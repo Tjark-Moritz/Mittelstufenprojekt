@@ -1,0 +1,4 @@
+POST http://authproxy.szut.dev
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=employee-management-service&username=user&password=test

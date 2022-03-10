@@ -1,0 +1,11 @@
+{
+  "/backend": {
+    "target": "http://localhost:8089/employees",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/backend": ""
+    },
+    "changeOrigin": true
+  }
+}

@@ -1,0 +1,30 @@
+version: '3'
+
+volumes:
+  employee_postgres_data:
+    driver: local
+
+services:
+  postgres-employee:
+    container_name: postgres_employee
+    image: postgres:13.3
+    volumes:
+      - employee_postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: employee_db
+      POSTGRES_USER: employee
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+
+  employee:
+    container_name: employee
+    image: berndheidemann/employee-management-service:0.1.2
+    environment:
+      spring.datasource.url: jdbc:postgresql://postgres-employee:5432/employee_db
+      spring.datasource.username: employee
+      spring.datasource.password: secret
+    ports:
+      - "8089:8089"
+    depends_on:
+      - postgres-employee
