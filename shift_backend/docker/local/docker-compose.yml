@@ -1,0 +1,18 @@
+version: '3'
+
+volumes:
+  lf8_starter_postgres_data:
+    driver: local
+
+services:
+  postgres_for_lf8_starter:
+    container_name: lf8_starter_postgres_container
+    image: postgres:13.3
+    volumes:
+      - lf8_starter_postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: lf8_starter_db
+      POSTGRES_USER: lf8_starter
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
