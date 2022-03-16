@@ -15,6 +15,7 @@ export class Employee {
               public sickDays?: SickDay[],
               public numHolidaysLeft?: number,
               public encodededProfilePic?: string,
-              public preferredShiftType?: ShiftType) {
+              public preferredShiftType?: ShiftType,
+              public departmentId?: number) {
   }
 }
