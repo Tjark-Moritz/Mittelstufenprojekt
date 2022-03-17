@@ -11,10 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -36,27 +33,66 @@ public class DepartmentController {
             @ApiResponse(responseCode =  "400", description = "department parameter is null", content = @Content),
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
-    public ResponseEntity<DepartmentDto> createDepartment(@RequestHeader Map<String,String> headers, @Valid @RequestBody final DepartmentDto departmentDto) {
+    @PostMapping
+    public ResponseEntity<DepartmentDto> createDepartment(@RequestHeader Map<String,String> headers,
+                                                          @Valid @RequestBody final DepartmentDto departmentDto)
+    {
         Department depDto = this.mappingService.mapDepDtoToDep(departmentDto);
         this.departmentService.create(depDto);
         final DepartmentDto request = this.mappingService.mapDepToDepDto(depDto);
         return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
-
-
-
-
-
-    @Operation(summary = "creates department")
+    @Operation(summary = "update department")
     @ApiResponses(value = {
             @ApiResponse(responseCode =  "200", description = "department was updated"),
             @ApiResponse(responseCode =  "400", description = "department parameter is null", content = @Content),
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
-    public ResponseEntity<DepartmentDto> updateDepartment(@RequestHeader Map<String, String> headers, @Valid @RequestBody final DepartmentDto departmentDto) {
-        //todo: add code here
+    @PostMapping("/{id}")
+    public ResponseEntity<DepartmentDto> updateDepartment(@RequestHeader Map<String, String> headers,
+                                                          @Valid @RequestBody final DepartmentDto departmentDto)
+    {
+        //todo: add token here
+
+        Department depDto = this.mappingService.mapDepDtoToDep(departmentDto);
+        this.departmentService.update(depDto, departmentDto.getDepartmentId());
+        final DepartmentDto request = this.mappingService.mapDepToDepDto(depDto);
+        return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
-    //todo: add update, findById, delete here
+    @Operation(summary = "delete department")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "department was deleted"),
+            @ApiResponse(responseCode =  "400", description = "department parameter is null", content = @Content),
+            @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<DepartmentDto> deleteDepartment(@RequestHeader Map<String, String> headers,
+                                                          @Valid @RequestBody final DepartmentDto departmentDto)
+    {
+        //todo: add token here
+
+        Department depDto = this.mappingService.mapDepDtoToDep(departmentDto);
+        this.departmentService.delete(departmentDto.getDepartmentId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "find department by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "department was found"),
+            @ApiResponse(responseCode =  "400", description = "department parameter is null", content = @Content),
+            @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<DepartmentDto> findDepartmentById(@RequestHeader Map<String, String> headers,
+                                                            @Valid @RequestBody final DepartmentDto departmentDto)
+    {
+        //todo: add token here
+
+        Department depDto = this.mappingService.mapDepDtoToDep(departmentDto);
+        this.departmentService.getById(departmentDto.getDepartmentId());
+        final DepartmentDto request = this.mappingService.mapDepToDepDto(depDto);
+        return new ResponseEntity<>(request, HttpStatus.OK);
+    }
 }
