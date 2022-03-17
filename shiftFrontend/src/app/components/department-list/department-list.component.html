@@ -1,0 +1,24 @@
+<div class="d-flex justify-content-between topHeader">
+  <h1>All Departments</h1>
+  <a role="button" class="btn addBtn">Add</a>
+<!--  <a routerLink="/departments/add" role="button" class="btn addBtn">Add</a>-->
+</div>
+
+<table class="table table-bordered table-hover">
+  <thead class="tableHead">
+  <tr>
+    <th scope="col">Name</th>
+    <th scope="col">Kürzel</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <ng-container *ngFor="let dep of departments">
+<!--    <tr class="tableRow" routerLink="/departments/edit/{{ dep.departmentId }}">-->
+    <tr class="tableRow">
+      <td>{{ dep.name }}</td>
+      <td>{{ dep.abbreviatedName }}</td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>
