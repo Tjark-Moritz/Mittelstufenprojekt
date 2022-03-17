@@ -1,5 +1,7 @@
 package de.szut.shift_backend.controller;
 
+import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
+import de.szut.shift_backend.model.Department;
 import de.szut.shift_backend.model.dto.DepartmentDto;
 import de.szut.shift_backend.services.DepartmentService;
 import de.szut.shift_backend.services.MappingService;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,10 +36,26 @@ public class DepartmentController {
             @ApiResponse(responseCode =  "400", description = "department parameter is null", content = @Content),
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
-    public ResponseEntity<DepartmentDto> createDepartment(@RequestHeader Map<String,String> headers, @Valid@RequestBody final DepartmentDto departmentDto) {
-        //todo: add code here
+    public ResponseEntity<DepartmentDto> createDepartment(@RequestHeader Map<String,String> headers, @Valid @RequestBody final DepartmentDto departmentDto) {
+        Department depDto = this.mappingService.mapDepDtoToDep(departmentDto);
+        this.departmentService.create(depDto);
+        final DepartmentDto request = this.mappingService.mapDepToDepDto(depDto);
+        return new ResponseEntity<>(request, HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(new DepartmentDto(), HttpStatus.OK);
+
+
+
+
+
+    @Operation(summary = "creates department")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "department was updated"),
+            @ApiResponse(responseCode =  "400", description = "department parameter is null", content = @Content),
+            @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
+    })
+    public ResponseEntity<DepartmentDto> updateDepartment(@RequestHeader Map<String, String> headers, @Valid @RequestBody final DepartmentDto departmentDto) {
+        //todo: add code here
     }
 
     //todo: add update, findById, delete here

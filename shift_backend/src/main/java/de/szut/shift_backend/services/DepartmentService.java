@@ -20,7 +20,7 @@ public class DepartmentService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Department add(Department newDepartment) {
+    public Department create(Department newDepartment) {
        return departmentRepository.save(newDepartment);
     }
 
