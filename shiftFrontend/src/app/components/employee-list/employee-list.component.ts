@@ -67,11 +67,7 @@ export class EmployeeListComponent implements OnInit {
     this.selection.clear();
     this.employees.forEach(row => this.selection.select(row));
 
-    console.log(this.selection);
-
     let searchkey = (document.getElementById("inputSearch") as HTMLInputElement).value;
-    console.log("search");
-    console.log(searchkey);
     if(searchkey != ""){
       let newFound = true;
       while(newFound){
