@@ -2,6 +2,7 @@
   <h1>All Departments</h1>
   <a role="button" class="btn addBtn">Add</a>
 <!--  <a routerLink="/departments/add" role="button" class="btn addBtn">Add</a>-->
+  <input id="inputSearch" type="text" placeholder="Search.." (input)="search()">
 </div>
 
 <table class="table table-bordered table-hover">
@@ -13,7 +14,7 @@
   </thead>
 
   <tbody>
-  <ng-container *ngFor="let dep of departments">
+  <ng-container *ngFor="let dep of selection.selected">
 <!--    <tr class="tableRow" routerLink="/departments/edit/{{ dep.departmentId }}">-->
     <tr class="tableRow">
       <td>{{ dep.name }}</td>
