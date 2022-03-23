@@ -1,0 +1,39 @@
+table {
+  margin-top: 10px;
+  width: 100%;
+}
+
+td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 0px;
+  white-space: nowrap;
+}
+
+.tableHead {
+  background-color: grey;
+  color: white;
+}
+
+.tableRow:hover {
+  cursor: pointer;
+}
+
+.addBtn {
+  background-color: #5b5b5b;
+  color: white;
+  align-self: center;
+  width: 100px;
+}
+
+.addBtn:hover {
+  background-color: #6b6b6b;
+}
+
+.topHeader {
+  margin: 10px;
+}
+
+.departmentName {
+  font-size: 12px;
+}
