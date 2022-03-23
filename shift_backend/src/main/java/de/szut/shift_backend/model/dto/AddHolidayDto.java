@@ -10,6 +10,10 @@ import java.time.LocalDate;
 public class AddHolidayDto {
 
     @Id
+    @NotNull(message = "HolidayId can not be null!")
+    private Long holidayId;
+
+    @Id
     @NotNull(message = "HolidayTypeId can not be null!")
     private Long holidayTypeId;
 
