@@ -10,7 +10,7 @@ import {SelectionModel} from "@angular/cdk/collections";
 })
 export class DepartmentListComponent implements OnInit{
 
-  public departments: Department[] = [];
+  private departments: Department[] = [];
   public selection: SelectionModel<Department>;
   private selectionLength = 0;
 
@@ -38,25 +38,17 @@ export class DepartmentListComponent implements OnInit{
     this.selection.clear();
     this.departments.forEach(row => this.selection.select(row));
 
-    console.log(this.selection);
-
-    /*
-    // Alle auswählen
-    for (let i = 0; i < this.selectionLength; i++) {
-      this.selection.select(i);
-    }
-    */
-
     let searchkey = (document.getElementById("inputSearch") as HTMLInputElement).value;
-    console.log("search");
-    console.log(searchkey);
     if(searchkey != ""){
       let newFound = true;
       while(newFound){
         newFound = false;
         let notFitting = this.selection.selected.find(value => {
-          if(value.name){
+          if(value.name && value.abbreviatedName){
             if(value.name.includes(searchkey)){
+              return;
+            }
+            if(value.abbreviatedName.includes(searchkey)){
               return;
             }
           }
