@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Data //todo: data???
+@Data
 public class HolidayRequestDto {
 
     @Id
@@ -26,7 +26,5 @@ public class HolidayRequestDto {
 
     @NotNull(message = "RequestDate can not be null!")
     private LocalDateTime requestDate;
-
-
 
 }
