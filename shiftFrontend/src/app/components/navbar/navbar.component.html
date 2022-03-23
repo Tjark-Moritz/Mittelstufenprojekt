@@ -1,0 +1,14 @@
+<nav class="navbar navbar-expand-lg navbar-dark cNavBar">
+  <div class="container-fluid">
+
+    <a class="navbar-brand mb-0 h1" routerLink="/">
+      <img class="cLogo" src="../../../assets/Logo/ShiPla_Logo.svg" alt="ShiPla"/>
+    </a>
+
+    <a class="cRoundedBorder cFilterToBaseColor">
+      <img *ngIf="!notificationAvailable" class="cNotificationBellImg" src="../../../assets/NotificationBell/Notification_Bell.svg" alt="Notification Bell"/>
+      <img *ngIf="notificationAvailable" class="cNotificationBellImg" src="../../../assets/NotificationBell/Notification_Bell_Ring.svg" alt="Notification Bell"/>
+    </a>
+
+  </div>
+</nav>

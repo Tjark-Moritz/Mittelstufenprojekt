@@ -1,0 +1,29 @@
+.cNavBar {
+  background-color: #35383a;
+}
+
+.cLogo {
+  cursor: pointer;
+  height: 40px;
+  padding: 1px;
+}
+
+.cFilterToBaseColor {
+  filter: invert(99%) sepia(4%) saturate(239%) hue-rotate(147deg) brightness(119%) contrast(100%);
+}
+
+.cRoundedBorder {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  border: 3px solid black;
+}
+
+.cNotificationBellImg {
+  height: 30px;
+}
+
+.cProfilPicture {
+  height: 30px;
+  filter: inherit;
+}
