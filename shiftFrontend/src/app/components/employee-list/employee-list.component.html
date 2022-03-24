@@ -17,9 +17,13 @@
   <ng-container *ngFor="let emp of selection.selected">
     <!--    <tr class="tableRow" routerLink="/departments/edit/{{ dep.departmentId }}">-->
     <tr class="tableRow">
-      <td>{{ emp.lastname }}, {{ emp.firstname }}</td>
-      <td>{{ getDepAbbr(emp.departmentId) }}<div class="departmentName">{{ getDepName(emp.departmentId)}}</div></td>
+      <td><div [innerHtml]="emp.lastname | highlighter:searchkey:'partial'"  ></div>, <div [innerHtml]="emp.firstname | highlighter:searchkey:'partial'"  ></div></td>
+      <td><div [innerHtml]="getDepAbbr(emp.departmentId) | highlighter:searchkey:'partial'"  ></div><div class="departmentName"><div [innerHtml]="getDepName(emp.departmentId) | highlighter:searchkey:'partial'"  ></div></div></td>
     </tr>
+<!--    <tr class="tableRow">-->
+<!--      <td>{{ emp.lastname }}, {{ emp.firstname }}</td>-->
+<!--      <td>{{ getDepAbbr(emp.departmentId) }}<div class="departmentName">{{ getDepName(emp.departmentId)}}</div></td>-->
+<!--    </tr>-->
   </ng-container>
   </tbody>
 </table>

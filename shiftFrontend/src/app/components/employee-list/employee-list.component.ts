@@ -16,6 +16,7 @@ export class EmployeeListComponent implements OnInit {
   public selection: SelectionModel<Employee>;
   private selectionLength = 0;
   private depIdAbbrDict: { [id: number]: Department; }  = {};
+  public searchkey = "";
 
   constructor(private empService: EmployeeService, private depService: DepartmentService) {
     this.selection = new SelectionModel<Employee>(true, []);
@@ -67,25 +68,25 @@ export class EmployeeListComponent implements OnInit {
     this.selection.clear();
     this.employees.forEach(row => this.selection.select(row));
 
-    let searchkey = (document.getElementById("inputSearch") as HTMLInputElement).value;
-    if(searchkey != ""){
+    this.searchkey = (document.getElementById("inputSearch") as HTMLInputElement).value;
+    if(this.searchkey != ""){
       let newFound = true;
       while(newFound){
         newFound = false;
         let notFitting = this.selection.selected.find(value => {
           if(value.lastname && value.firstname){
-            if(value.lastname.includes(searchkey)){
+            if(value.lastname.includes(this.searchkey)){
               return;
             }
-            if(value.firstname.includes(searchkey)){
+            if(value.firstname.includes(this.searchkey)){
               return;
             }
             let depAbbr = this.getDepAbbr(value.departmentId);
-            if(depAbbr && depAbbr.includes(searchkey)){
+            if(depAbbr && depAbbr.includes(this.searchkey)){
               return;
             }
             let depName = this.getDepName(value.departmentId);
-            if(depName && depName.includes(searchkey)){
+            if(depName && depName.includes(this.searchkey)){
               return;
             }
           }
