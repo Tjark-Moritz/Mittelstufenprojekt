@@ -5,7 +5,7 @@
   <input id="inputSearch" type="text" placeholder="Search.." (input)="search()">
 </div>
 
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" id="depTable">
   <thead class="tableHead">
   <tr>
     <th scope="col">Name</th>
@@ -13,12 +13,12 @@
   </tr>
   </thead>
 
-  <tbody>
+  <tbody id="tb">
   <ng-container *ngFor="let dep of selection.selected">
 <!--    <tr class="tableRow" routerLink="/departments/edit/{{ dep.departmentId }}">-->
     <tr class="tableRow">
-      <td>{{ dep.name }}</td>
-      <td>{{ dep.abbreviatedName }}</td>
+      <td><div [innerHtml]="dep.name | highlighter:searchkey:'partial'"  ></div></td>
+      <td><div [innerHtml]="dep.abbreviatedName | highlighter:searchkey:'partial'"  ></div></td>
     </tr>
   </ng-container>
   </tbody>

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {DepartmentService} from "../../services/department.service";
 import {Department} from "../../models/dto/Department";
 import {SelectionModel} from "@angular/cdk/collections";
@@ -6,13 +6,13 @@ import {SelectionModel} from "@angular/cdk/collections";
 @Component({
   selector: 'app-department-list',
   templateUrl: './department-list.component.html',
-  styleUrls: ['./department-list.component.css']
+  styleUrls: ['./department-list.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DepartmentListComponent implements OnInit{
-
   private departments: Department[] = [];
   public selection: SelectionModel<Department>;
-  private selectionLength = 0;
+  public searchkey = "";
 
   constructor(private depService: DepartmentService) {
     this.selection = new SelectionModel<Department>(true, []);
@@ -28,9 +28,7 @@ export class DepartmentListComponent implements OnInit{
       this.selection = new SelectionModel<Department>(true, []);
       console.log("There was an error getting the Departments: ", error);
     })
-    this.selectionLength = this.selection.selected.length;
   }
-
 
   async search(){
     // Puffer damit der eingegebene Text lädt
@@ -38,17 +36,17 @@ export class DepartmentListComponent implements OnInit{
     this.selection.clear();
     this.departments.forEach(row => this.selection.select(row));
 
-    let searchkey = (document.getElementById("inputSearch") as HTMLInputElement).value;
-    if(searchkey != ""){
+    this.searchkey = (document.getElementById("inputSearch") as HTMLInputElement).value;
+    if(this.searchkey != ""){
       let newFound = true;
       while(newFound){
         newFound = false;
         let notFitting = this.selection.selected.find(value => {
           if(value.name && value.abbreviatedName){
-            if(value.name.includes(searchkey)){
+            if(value.name.includes(this.searchkey)){
               return;
             }
-            if(value.abbreviatedName.includes(searchkey)){
+            if(value.abbreviatedName.includes(this.searchkey)){
               return;
             }
           }
