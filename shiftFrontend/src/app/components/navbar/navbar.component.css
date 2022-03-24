@@ -2,28 +2,41 @@
   background-color: #35383a;
 }
 
-.cLogo {
+.cMenuLinesDiv {
   cursor: pointer;
+  display: inline-block;
+}
+
+.cLogoDiv {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 5px;
+}
+
+.cMenuLine {
+  width: 35px;
+  height: 5px;
+  background-color: white;
+  margin: 6px 0;
+}
+
+.cLogo {
   height: 40px;
   padding: 1px;
 }
 
-.cFilterToBaseColor {
-  filter: invert(99%) sepia(4%) saturate(239%) hue-rotate(147deg) brightness(119%) contrast(100%);
-}
-
-.cRoundedBorder {
+.cSymbol {
   cursor: pointer;
-  padding: 5px;
+  margin: 5px;
+}
+
+.cSymbolImg {
+  background-color: white;
+
   border-radius: 50%;
-  border: 3px solid black;
-}
+  border: 3px solid white;
 
-.cNotificationBellImg {
-  height: 30px;
-}
-
-.cProfilPicture {
-  height: 30px;
-  filter: inherit;
+  height: 42px;
+  width: 42px;
 }
