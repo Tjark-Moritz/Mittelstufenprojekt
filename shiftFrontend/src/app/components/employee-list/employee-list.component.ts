@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {DepartmentService} from "../../services/department.service";
 import {Department} from "../../models/dto/Department";
 import {SelectionModel} from "@angular/cdk/collections";
@@ -8,7 +8,8 @@ import {EmployeeService} from "../../services/employee.service";
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
-  styleUrls: ['./employee-list.component.css']
+  styleUrls: ['./employee-list.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class EmployeeListComponent implements OnInit {
 
