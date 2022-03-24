@@ -1,18 +1,44 @@
 version: '3'
 
 volumes:
-  lf8_starter_postgres_data:
+  lf12_shiftplanner_data:
     driver: local
 
 services:
-  postgres_for_lf8_starter:
-    container_name: lf8_starter_postgres_container
+  postgres_for_shiftplanner:
+    container_name: lf12_shiftplanner
     image: postgres:13.3
     volumes:
-      - lf8_starter_postgres_data:/var/lib/postgresql/data
+      - lf12_shiftplanner_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: lf8_starter_db
-      POSTGRES_USER: lf8_starter
+      POSTGRES_DB: lf12_shiftplanner_db
+      POSTGRES_USER: shiftplanner
       POSTGRES_PASSWORD: secret
     ports:
       - "5432:5432"
+
+  keycloak_for_shiftplanner:
+    depends_on:
+      - postgres_for_shiftplanner
+    image: jboss/keycloak:12.0.4
+    volumes:
+      - ./keycloak-realm:/opt/jboss/keycloak/import
+      - ./keycloak-realm:/tmp/export
+    command:
+      - "-Dkeycloak.migration.action=export"
+      - "-Dkeycloak.migration.provider=singleFile"
+      - "-Dkeycloak.migration.realmName=Shiftplanner"
+      - "-Dkeycloak.migration.usersExportStrategy=REALM_FILE"
+      - "-Dkeycloak.migration.file=/tmp/export/shiftplanner-realm.json"
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres_for_shiftplanner
+      DB_DATABASE: lf12_shiftplanner_db
+      DB_USER: shiftplanner
+      DB_SCHEMA: public
+      DB_PASSWORD: secret
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: "/opt/jboss/keycloak/import/Shiftplanner-realm.json"
+    ports:
+      - "8089:8080"
