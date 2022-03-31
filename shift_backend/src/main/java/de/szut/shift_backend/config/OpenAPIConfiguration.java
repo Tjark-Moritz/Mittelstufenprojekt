@@ -35,10 +35,10 @@ public class OpenAPIConfiguration {
                         .description("\n## Auth\n" +
                                 "\n## Authentication\n" + "\nThis Hello service uses JWTs to authenticate requests. You will receive a bearer token by making a POST-Request in IntelliJ on:\n\n" +
                                 "\n" +
-                                "```\nPOST http://keycloak.szut.dev/auth/realms/szut/protocol/openid-connect/token\nContent-Type: application/x-www-form-urlencoded\ngrant_type=password&client_id=employee-management-service&username=user&password=test\n```\n" +
+                                "```\nPOST http://localhost:8089/auth/realms/Shiftplanner/protocol/openid-connect/token\nContent-Type: application/x-www-form-urlencoded\ngrant_type=password&client_id=shiftplanner&username=user&password=user\n```\n" +
                                 "\n" +
                                 "\nor by CURL\n" +
-                                "```\ncurl -X POST 'http://keycloak.szut.dev/auth/realms/szut/protocol/openid-connect/token'\n--header 'Content-Type: application/x-www-form-urlencoded'\n--data-urlencode 'grant_type=password'\n--data-urlencode 'client_id=employee-management-service'\n--data-urlencode 'username=user'\n--data-urlencode 'password=test'\n```\n" +
+                                "```\ncurl -X POST 'http://localhost:8089/auth/realms/Shiftplanner/protocol/openid-connect/token'\n--header 'Content-Type: application/x-www-form-urlencoded'\n--data-urlencode 'grant_type=password'\n--data-urlencode 'client_id=shiftplanner'\n--data-urlencode 'username=user'\n--data-urlencode 'password=user'\n```\n" +
                                 "\nTo get a bearer-token in Postman, you have to follow the instructions in \n [Postman-Documentation](https://documenter.getpostman.com/view/7294517/SzmfZHnd).")
 
                         .version("0.1"))
