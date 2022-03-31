@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -46,13 +47,24 @@ public class HolidayController {
         return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
+    @Operation(summary = "gets unanswered holiday requests")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "get holiday request successfully"),
+            @ApiResponse(responseCode =  "400", description = "get holiday request failed", content = @Content),
+            @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
+    })
+    @GetMapping
+    public ResponseEntity<> getUnansweredHolidayRequests(@RequestHeader Map<String,String> headers,
+                                                                      @Valid @RequestBody final long departmentId) {
 
-    public ResponseEntity<HolidayRequestDto> getUnansweredHolidayRequests(@RequestHeader Map<String,String> headers,
-                                                                          @Valid @RequestBody final HolidayRequestDto holidayRequestDto) {
-        Holiday holidayDto = this.mappingService.mapGetHolidayDtoToHoliday(holidayRequestDto);
-        this.holidayService.create(holidayDto);
-        final AddHolidayDto request = this.mappingService.mapHolidayToAddHolidayDto(holidayDto);
-        return new ResponseEntity<>(request, HttpStatus.OK);
+        List<Holiday> holidayList = holidayService.getHolidayRequestsByStatusByDeptId(departmentId);
+        mappingService.mapHolidaylistToHolidayRequestDto(holidayList);
 
+
+
+            Holiday holidayDto = this.mappingService.mapHolidayRequestDtoToHoliday(holidayRequestDto);
+            this.holidayService.create(holidayDto);
+            final AddHolidayDto request = this.mappingService.mapHolidayToAddHolidayDto(holidayDto);
+            return new ResponseEntity<AddHolidayDto>(request, HttpStatus.OK);
     }
 }

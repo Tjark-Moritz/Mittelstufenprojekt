@@ -13,11 +13,16 @@ import java.time.LocalDate;
 @Table(name="holiday")
 public class Holiday {
 
+    public enum HolidayStatus {
+        UNANSWERED,
+        ACCEPTED,
+        DENIED
+    }
+
     @Id
     @NotNull(message = "HolidayId can not be null!")
     private Long holidayId;
 
-    @Id
     @NotNull(message = "HolidayTypeId can not be null!")
     private Long holidayTypeId;
 
@@ -27,8 +32,9 @@ public class Holiday {
     @NotNull(message = "EndDate can not be null!")
     private LocalDate endDate;
 
-    @Id
     @NotNull(message = "EmployeeId can not be null!")
     private Long employeeId;
 
+    @NotNull
+    private HolidayStatus holidayStatus;
 }

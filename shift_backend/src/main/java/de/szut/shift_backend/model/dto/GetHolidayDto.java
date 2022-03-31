@@ -1,5 +1,6 @@
 package de.szut.shift_backend.model.dto;
 
+import de.szut.shift_backend.model.Holiday;
 import lombok.Data;
 
 import javax.persistence.Id;
@@ -11,13 +12,13 @@ public class GetHolidayDto {
     @Id
     private Long holidayId;
 
-    @Id
     private Long holidayTypeId;
 
     private LocalDate startDate;
 
     private LocalDate endDate;
 
-    @Id
     private Long employeeId;
+
+    private Holiday.HolidayStatus status;
 }

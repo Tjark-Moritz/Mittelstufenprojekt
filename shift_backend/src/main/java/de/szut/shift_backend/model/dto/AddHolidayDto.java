@@ -13,7 +13,6 @@ public class AddHolidayDto {
     @NotNull(message = "HolidayId can not be null!")
     private Long holidayId;
 
-    @Id
     @NotNull(message = "HolidayTypeId can not be null!")
     private Long holidayTypeId;
 
@@ -23,7 +22,6 @@ public class AddHolidayDto {
     @NotNull(message = "EndDate can not be null!")
     private LocalDate endDate;
 
-    @Id
     @NotNull(message = "EmployeeId can not be null!")
     private Long employeeId;
 

@@ -25,7 +25,7 @@ public class DepartmentService {
     }
 
     public Department update(Department newDepartment, Long id) {
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        EmployeeService employeeService = new EmployeeService(employeeRepository, departmentRepository, departmentService);
 
         Department department = getById(id);
 
@@ -55,5 +55,14 @@ public class DepartmentService {
 
     public void delete(Long id) {
         departmentRepository.deleteById(id);
+    }
+
+    public Department getDepartmentById(Long depID){
+        Optional<Department> dep = departmentRepository.findById(depID);
+
+        if (dep.isEmpty())
+            throw new ResourceNotFoundException("Department could not be found");
+
+        return dep.get();
     }
 }
