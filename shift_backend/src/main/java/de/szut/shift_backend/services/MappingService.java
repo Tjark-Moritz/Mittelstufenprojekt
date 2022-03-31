@@ -9,8 +9,6 @@ import de.szut.shift_backend.model.dto.HolidayRequestDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -82,7 +80,7 @@ public class MappingService {
     public Holiday mapHolidayRequestDtoToHoliday(HolidayRequestDto holidayRequestDto) {
         Holiday holiday = new Holiday();
 
-        if (holidayRequestDto.getStatus()) {
+        if (holidayRequestDto.getStatus() != null) { //todo: richtig?
             holiday = holidayRequestDto.getHoliday();
         }
 
@@ -90,17 +88,27 @@ public class MappingService {
     }
 
 
-    public void mapHolidaylistToHolidayRequestDto(List<Holiday> holidays) {
+    public HolidayRequestDto mapHolidayToHolidayRequestDto(Holiday holiday) {
         HolidayRequestDto requestDto = new HolidayRequestDto();
 
-        for (Holiday holiday : holidays) {
-            requestDto.setRequestingEmployeeId(holiday.getEmployeeId());
-            requestDto.setHoliday(holiday);
-            requestDto.setRequestDate(LocalDateTime.now());
-          //todo: refactor here
+        requestDto.setRequestingEmployeeId(holiday.getEmployeeId());
+        requestDto.setHoliday(holiday);
+        requestDto.setRequestDate(holiday.getRequestDate());
+        requestDto.setStatus(holiday.getHolidayStatus());
 
-        }
+        return requestDto;
+    }
 
+    public GetHolidayDto mapHolidayToGetHolidayDto(Holiday holiday) {
+        GetHolidayDto getHolidayDto = new GetHolidayDto();
+
+        getHolidayDto.setHolidayId(holiday.getHolidayId());
+        getHolidayDto.setHolidayTypeId(holiday.getHolidayTypeId());
+        getHolidayDto.setEmployeeId(holiday.getEmployeeId());
+        getHolidayDto.setStartDate(holiday.getStartDate());
+        getHolidayDto.setEndDate(holiday.getEndDate());
+
+        return getHolidayDto;
     }
 
     /*

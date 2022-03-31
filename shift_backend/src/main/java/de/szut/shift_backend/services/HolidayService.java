@@ -27,7 +27,6 @@ public class HolidayService {
     }
 
     public Holiday update(Holiday newHoliday, Long id) {
-
         Holiday holiday = getById(id);
 
         holiday.setHolidayId(newHoliday.getHolidayId());
@@ -60,6 +59,10 @@ public class HolidayService {
         return matchedHolidays;
     }
 
+    public List<Holiday> getAllHolidays() {
+        return holidayRepository.findAll();
+    }
+
     public List<Holiday> getHolidayRequestsByStatusByDeptId(long departmentId, Holiday.HolidayStatus status) {
         List<Holiday> holidayList = getAllByStatus(status);
         List<Holiday> matchedHolidays = new ArrayList<>();
@@ -73,4 +76,9 @@ public class HolidayService {
 
         return matchedHolidays;
     }
+
+    public void delete(long holidayId) {
+        holidayRepository.deleteById(holidayId);
+    }
+
 }

@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -31,6 +32,8 @@ public class Holiday {
 
     @NotNull(message = "EndDate can not be null!")
     private LocalDate endDate;
+
+    private LocalDateTime requestDate;
 
     @NotNull(message = "EmployeeId can not be null!")
     private Long employeeId;

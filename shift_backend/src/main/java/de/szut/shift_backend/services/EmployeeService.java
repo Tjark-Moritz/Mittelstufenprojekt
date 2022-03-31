@@ -36,7 +36,7 @@ public class EmployeeService {
     public Department getDepartmentByEmployeeId(Long employeeId) {
         Employee emp = this.getEmployeeById(employeeId);
 
-        return departmentService.getDepartmentById(emp.getDepartmentID);
+        return departmentService.getDepartmentById(emp.getDepartmentId());
     }
 
 }

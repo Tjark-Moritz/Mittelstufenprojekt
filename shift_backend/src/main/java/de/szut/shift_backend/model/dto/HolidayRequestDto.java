@@ -14,7 +14,6 @@ public class HolidayRequestDto {
     @NotNull(message = "HolidayRequestId can not be null!")
     private Long holidayRequestId;
 
-    @Id
     @NotNull(message = "RequestingEmployeeId can not be null!")
     private Long requestingEmployeeId;
 
@@ -22,7 +21,7 @@ public class HolidayRequestDto {
     private Holiday holiday;
 
     @NotNull(message = "Status can not be null!")
-    private Boolean status;
+    private Holiday.HolidayStatus status;
 
     @NotNull(message = "RequestDate can not be null!")
     private LocalDateTime requestDate;
