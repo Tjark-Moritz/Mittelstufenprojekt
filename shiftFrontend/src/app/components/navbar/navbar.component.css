@@ -1,0 +1,42 @@
+.cNavBar {
+  background-color: #35383a;
+}
+
+.cMenuLinesDiv {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.cLogoDiv {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 5px;
+}
+
+.cMenuLine {
+  width: 35px;
+  height: 5px;
+  background-color: white;
+  margin: 6px 0;
+}
+
+.cLogo {
+  height: 40px;
+  padding: 1px;
+}
+
+.cSymbol {
+  cursor: pointer;
+  margin: 5px;
+}
+
+.cSymbolImg {
+  background-color: white;
+
+  border-radius: 50%;
+  border: 3px solid white;
+
+  height: 42px;
+  width: 42px;
+}

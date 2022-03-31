@@ -1,0 +1,29 @@
+<nav class="navbar cNavBar">
+  <div class="container-fluid">
+    <div>
+      <div class="cMenuLinesDiv">
+        <div class="cMenuLine"></div>
+        <div class="cMenuLine"></div>
+        <div class="cMenuLine"></div>
+      </div>
+
+      <div class="cLogoDiv">
+        <a class="navbar-brand h1" routerLink="/">
+          <img class="cLogo" src="../../../assets/Logo/ShiPla_Logo.svg" alt="ShiPla"/>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <a class="cSymbol">
+        <img *ngIf="!notificationAvailable" class="cSymbolImg" src="../../../assets/NotificationBell/Notification_Bell.svg" alt="Notification Bell"/>
+        <img *ngIf="notificationAvailable" class="cSymbolImg" src="../../../assets/NotificationBell/Notification_Bell_Ring.svg" alt="Notification Bell"/>
+      </a>
+
+      <a class="cSymbol">
+        <img *ngIf="profilePictureBase64 == ''" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
+        <img *ngIf="profilePictureBase64 != ''" id="ProfilePicture" class="cSymbolImg" [src]="safeProfilePicture" alt="Profile Picture"/>
+      </a>
+    </div>
+  </div>
+</nav>
