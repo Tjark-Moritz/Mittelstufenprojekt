@@ -1,32 +1,30 @@
 package de.szut.shift_backend.services;
 
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
+import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Department;
 import de.szut.shift_backend.model.Employee;
-import de.szut.shift_backend.model.dto.AddEmployeeDto;
-import de.szut.shift_backend.repository.DepartmentRepository;
 import de.szut.shift_backend.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final DepartmentRepository departmentRepository;
     private final DepartmentService departmentService;
 
-    public EmployeeService(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, DepartmentService departmentService) {
+    public EmployeeService(EmployeeRepository employeeRepository, DepartmentService departmentService) {
         this.employeeRepository = employeeRepository;
-        this.departmentRepository = departmentRepository;
         this.departmentService = departmentService;
     }
 
-    public Employee create(Employee newEmployee) {
-        return employeeRepository.save(newEmployee);
+    public void create(Employee newEmployee) {
+        employeeRepository.save(newEmployee);
     }
 
     public Employee getEmployeeById(Long empID){
@@ -52,20 +50,13 @@ public class EmployeeService {
         this.employeeRepository.deleteById(employeeId);
     }
 
-    public void updateEmployee(Long employeeId, Employee empUpdate) throws IllegalAccessException, NoSuchFieldException {
+    public Employee updateEmployee(Long employeeId, Map<String, Object> empUpdate) throws ConstraintViolationException{
         Employee emp = this.getEmployeeById(employeeId);
 
-        Field[] empFields = empUpdate.getClass().getDeclaredFields();
+        Employee empUpdated = ClassReflectionHelper.UpdateFields(emp, empUpdate);
 
-        for (Field field : empFields){
-            field.setAccessible(true);
-            if (field.get(this) != null){
-                Field empFieldtoUpdate = emp.getClass().getDeclaredField(field.getName());
-                empFieldtoUpdate.setAccessible(true);
-                empFieldtoUpdate.set(field, field.get(this));
-            }
-        }
+        this.employeeRepository.save(empUpdated);
 
-        this.employeeRepository.save(emp);
+        return empUpdated;
     }
 }

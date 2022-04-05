@@ -1,5 +1,6 @@
 package de.szut.shift_backend.controller;
 
+import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.dto.AddEmployeeDto;
 import de.szut.shift_backend.model.dto.GetEmployeeDto;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class EmployeeController {
         return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
-    @Operation(summary = "creates Employee")
+    @Operation(summary = "get all Employee")
     @ApiResponses(value = {
             @ApiResponse(responseCode =  "200", description = "employee was created"),
             @ApiResponse(responseCode =  "400", description = "employee parameter is null", content = @Content),
@@ -64,31 +66,51 @@ public class EmployeeController {
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
-    @Operation(summary = "creates Employee")
+    @Operation(summary = "get Employee by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "employee was created"),
+            @ApiResponse(responseCode =  "400", description = "employee parameter is null", content = @Content),
+            @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<GetEmployeeDto> getEmployeeById( @Valid @PathVariable("id") final Long employeeId )
+    {
+        Employee emp = this.employeeService.getEmployeeById(employeeId);
+        GetEmployeeDto empDto = this.mappingService.mapEmployeeToGetEmployeeDto(emp);
+
+        return new ResponseEntity<>(empDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "deletes Employee")
     @ApiResponses(value = {
             @ApiResponse(responseCode =  "200", description = "employee was created"),
             @ApiResponse(responseCode =  "400", description = "employee parameter is null", content = @Content),
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
     @DeleteMapping("/{id}")
-    public void getAllEmployees(@RequestHeader Map<String,String> headers,
-                                @Valid @PathVariable("id") final Long employeeId)
+    public ResponseEntity<Object> getAllEmployees(@RequestHeader Map<String,String> headers,
+                                                  @Valid @PathVariable("id") final Long employeeId)
     {
         this.employeeService.deleteEmployeeById(employeeId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "creates Employee")
+    @Operation(summary = "updates Employee")
     @ApiResponses(value = {
-            @ApiResponse(responseCode =  "200", description = "employee was created"),
+            @ApiResponse(responseCode =  "200", description = "employee was updated"),
             @ApiResponse(responseCode =  "400", description = "employee parameter is null", content = @Content),
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
     @PatchMapping("/{id}")
-    public void updateEmployee(@RequestHeader Map<String,String> headers,
+    public ResponseEntity<GetEmployeeDto> updateEmployee(@RequestHeader Map<String,String> headers,
                                @Valid @PathVariable("id") final Long employeeId,
-                               @RequestBody final AddEmployeeDto empToUpdate) throws NoSuchFieldException, IllegalAccessException {
+                               @Valid @RequestBody final Map<String,Object> fieldsToPatch) {
 
-        Employee empUpdate = this.mappingService.mapAddEmployeeDtoToEmployee(empToUpdate);
-        this.employeeService.updateEmployee(employeeId, empUpdate);
+            Employee empUpdate = this.employeeService.updateEmployee(employeeId, fieldsToPatch);
+
+            GetEmployeeDto empUpdatedDto = this.mappingService.mapEmployeeToGetEmployeeDto(empUpdate);
+
+            return new ResponseEntity<>(empUpdatedDto, HttpStatus.OK);
     }
 }
