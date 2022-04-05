@@ -1,0 +1,43 @@
+
+
+.cHeader {
+  text-align: center;
+  margin: 50px;
+}
+
+.cInput {
+  text-align: center;
+  width: 80vw;
+  max-width: 500px;
+  alignment: center;
+  border: 0px;
+  border-bottom: 1px solid black;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.cInput:hover {
+  background-color: rgba(0,0,0,5%);
+}
+
+.cCenterDiv {
+  margin: 10px;
+  text-align: center;
+}
+
+.cCheckboxDiv {
+  cursor: pointer;
+}
+
+.cCheckbox {
+  margin: 10px;
+}
+
+.cButton {
+  padding: 5px 15px 10px 15px;
+  outline: none;
+  border: none;
+  border-radius: 12px;
+  background-color: black;
+  color: white;
+}
