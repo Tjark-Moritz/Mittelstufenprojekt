@@ -71,8 +71,6 @@ public class DepartmentController {
     public ResponseEntity<DepartmentDto> deleteDepartment(@RequestHeader Map<String, String> headers,
                                                           @Valid @RequestBody final DepartmentDto departmentDto)
     {
-        //todo: add token here
-
         Department depDto = this.mappingService.mapDepDtoToDep(departmentDto);
         this.departmentService.delete(departmentDto.getDepartmentId());
         return new ResponseEntity<>(HttpStatus.OK);

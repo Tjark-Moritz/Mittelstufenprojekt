@@ -1,13 +1,13 @@
 package de.szut.shift_backend.services;
 
 import de.szut.shift_backend.model.Department;
+import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.Holiday;
-import de.szut.shift_backend.model.dto.AddHolidayDto;
-import de.szut.shift_backend.model.dto.DepartmentDto;
-import de.szut.shift_backend.model.dto.GetHolidayDto;
-import de.szut.shift_backend.model.dto.HolidayRequestDto;
+import de.szut.shift_backend.model.dto.*;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -103,13 +103,40 @@ public class MappingService {
 
     }
 
-    /*
-    public List<Employee> mapEmpDtoToEmp(List<EmployeeDto> input) {
+    public Employee mapAddEmployeeDtoToEmployee(AddEmployeeDto empDto){
+        Employee emp = new Employee();
 
+        emp.setUsername(empDto.getUsername());
+        emp.setLastName(empDto.getLastName());
+        emp.setFirstName(empDto.getFirstName());
+        emp.setStreet(empDto.getStreet());
+        emp.setZipcode(empDto.getZipcode());
+        emp.setCity(empDto.getCity());
+        emp.setPhone(empDto.getPhone());
+        emp.setEmail(empDto.getEmail());
+        emp.setNumHolidaysLeft(empDto.getNumHolidaysLeft());
+        emp.setBase64ProfilePic(empDto.getBase64ProfilePic());
+        emp.setDepartmentId(empDto.getDepartmentId());
+
+        return emp;
     }
 
-    public List<EmployeeDto> mapEmpToEmpDto(List<Employee> input) {
+    public GetEmployeeDto mapEmployeeToGetEmployeeDto(Employee emp){
+        GetEmployeeDto empDto = new GetEmployeeDto();
 
+        empDto.setId(emp.getId());
+        empDto.setUsername(emp.getUsername());
+        empDto.setLastName(emp.getLastName());
+        empDto.setFirstName(emp.getFirstName());
+        empDto.setStreet(emp.getStreet());
+        empDto.setZipcode(emp.getZipcode());
+        empDto.setCity(emp.getCity());
+        empDto.setPhone(emp.getPhone());
+        empDto.setEmail(emp.getEmail());
+        empDto.setNumHolidaysLeft(emp.getNumHolidaysLeft());
+        empDto.setBase64ProfilePic(emp.getBase64ProfilePic());
+        empDto.setDepartmentId(emp.getDepartmentId());
+
+        return empDto;
     }
-    */
 }

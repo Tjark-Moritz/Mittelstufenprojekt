@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @Setter
@@ -48,11 +49,12 @@ public class Employee {
     @OneToMany
     private List<Holiday> acceptedHolidays;
 
-    @OneToMany
-    private List<SickDay> sickDays;
+    //@OneToMany
+    //private List<SickDay> sickDays;
 
     private String base64ProfilePic;
 
+    @OneToOne
     private ShiftType preferredShiftType;
 
     private Long departmentId;

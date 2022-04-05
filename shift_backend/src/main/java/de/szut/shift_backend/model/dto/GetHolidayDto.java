@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @Data
 public class GetHolidayDto {
 
-    @Id
     private Long holidayId;
 
     private Long holidayTypeId;

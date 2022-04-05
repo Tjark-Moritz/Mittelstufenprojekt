@@ -25,8 +25,6 @@ public class DepartmentService {
     }
 
     public Department update(Department newDepartment, Long id) {
-        EmployeeService employeeService = new EmployeeService(employeeRepository, departmentRepository, departmentService);
-
         Department department = getById(id);
 
         department.setDepartmentId(newDepartment.getDepartmentId());

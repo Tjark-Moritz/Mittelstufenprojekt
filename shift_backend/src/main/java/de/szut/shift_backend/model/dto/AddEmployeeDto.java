@@ -1,8 +1,9 @@
 package de.szut.shift_backend.model.dto;
 
-public class GetEmployeeDTO {
+import lombok.Data;
 
-    private Long id;
+@Data
+public class AddEmployeeDto {
 
     private String username;
 
@@ -20,15 +21,11 @@ public class GetEmployeeDTO {
 
     private String email;
 
-    private Long numHolidaysLeft;
-
-    private List<GetHolidayDTO> acceptedHolidays;
-
-    private List<GetSickDayDTO> sickDays;
+    private long numHolidaysLeft;
 
     private String base64ProfilePic;
 
-    private GetShiftTypeDTO preferredShiftType;
+    private GetShiftTypeDto preferredShiftType;
 
     private Long departmentId;
 }

@@ -47,6 +47,7 @@ public class HolidayController {
         return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
+    /*
     @Operation(summary = "gets unanswered holiday requests")
     @ApiResponses(value = {
             @ApiResponse(responseCode =  "200", description = "get holiday request successfully"),
@@ -67,4 +68,6 @@ public class HolidayController {
             final AddHolidayDto request = this.mappingService.mapHolidayToAddHolidayDto(holidayDto);
             return new ResponseEntity<AddHolidayDto>(request, HttpStatus.OK);
     }
+
+    */
 }
