@@ -31,7 +31,7 @@ public class EmployeeService {
         Optional<Employee> emp = employeeRepository.findById(empID);
 
         if (emp.isEmpty())
-            throw new ResourceNotFoundException("Employee could not be found");
+            throw new ResourceNotFoundException("Employee with id '"+ empID + "' could not be found");
 
         return emp.get();
     }
@@ -47,6 +47,10 @@ public class EmployeeService {
     }
 
     public void deleteEmployeeById(Long employeeId){
+
+        if (!this.employeeRepository.existsById(employeeId))
+            throw new ResourceNotFoundException("Employee with id '"+ employeeId + "' could not be found");
+
         this.employeeRepository.deleteById(employeeId);
     }
 

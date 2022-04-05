@@ -38,12 +38,13 @@ public class EmployeeController {
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
     @PostMapping
-    public ResponseEntity<GetEmployeeDto> createDepartment(@RequestHeader Map<String,String> headers,
-                                                          @Valid @RequestBody final AddEmployeeDto employeeDto)
+    public ResponseEntity<GetEmployeeDto> createDepartment(@Valid @RequestBody final AddEmployeeDto employeeDto)
     {
         Employee emp = this.mappingService.mapAddEmployeeDtoToEmployee(employeeDto);
         this.employeeService.create(emp);
+
         final GetEmployeeDto request = this.mappingService.mapEmployeeToGetEmployeeDto(emp);
+
         return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
@@ -54,7 +55,7 @@ public class EmployeeController {
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
     @GetMapping
-    public ResponseEntity<List<GetEmployeeDto>> getAllEmployees(@RequestHeader Map<String,String> headers)
+    public ResponseEntity<List<GetEmployeeDto>> getAllEmployees()
     {
         List<Employee> empList = this.employeeService.getAllEmployees();
         List<GetEmployeeDto> resultList = new LinkedList<>();
@@ -88,8 +89,7 @@ public class EmployeeController {
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> getAllEmployees(@RequestHeader Map<String,String> headers,
-                                                  @Valid @PathVariable("id") final Long employeeId)
+    public ResponseEntity<Object> getAllEmployees(@Valid @PathVariable("id") final Long employeeId)
     {
         this.employeeService.deleteEmployeeById(employeeId);
 
@@ -103,9 +103,8 @@ public class EmployeeController {
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
     @PatchMapping("/{id}")
-    public ResponseEntity<GetEmployeeDto> updateEmployee(@RequestHeader Map<String,String> headers,
-                               @Valid @PathVariable("id") final Long employeeId,
-                               @Valid @RequestBody final Map<String,Object> fieldsToPatch) {
+    public ResponseEntity<GetEmployeeDto> updateEmployee(@Valid @PathVariable("id") final Long employeeId,
+                                                         @Valid @RequestBody final Map<String,Object> fieldsToPatch) {
 
             Employee empUpdate = this.employeeService.updateEmployee(employeeId, fieldsToPatch);
 
