@@ -1,5 +1,7 @@
 package de.szut.shift_backend.model.dto;
 
+import java.util.List;
+
 public class GetEmployeeDTO {
 
     private Long id;
@@ -22,9 +24,9 @@ public class GetEmployeeDTO {
 
     private Long numHolidaysLeft;
 
-    private List<GetHolidayDTO> acceptedHolidays;
+    private List<GetHolidayDto> acceptedHolidays;
 
-    private List<GetSickDayDTO> sickDays;
+    private List<GetSickDayDto> sickDays;
 
     private String base64ProfilePic;
 

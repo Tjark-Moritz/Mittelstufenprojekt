@@ -1,5 +1,6 @@
 package de.szut.shift_backend.model.dto;
 
+import de.szut.shift_backend.model.Holiday;
 import lombok.Data;
 
 import javax.persistence.Id;
@@ -24,5 +25,4 @@ public class AddHolidayDto {
 
     @NotNull(message = "EmployeeId can not be null!")
     private Long employeeId;
-
 }

@@ -5,9 +5,11 @@ import de.szut.shift_backend.model.Department;
 import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.repository.DepartmentRepository;
 import de.szut.shift_backend.repository.EmployeeRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;

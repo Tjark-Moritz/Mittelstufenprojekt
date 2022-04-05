@@ -3,8 +3,6 @@ package de.szut.shift_backend.services;
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.model.Department;
 import de.szut.shift_backend.model.Holiday;
-import de.szut.shift_backend.repository.DepartmentRepository;
-import de.szut.shift_backend.repository.EmployeeRepository;
 import de.szut.shift_backend.repository.HolidayRepository;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +32,7 @@ public class HolidayService {
         holiday.setStartDate(newHoliday.getStartDate());
         holiday.setEndDate(newHoliday.getEndDate());
         holiday.setEmployeeId(newHoliday.getEmployeeId());
+        //todo: update for status?
 
         holiday = holidayRepository.save(holiday);
         return holiday;
@@ -47,6 +46,7 @@ public class HolidayService {
         }
         return holiday.get();
     }
+
     private List<Holiday> getAllByStatus(Holiday.HolidayStatus status) {
         List<Holiday> holidayList = holidayRepository.findAll();
         List<Holiday> matchedHolidays = new ArrayList<>();
@@ -68,7 +68,7 @@ public class HolidayService {
         List<Holiday> matchedHolidays = new ArrayList<>();
 
         for (Holiday holiday : holidayList) {
-            Department department =  employeeService.getDepartmentByEmployeeId(holiday.getEmployeeId());
+            Department department = employeeService.getDepartmentByEmployeeId(holiday.getEmployeeId());
 
             if (department.getDepartmentId() == departmentId)
                 matchedHolidays.add(holiday);
@@ -81,4 +81,15 @@ public class HolidayService {
         holidayRepository.deleteById(holidayId);
     }
 
+    public Holiday setHolidayStatus(Long id, String status) {
+        Holiday holiday = getById(id);
+
+        Holiday.HolidayStatus holidayStatus = Holiday.HolidayStatus.of(status);
+        holiday.setHolidayStatus(holidayStatus);
+
+        //todo: if holidayStatus == accepted => calculateFreeHolidayCounter() (Anzahl der freien Urlaubstage reduzieren)
+        //todo: [Bedarf] bei "unanswered" => geplante Urlaubstage erhöhen
+
+        return holiday;
+    }
 }

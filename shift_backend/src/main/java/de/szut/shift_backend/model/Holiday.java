@@ -17,7 +17,18 @@ public class Holiday {
     public enum HolidayStatus {
         UNANSWERED,
         ACCEPTED,
-        DENIED
+        DENIED;
+
+        public static HolidayStatus of(String status) {
+            HolidayStatus[] values = HolidayStatus.values();
+
+            for (HolidayStatus holidayStatus : values) {
+                if (holidayStatus.name().equals(status)) {
+                    return holidayStatus;
+                }
+            }
+            return UNANSWERED;
+        }
     }
 
     @Id
