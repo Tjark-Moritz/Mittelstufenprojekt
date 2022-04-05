@@ -30,6 +30,22 @@ public class RequestController {
         this.holidayService = holidayService;
     }
 
+    @Operation(summary = "create request")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "get holiday request by status successfully"),
+            @ApiResponse(responseCode = "400", description = "get holiday by status request failed", content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
+    })
+    @PostMapping
+    public void create(@RequestHeader Map<String, String> headers,
+                       @Valid @RequestBody final AddHolidayDto holidayDto
+    ) {
+        Holiday holiday = this.mappingService.mapAddHolidayDtoToHoliday(holidayDto);
+        HolidayRequestDto holidayRequestDto = this.mappingService.mapHolidayToHolidayRequestDto(holiday);
+
+        //todo: create and return missing
+    }
+
     @Operation(summary = "gets holiday requests by status")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "get holiday request by status successfully"),
@@ -39,8 +55,8 @@ public class RequestController {
     @GetMapping("/holidays/{departmentId}/{holidayStatus}")
     public ResponseEntity<List<HolidayRequestDto>> getHolidayRequestsByStatus(@RequestHeader Map<String, String> headers,
                                                                               @RequestBody final @Valid long departmentId,
-                                                                              @RequestParam Holiday.HolidayStatus holidayStatus) {
-
+                                                                              @RequestParam Holiday.HolidayStatus holidayStatus
+    ) {
         List<Holiday> holidayList = holidayService.getHolidayRequestsByStatusByDeptId(departmentId, holidayStatus);
         List<HolidayRequestDto> resultList = new LinkedList<>();
 
@@ -60,7 +76,8 @@ public class RequestController {
     @PatchMapping("/holidays/{id}")
     public ResponseEntity<AddHolidayDto> updateHolidayRequest(@RequestHeader Map<String, String> headers,
                                                               @Valid @RequestBody final AddHolidayDto dto,
-                                                              @PathVariable final Long id) {
+                                                              @PathVariable final Long id
+    ) {
 
         Holiday holiday = mappingService.mapAddHolidayDtoToHoliday(dto);
 
@@ -83,7 +100,8 @@ public class RequestController {
     @PatchMapping("/{id}/{status}")
     public ResponseEntity<AddHolidayDto> answerHolidayRequest(@RequestHeader Map<String, String> headers,
                                                               HttpServletRequest httpServletRequest,
-                                                              @PathVariable final Long id) {
+                                                              @PathVariable final Long id
+    ) {
 
         String status = httpServletRequest.getParameter("status");
         Holiday holiday = holidayService.setHolidayStatus(id, status);
