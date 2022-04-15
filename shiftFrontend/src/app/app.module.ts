@@ -13,15 +13,13 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatDateFnsModule} from "@angular/material-date-fns-adapter";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
-import { RequestPlannerComponent } from './components/request-planner/request-planner.component';
 //MatLuxonDateModule
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    HolidayPlanerComponent,
-    RequestPlannerComponent
+    HolidayPlanerComponent
   ],
   imports: [
     BrowserModule,
