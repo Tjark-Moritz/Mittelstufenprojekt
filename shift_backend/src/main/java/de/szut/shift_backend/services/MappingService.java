@@ -1,25 +1,25 @@
 package de.szut.shift_backend.services;
 
-import de.szut.shift_backend.model.Department;
-import de.szut.shift_backend.model.Employee;
-import de.szut.shift_backend.model.Holiday;
+import de.szut.shift_backend.model.*;
 import de.szut.shift_backend.model.dto.*;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class MappingService {
 
     private final HolidayService holidayService;
+    private final EmployeeService employeeService;
+    private final ShiftService shiftService;
 
-    public MappingService(HolidayService holidayService) {
+    public MappingService(HolidayService holidayService, EmployeeService employeeService, ShiftService shiftService)
+    {
         this.holidayService = holidayService;
+        this.employeeService = employeeService;
+        this.shiftService = shiftService;
     }
 
     public DepartmentDto mapDepToDepDto(Department department) {
@@ -138,5 +138,64 @@ public class MappingService {
         empDto.setDepartmentId(emp.getDepartmentId());
 
         return empDto;
+    }
+
+    public ShiftTradeRequest mapAddShiftTradeRequestDtoToShiftTradeRequest(AddShiftTradeRequestDto requestDto){
+        ShiftTradeRequest request = new ShiftTradeRequest();
+
+        request.setRequestingEmployee(this.employeeService.getEmployeeById(requestDto.getRequestingEmployeeId()));
+        request.setReplyingEmployee(this.employeeService.getEmployeeById(requestDto.getReplyingEmployeeId()));
+        request.setOldShift(this.shiftService.getShiftById(requestDto.getOldShiftId()));
+        request.setNewShift(this.shiftService.getShiftById(requestDto.getNewShiftId()));
+
+        return request;
+    }
+
+    public GetShiftTradeRequestDto mapShiftTradeRequestToGetShiftTradeRequestDto(ShiftTradeRequest request){
+        GetShiftTradeRequestDto requestDto = new GetShiftTradeRequestDto();
+
+        GetEmployeeDto requestingEmployeeDto = this.mapEmployeeToGetEmployeeDto(request.getRequestingEmployee());
+        GetEmployeeDto replyingEmployeeDto = this.mapEmployeeToGetEmployeeDto(request.getReplyingEmployee());
+        GetShiftDto oldShiftDto = this.mapShiftToGetShiftDto(request.getOldShift());
+        GetShiftDto newShiftDto = this.mapShiftToGetShiftDto(request.getNewShift());
+
+
+        requestDto.setId(request.getId());
+        requestDto.setRequestingEmployee(requestingEmployeeDto);
+        requestDto.setReplyingEmployee(replyingEmployeeDto);
+        requestDto.setOldShift(oldShiftDto);
+        requestDto.setNewShift(newShiftDto);
+
+        return requestDto;
+    }
+
+    private GetShiftDto mapShiftToGetShiftDto(Shift shift) {
+        GetShiftDto shiftDto = new GetShiftDto();
+
+        GetShiftTypeDto shiftTypeDto = this.mapShiftTypeToGetShiftTypeDto(shift.getShiftType());
+        List<GetEmployeeDto> employeeDtoList = new ArrayList<>();
+
+        for(Employee emp : shift.getActiveEmployees()){
+            employeeDtoList.add(this.mapEmployeeToGetEmployeeDto(emp));
+        }
+
+        shiftDto.setId(shift.getId());
+        shiftDto.setShiftDate(shift.getShiftDate());
+        shiftDto.setShiftType(shiftTypeDto);
+        shiftDto.setActiveEmployees(employeeDtoList);
+
+        return shiftDto;
+    }
+
+    private GetShiftTypeDto mapShiftTypeToGetShiftTypeDto(ShiftType shiftType) {
+        GetShiftTypeDto shiftTypeDto = new GetShiftTypeDto();
+
+        shiftTypeDto.setId(shiftType.getId());
+        shiftTypeDto.setShiftStartTime(shiftType.getShiftStartTime());
+        shiftTypeDto.setShiftEndTime(shiftType.getShiftEndTime());
+        shiftTypeDto.setTypeName(shiftType.getTypeName());
+        shiftTypeDto.setShiftTypeColor(shiftType.getShiftTypeColor());
+
+        return shiftTypeDto;
     }
 }
