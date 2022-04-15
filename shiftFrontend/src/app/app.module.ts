@@ -4,15 +4,35 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { HolidayPlanerComponent } from './components/holiday-planer/holiday-planer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import {MatTableModule} from '@angular/material/table';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatDateFnsModule} from "@angular/material-date-fns-adapter";
+import {MatMomentDateModule} from "@angular/material-moment-adapter";
+import { RequestPlannerComponent } from './components/request-planner/request-planner.component';
+//MatLuxonDateModule
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent
+    NavbarComponent,
+    HolidayPlanerComponent,
+    RequestPlannerComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatDateFnsModule,
+    MatMomentDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]
