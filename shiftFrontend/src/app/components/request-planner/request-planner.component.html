@@ -1,0 +1,56 @@
+<h1> Anfragen </h1>
+
+<div class="datePickerSpace">
+  <!-- startdate picker -->
+  <mat-label > </mat-label>
+  <input matInput (dateChange)="closePicker($event, startpicker)" [matDatepicker]="startpicker" placeholder="">
+  <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
+  <mat-datepicker #startpicker></mat-datepicker>
+
+  <button mat-raised-button (click)="sendRequest">Senden</button>
+</div>
+
+
+
+<div class="outputTable">
+  <table mat-table [dataSource]="data" class="mat-elevation-z8">
+
+    <!-- swapdate Column -->
+    <ng-container matColumnDef="swapDate">
+      <th mat-header-cell *matHeaderCellDef> Swap Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.swapDate}} </td>
+    </ng-container>
+
+    <!-- currentShift Column -->
+    <ng-container matColumnDef="currentShift">
+      <th mat-header-cell *matHeaderCellDef> Current Shift </th>
+      <td mat-cell *matCellDef="let element"> {{element.currentShift}} </td>
+    </ng-container>
+
+    <!-- requestedShift Column -->
+    <ng-container matColumnDef="requestedShift">
+      <th mat-header-cell *matHeaderCellDef> Requested Shift </th>
+      <td mat-cell *matCellDef="let element"> {{element.requestedShift}} </td>
+    </ng-container>
+
+    <!-- Requester Column -->
+    <ng-container matColumnDef="requester">
+      <th mat-header-cell *matHeaderCellDef> Requester </th>
+      <td mat-cell *matCellDef="let element"> {{element.requester}} </td>
+    </ng-container>
+
+    <!-- checkBox Column -->
+    <ng-container matColumnDef="checkBox">
+      <mat-header-cell  *matHeaderCellDef > checkBox </mat-header-cell>
+      <mat-cell *matCellDef="let row" >
+        <div class="okButton"><button mat-button >✔</button></div>
+        <div class="declinedButton"><button mat-button >❌</button></div>
+      </mat-cell>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+</div>
+
