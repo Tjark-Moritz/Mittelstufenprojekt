@@ -1,0 +1,7 @@
+table {
+  height: 83.5vh;
+}
+
+::ng-deep button.mat-calendar-period-button {
+  display: none;
+}

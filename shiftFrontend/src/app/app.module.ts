@@ -13,13 +13,18 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatDateFnsModule} from "@angular/material-date-fns-adapter";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
+
+import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
+import {MatInputModule} from "@angular/material/input";
+
 //MatLuxonDateModule
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    HolidayPlanerComponent
+    HolidayPlanerComponent,
+    ShiftPlanComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +35,8 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
     MatFormFieldModule,
     MatNativeDateModule,
     MatDateFnsModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
