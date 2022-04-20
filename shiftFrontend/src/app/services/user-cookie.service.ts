@@ -8,8 +8,11 @@ import { BearerTokenService } from "./bearer-token.service";
 })
 export class UserCookieService {
   private static bearerTokenCookieName: string = "BearerTokenCookie";
-  public static cookieService: CookieService;
-  constructor() { }
+  private static cookieService: CookieService;
+
+  constructor(private cookieService: CookieService) {
+    UserCookieService.cookieService = cookieService;
+  }
 
   public static isBearerTokenSet() : boolean{
     return UserCookieService.cookieService.check(UserCookieService.bearerTokenCookieName);

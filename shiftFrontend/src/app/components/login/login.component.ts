@@ -31,12 +31,9 @@ export class LoginComponent implements OnInit {
     this.bearerTokenService.generateBearerToken(this.form['username'].value, this.form['password'].value).subscribe(
       res => {
         this.bearerTokenService.bearerToken = res;
-        console.log("Worked!");
       }, error => {
         window.alert("Wrong credentials");
       })
-
-    console.log(this.bearerTokenService.bearerToken);
   }
 
 }

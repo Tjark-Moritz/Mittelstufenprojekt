@@ -15,14 +15,15 @@ export class BearerTokenService {
   }
 
   generateBearerToken(username: string, password: string): Observable<BearerToken>{
-    return this.httpClient.post<BearerToken>(this.authUrl,{},{
+    let body = new URLSearchParams();
+    body.set('grant_type', 'password');
+    body.set('client_id', 'shiftplanner');
+    body.set('username', username);
+    body.set('password', password);
+
+    return this.httpClient.post<BearerToken>(this.authUrl,body.toString(),{
       headers: new HttpHeaders()
-        .set('Content-Type', 'application/x-www-form-urlencoded'),
-      params: new HttpParams()
-        .set('grant_type', 'password')
-        .set('client_id', 'shiftplanner')
-        .set('username', username)
-        .set('password', password)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
     })
   }
 
