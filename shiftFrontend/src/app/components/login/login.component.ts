@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BearerTokenService} from "../../services/bearer-token.service";
+import {UserCookieService} from "../../services/user-cookie.service";
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,7 @@ import {BearerTokenService} from "../../services/bearer-token.service";
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   wrongLogin: boolean = false;
+  private autoLoginChecked: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private bearerTokenService: BearerTokenService) {
     this.loginForm = this.formBuilder.group({
@@ -33,10 +35,19 @@ export class LoginComponent implements OnInit {
     this.bearerTokenService.generateBearerToken(this.form['username'].value, this.form['password'].value).subscribe(
       res => {
         this.bearerTokenService.bearerToken = res;
+
+        if(this.autoLoginChecked) {
+          UserCookieService.setBearerToken(res);
+        }
+
         this.wrongLogin = false;
       }, error => {
         this.wrongLogin = true;
       })
+  }
+
+  onAutoLoginCheck(event:any) {
+    this.autoLoginChecked = event.target.checked;
   }
 
 }

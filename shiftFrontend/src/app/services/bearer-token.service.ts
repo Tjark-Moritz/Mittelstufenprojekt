@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {BearerToken} from "../models/bearerToken";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {UserCookieService} from "./user-cookie.service";
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +28,6 @@ export class BearerTokenService {
 
   set bearerToken(token) {
     BearerTokenService.staticBearerToken = token;
-    UserCookieService.setBearerToken(token);
   }
 
   get bearerToken(): BearerToken {
