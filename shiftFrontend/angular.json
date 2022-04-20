@@ -6,7 +6,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "employeeFrontendStarter": {
+    "shiftplaner": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/employeeFrontendStarter",
+            "outputPath": "dist/shiftplaner",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -71,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "employeeFrontendStarter:build:production"
+              "browserTarget": "shiftplaner:build:production"
             },
             "development": {
-              "browserTarget": "employeeFrontendStarter:build:development"
+              "browserTarget": "shiftplaner:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "employeeFrontendStarter:build"
+            "browserTarget": "shiftplaner:build"
           }
         },
         "test": {
@@ -105,5 +105,5 @@
       }
     }
   },
-  "defaultProject": "employeeFrontendStarter"
+  "defaultProject": "shiftplaner"
 }
