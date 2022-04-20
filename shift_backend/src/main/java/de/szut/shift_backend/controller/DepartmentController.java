@@ -53,8 +53,6 @@ public class DepartmentController {
     public ResponseEntity<DepartmentDto> updateDepartment(@RequestHeader Map<String, String> headers,
                                                           @Valid @RequestBody final DepartmentDto departmentDto)
     {
-        //todo: add token here
-
         Department depDto = this.mappingService.mapDepDtoToDep(departmentDto);
         this.departmentService.update(depDto, departmentDto.getDepartmentId());
         final DepartmentDto request = this.mappingService.mapDepToDepDto(depDto);
@@ -86,8 +84,6 @@ public class DepartmentController {
     public ResponseEntity<DepartmentDto> findDepartmentById(@RequestHeader Map<String, String> headers,
                                                             @Valid @RequestBody final DepartmentDto departmentDto)
     {
-        //todo: add token here
-
         Department depDto = this.mappingService.mapDepDtoToDep(departmentDto);
         this.departmentService.getById(departmentDto.getDepartmentId());
         final DepartmentDto request = this.mappingService.mapDepToDepDto(depDto);

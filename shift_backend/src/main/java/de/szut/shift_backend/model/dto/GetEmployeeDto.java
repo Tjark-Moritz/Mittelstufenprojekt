@@ -29,7 +29,7 @@ public class GetEmployeeDto {
 
     private List<GetHolidayDto> acceptedHolidays;
 
-    //private List<GetSickDayDTO> sickDays;
+    private List<GetSickDayDto> sickDays;
 
     private String base64ProfilePic;
 
