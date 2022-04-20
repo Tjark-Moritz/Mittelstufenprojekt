@@ -36,22 +36,22 @@ public class HolidayController {
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @PostMapping
-    public ResponseEntity<AddHolidayDto> createHoliday(@RequestHeader Map<String, String> headers,
-                                                       @Valid @RequestBody final AddHolidayDto addHolidayDto) {
-        Holiday holidayDto = this.mappingService.mapAddHolidayDtoToHoliday(addHolidayDto);
-        this.holidayService.create(holidayDto);
-        final AddHolidayDto request = this.mappingService.mapHolidayToAddHolidayDto(holidayDto);
+    public ResponseEntity<AddHolidayDto> create(@RequestHeader Map<String, String> headers,
+                                                @Valid @RequestBody final AddHolidayDto addHolidayDto) {
+        Holiday holiday= this.mappingService.mapAddHolidayDtoToHoliday(addHolidayDto);
+        this.holidayService.create(holiday);
+        final AddHolidayDto request = this.mappingService.mapHolidayToAddHolidayDto(holiday);
         return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
-    @Operation(summary = "gets unanswered holiday requests")
+    @Operation(summary = "gets all holidays")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "deleted holiday successfully"),
-            @ApiResponse(responseCode = "400", description = "delete holiday failed", content = @Content),
+            @ApiResponse(responseCode = "200", description = "get all holidays successfully"),
+            @ApiResponse(responseCode = "400", description = "get all holidays failed", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @GetMapping
-    public ResponseEntity<List<GetHolidayDto>> getAllHolidays() {
+    public ResponseEntity<List<GetHolidayDto>> getAll() {
         List<Holiday> holidayList = this.holidayService.getAllHolidays();
         List<GetHolidayDto> holidayDtoList = new LinkedList<>();
 
@@ -69,8 +69,8 @@ public class HolidayController {
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteHolidayById(@RequestHeader Map<String, String> headers,
-                                                    @RequestBody final @Valid long id) {
+    public ResponseEntity<String> deleteById(@RequestHeader Map<String, String> headers,
+                                             @Valid @RequestBody final long id) {
         this.holidayService.delete(id);
         return new ResponseEntity<>("", HttpStatus.OK);
     }

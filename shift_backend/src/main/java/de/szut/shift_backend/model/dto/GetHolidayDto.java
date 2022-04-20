@@ -19,6 +19,4 @@ public class GetHolidayDto {
     private LocalDate endDate;
 
     private Long employeeId;
-
-    private Holiday.HolidayStatus status;
 }

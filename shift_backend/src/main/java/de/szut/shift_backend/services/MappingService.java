@@ -1,23 +1,22 @@
 package de.szut.shift_backend.services;
 
 import de.szut.shift_backend.model.Department;
+import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.Holiday;
 import de.szut.shift_backend.model.dto.AddHolidayDto;
 import de.szut.shift_backend.model.dto.DepartmentDto;
 import de.szut.shift_backend.model.dto.GetHolidayDto;
-import de.szut.shift_backend.model.dto.HolidayRequestDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class MappingService {
 
-    private final HolidayService holidayService;
+    private final EmployeeService employeeService;
 
-    public MappingService(HolidayService holidayService) {
-        this.holidayService = holidayService;
+    public MappingService(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     public DepartmentDto mapDepToDepDto(Department department) {
@@ -46,57 +45,28 @@ public class MappingService {
 
     public AddHolidayDto mapHolidayToAddHolidayDto(Holiday holiday) {
         AddHolidayDto addHolidayDto = new AddHolidayDto();
-        addHolidayDto.setHolidayId(holiday.getHolidayId());
-        addHolidayDto.setHolidayTypeId(holiday.getHolidayTypeId());
+        addHolidayDto.setId(holiday.getHolidayId());
+        addHolidayDto.setTypeId(holiday.getHolidayTypeId());
         addHolidayDto.setStartDate(holiday.getStartDate());
         addHolidayDto.setEndDate(holiday.getEndDate());
-        addHolidayDto.setEmployeeId(holiday.getEmployeeId());
+        addHolidayDto.setEmployeeId(holiday.getEmployee().getId());
 
         return addHolidayDto;
     }
 
-    public Holiday mapAddHolidayDtoToHoliday(AddHolidayDto holidayDto) {
-        Holiday holiday = new Holiday();
-        holiday.setHolidayId(holidayDto.getHolidayId());
-        holiday.setHolidayTypeId(holidayDto.getHolidayTypeId());
-        holiday.setStartDate(holidayDto.getStartDate());
-        holiday.setEndDate(holidayDto.getEndDate());
-        holiday.setEmployeeId(holidayDto.getEmployeeId());
-
-        return holiday;
-    }
-
-    public Holiday mapGetHolidayDtoToHoliday(GetHolidayDto holidayDto) {
-        Holiday holiday = new Holiday();
-        holiday.setHolidayId(holidayDto.getHolidayId());
-        holiday.setHolidayTypeId(holidayDto.getHolidayTypeId());
-        holiday.setStartDate(holidayDto.getStartDate());
-        holiday.setEndDate(holidayDto.getEndDate());
-        holiday.setEmployeeId(holidayDto.getEmployeeId());
-
-        return holiday;
-    }
-
-    public Holiday mapHolidayRequestDtoToHoliday(HolidayRequestDto holidayRequestDto) {
+    public Holiday mapAddHolidayDtoToHoliday(AddHolidayDto addHolidayDto) {
         Holiday holiday = new Holiday();
 
-        if (holidayRequestDto.getStatus() != null) { //todo: richtig?
-            holiday = holidayRequestDto.getHoliday();
-        }
+        Employee employee = employeeService.getEmployeeById(addHolidayDto.getEmployeeId());
+
+        holiday.setHolidayId(addHolidayDto.getId());
+        holiday.setHolidayTypeId(addHolidayDto.getTypeId());
+        holiday.setEmployee(employee);
+        holiday.setStartDate(addHolidayDto.getStartDate());
+        holiday.setEndDate(addHolidayDto.getEndDate());
+        holiday.setRequestDate(LocalDateTime.now());
 
         return holiday;
-    }
-
-
-    public HolidayRequestDto mapHolidayToHolidayRequestDto(Holiday holiday) {
-        HolidayRequestDto requestDto = new HolidayRequestDto();
-
-        requestDto.setRequestingEmployeeId(holiday.getEmployeeId());
-        requestDto.setHoliday(holiday);
-        requestDto.setRequestDate(holiday.getRequestDate());
-        requestDto.setStatus(holiday.getHolidayStatus());
-
-        return requestDto;
     }
 
     public GetHolidayDto mapHolidayToGetHolidayDto(Holiday holiday) {
@@ -104,7 +74,7 @@ public class MappingService {
 
         getHolidayDto.setHolidayId(holiday.getHolidayId());
         getHolidayDto.setHolidayTypeId(holiday.getHolidayTypeId());
-        getHolidayDto.setEmployeeId(holiday.getEmployeeId());
+        getHolidayDto.setEmployeeId(holiday.getEmployee().getId());
         getHolidayDto.setStartDate(holiday.getStartDate());
         getHolidayDto.setEndDate(holiday.getEndDate());
 

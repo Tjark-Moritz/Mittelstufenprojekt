@@ -31,8 +31,7 @@ public class HolidayService {
         holiday.setHolidayTypeId(newHoliday.getHolidayTypeId());
         holiday.setStartDate(newHoliday.getStartDate());
         holiday.setEndDate(newHoliday.getEndDate());
-        holiday.setEmployeeId(newHoliday.getEmployeeId());
-        //todo: update for status?
+        holiday.setEmployee(newHoliday.getEmployee());
 
         holiday = holidayRepository.save(holiday);
         return holiday;
@@ -42,7 +41,7 @@ public class HolidayService {
         Optional<Holiday> holiday = holidayRepository.findById(id);
 
         if (holiday.isEmpty()) {
-            throw new ResourceNotFoundException("Holiday with Id: " + id + "could not be found!");
+            throw new ResourceNotFoundException("Holiday with Id: " + id + " could not be found!");
         }
         return holiday.get();
     }
@@ -52,7 +51,7 @@ public class HolidayService {
         List<Holiday> matchedHolidays = new ArrayList<>();
 
         for (Holiday holiday : holidayList) {
-            if (holiday.getHolidayStatus() == status)
+            if (holiday.getStatus() == status)
                 matchedHolidays.add(holiday);
         }
 
@@ -68,7 +67,7 @@ public class HolidayService {
         List<Holiday> matchedHolidays = new ArrayList<>();
 
         for (Holiday holiday : holidayList) {
-            Department department = employeeService.getDepartmentByEmployeeId(holiday.getEmployeeId());
+            Department department = employeeService.getDepartmentByEmployeeId(holiday.getEmployee().getId());
 
             if (department.getDepartmentId() == departmentId)
                 matchedHolidays.add(holiday);
@@ -85,7 +84,7 @@ public class HolidayService {
         Holiday holiday = getById(id);
 
         Holiday.HolidayStatus holidayStatus = Holiday.HolidayStatus.of(status);
-        holiday.setHolidayStatus(holidayStatus);
+        holiday.setStatus(holidayStatus);
 
         //todo: if holidayStatus == accepted => calculateFreeHolidayCounter() (Anzahl der freien Urlaubstage reduzieren)
         //todo: [Bedarf] bei "unanswered" => geplante Urlaubstage erhöhen

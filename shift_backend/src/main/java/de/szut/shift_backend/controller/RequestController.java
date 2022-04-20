@@ -2,7 +2,6 @@ package de.szut.shift_backend.controller;
 
 import de.szut.shift_backend.model.Holiday;
 import de.szut.shift_backend.model.dto.AddHolidayDto;
-import de.szut.shift_backend.model.dto.HolidayRequestDto;
 import de.szut.shift_backend.services.HolidayService;
 import de.szut.shift_backend.services.MappingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,8 +21,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/requests")
 public class RequestController {
-    private final MappingService mappingService; //todo: add logic
-    private final HolidayService holidayService; //todo: add logic
+    private final MappingService mappingService;
+    private final HolidayService holidayService;
 
     public RequestController(MappingService mappingService, HolidayService holidayService) {
         this.mappingService = mappingService;
@@ -32,18 +31,18 @@ public class RequestController {
 
     @Operation(summary = "create request")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "get holiday request by status successfully"),
-            @ApiResponse(responseCode = "400", description = "get holiday by status request failed", content = @Content),
+            @ApiResponse(responseCode = "200", description = "create holiday request was successfully"),
+            @ApiResponse(responseCode = "400", description = "create holiday request failed", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @PostMapping
-    public void create(@RequestHeader Map<String, String> headers,
-                       @Valid @RequestBody final AddHolidayDto holidayDto
+    public ResponseEntity<Void> create(@RequestHeader Map<String, String> headers,
+                                                 @Valid @RequestBody final AddHolidayDto addHolidayDto
     ) {
-        Holiday holiday = this.mappingService.mapAddHolidayDtoToHoliday(holidayDto);
-        HolidayRequestDto holidayRequestDto = this.mappingService.mapHolidayToHolidayRequestDto(holiday);
+        Holiday request = this.mappingService.mapAddHolidayDtoToHoliday(addHolidayDto);
+        holidayService.create(request);
 
-        //todo: create and return missing
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "gets holiday requests by status")
@@ -52,19 +51,19 @@ public class RequestController {
             @ApiResponse(responseCode = "400", description = "get holiday by status request failed", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
-    @GetMapping("/holidays/{departmentId}/{holidayStatus}")
-    public ResponseEntity<List<HolidayRequestDto>> getHolidayRequestsByStatus(@RequestHeader Map<String, String> headers,
-                                                                              @RequestBody final @Valid long departmentId,
-                                                                              @RequestParam Holiday.HolidayStatus holidayStatus
+    @GetMapping
+    public ResponseEntity<List<AddHolidayDto>> getHolidayRequestsByStatus(@RequestHeader Map<String, String> headers,
+                                                                          @RequestParam Long departmentId,
+                                                                          @RequestParam Holiday.HolidayStatus holidayStatus
     ) {
         List<Holiday> holidayList = holidayService.getHolidayRequestsByStatusByDeptId(departmentId, holidayStatus);
-        List<HolidayRequestDto> resultList = new LinkedList<>();
+        List<AddHolidayDto> resultList = new LinkedList<>();
 
         for (Holiday holiday : holidayList) {
-            resultList.add(this.mappingService.mapHolidayToHolidayRequestDto(holiday));
+            resultList.add(this.mappingService.mapHolidayToAddHolidayDto(holiday));
         }
 
-        return new ResponseEntity<>(resultList, HttpStatus.OK);
+        return ResponseEntity.ok(resultList);
     }
 
     @Operation(summary = "update holiday request")
@@ -73,7 +72,7 @@ public class RequestController {
             @ApiResponse(responseCode = "400", description = "update holiday failed", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
-    @PatchMapping("/holidays/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<AddHolidayDto> updateHolidayRequest(@RequestHeader Map<String, String> headers,
                                                               @Valid @RequestBody final AddHolidayDto dto,
                                                               @PathVariable final Long id

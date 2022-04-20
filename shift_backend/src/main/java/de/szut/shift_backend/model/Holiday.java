@@ -2,9 +2,7 @@ package de.szut.shift_backend.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,11 +30,15 @@ public class Holiday {
     }
 
     @Id
-    @NotNull(message = "HolidayId can not be null!")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long holidayId;
 
     @NotNull(message = "HolidayTypeId can not be null!")
     private Long holidayTypeId;
+
+    @NotNull(message = "EmployeeId can not be null!")
+    @OneToOne
+    private Employee employee;
 
     @NotNull(message = "StartDate can not be null!")
     private LocalDate startDate;
@@ -44,11 +46,10 @@ public class Holiday {
     @NotNull(message = "EndDate can not be null!")
     private LocalDate endDate;
 
+    private Holiday.HolidayStatus status;
+
+    @NotNull(message = "RequestDate can not be null!")
     private LocalDateTime requestDate;
 
-    @NotNull(message = "EmployeeId can not be null!")
-    private Long employeeId;
 
-    @NotNull
-    private HolidayStatus holidayStatus;
 }
