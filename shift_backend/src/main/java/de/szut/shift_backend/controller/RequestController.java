@@ -37,7 +37,7 @@ public class RequestController {
     })
     @PostMapping
     public ResponseEntity<Void> create(@RequestHeader Map<String, String> headers,
-                                                 @Valid @RequestBody final AddHolidayDto addHolidayDto
+                                       @Valid @RequestBody final AddHolidayDto addHolidayDto
     ) {
         Holiday request = this.mappingService.mapAddHolidayDtoToHoliday(addHolidayDto);
         holidayService.create(request);
@@ -77,7 +77,6 @@ public class RequestController {
                                                               @Valid @RequestBody final AddHolidayDto dto,
                                                               @PathVariable final Long id
     ) {
-
         Holiday holiday = mappingService.mapAddHolidayDtoToHoliday(dto);
 
         this.holidayService.update(holiday, id);
@@ -101,7 +100,6 @@ public class RequestController {
                                                               HttpServletRequest httpServletRequest,
                                                               @PathVariable final Long id
     ) {
-
         String status = httpServletRequest.getParameter("status");
         Holiday holiday = holidayService.setHolidayStatus(id, status);
 
