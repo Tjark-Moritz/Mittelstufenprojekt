@@ -9,6 +9,8 @@ import {BearerTokenService} from "../../services/bearer-token.service";
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  wrongLogin: boolean = false;
+
   constructor(private formBuilder: FormBuilder, private bearerTokenService: BearerTokenService) {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -31,8 +33,9 @@ export class LoginComponent implements OnInit {
     this.bearerTokenService.generateBearerToken(this.form['username'].value, this.form['password'].value).subscribe(
       res => {
         this.bearerTokenService.bearerToken = res;
+        this.wrongLogin = false;
       }, error => {
-        window.alert("Wrong credentials");
+        this.wrongLogin = true;
       })
   }
 

@@ -5,6 +5,11 @@
   margin: 50px;
 }
 
+.cWrongInput {
+  color: red;
+  font-weight: bold;
+}
+
 .cInput {
   text-align: center;
   width: 80vw;
