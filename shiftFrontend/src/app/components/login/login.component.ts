@@ -41,6 +41,8 @@ export class LoginComponent implements OnInit {
         }
 
         this.wrongLogin = false;
+
+        // Todo: Redirect on successfull login (LF12-54)
       }, error => {
         this.wrongLogin = true;
       })
