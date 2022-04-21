@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @Entity
-public class ShiftTradeRequest {
+public class GetShiftTradeRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
