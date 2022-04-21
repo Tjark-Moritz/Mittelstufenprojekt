@@ -221,6 +221,26 @@ public class MappingService {
         return requestDto;
     }
 
+    public GetDepartmentDto mapDepartmentToGetDepartmentDto(Department department) {
+        GetDepartmentDto getDepartmentDto = new GetDepartmentDto();
+        List<GetEmployeeDto> getEmployeeDtoList = new ArrayList<>();
+
+        List<Employee> employeeList = department.getEmployees();
+
+        for (Employee employee : employeeList) {
+            GetEmployeeDto getEmployeeDto = mapEmployeeToGetEmployeeDto(employee);
+            getEmployeeDtoList.add(getEmployeeDto);
+        }
+
+        getDepartmentDto.setDepartmentId(department.getDepartmentId());
+        getDepartmentDto.setName(department.getName());
+        getDepartmentDto.setAbbreviatedName(department.getAbbreviatedName());
+        getDepartmentDto.setLeadEmployee(department.getLeadEmployee().getId());
+        getDepartmentDto.setEmployees(getEmployeeDtoList);
+
+        return getDepartmentDto;
+    }
+
     private GetShiftDto mapShiftToGetShiftDto(Shift shift) {
         GetShiftDto shiftDto = new GetShiftDto();
 
