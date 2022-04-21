@@ -1,6 +1,7 @@
 package de.szut.shift_backend.services;
 
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
+import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Department;
 import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.repository.DepartmentRepository;
@@ -8,6 +9,7 @@ import de.szut.shift_backend.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -24,22 +26,12 @@ public class DepartmentService {
        return departmentRepository.save(newDepartment);
     }
 
-    public Department update(Department newDepartment, Long id) {
-        Department department = getById(id);
+    public Department update(Long deptId, Map<String,Object> fieldsToPatch) {
+        Department deptToUpdate = this.getDepartmentById(deptId);
+        Department deptUpdated = ClassReflectionHelper.UpdateFields(deptToUpdate, fieldsToPatch);
 
-        department.setDepartmentId(newDepartment.getDepartmentId());
-        department.setName(newDepartment.getName());
-        department.setAbbreviatedName(newDepartment.getAbbreviatedName());
-        department.setLeadEmployee(newDepartment.getLeadEmployee());
-        department.setEmployees(newDepartment.getEmployees());
-
-        List<Employee> employeeList = newDepartment.getEmployees();
-
-        if (employeeList.size() != 0)
-            department.setEmployees(employeeList);
-
-        department = departmentRepository.save(department);
-        return department;
+        deptUpdated = departmentRepository.save(deptUpdated);
+        return deptUpdated;
     }
 
     public Department getById(Long id) {

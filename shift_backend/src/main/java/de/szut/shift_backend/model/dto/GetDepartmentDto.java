@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DepartmentDto {
+public class GetDepartmentDto {
 
     @Id
     @NotNull(message = "DepartmentId can not be null!")

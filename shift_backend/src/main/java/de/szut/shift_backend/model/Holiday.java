@@ -40,8 +40,7 @@ public class Holiday {
     private Long holidayTypeId;
 
     @NotNull(message = "EmployeeId can not be null!")
-    @OneToOne
-    private Employee employee;
+    private Long employeeId;
 
     @NotNull(message = "StartDate can not be null!")
     private LocalDate startDate;
@@ -53,6 +52,4 @@ public class Holiday {
 
     @NotNull(message = "RequestDate can not be null!")
     private LocalDateTime requestDate;
-
-
 }
