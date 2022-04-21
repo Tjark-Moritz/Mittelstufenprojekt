@@ -80,7 +80,7 @@ export class EmployeeService {
     let shifttype1 = new ShiftType(1, sdate1, sdate2);
     let shifttype2 = new ShiftType(2, sdate3, sdate4);
 
-    let emp1 = new Employee(1, "fn1", "ln1", "addr1", "zip1", "city1", "tel1", "email1", holList1, sickDayList1, 10, "", shifttype1, 1);
+    let emp1 = new Employee(1, "fn1", "ln1", "addr1", "zip1", "city1", "tel1", "email1", holList1, sickDayList1, 10, "", shifttype1, 1 );
     let emp2 = new Employee(2, "fn2", "ln2", "addr2", "zip2", "city2", "tel2", "email2", holList2, sickDayList2, 10, "", shifttype2, 2);
 
     this.emplist.employees = [emp1, emp2];
