@@ -7,9 +7,9 @@ import lombok.Setter;
 @Setter
 public class AllDepartmentsDto {
 
-    private DepartmentDto departmentDto;
+    private GetDepartmentDto getDepartmentDto;
 
-    public AllDepartmentsDto(DepartmentDto departmentDto) {
-        this.departmentDto = departmentDto;
+    public AllDepartmentsDto(GetDepartmentDto getDepartmentDto) {
+        this.getDepartmentDto = getDepartmentDto;
     }
 }

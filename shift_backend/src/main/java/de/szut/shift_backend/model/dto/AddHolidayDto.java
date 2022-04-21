@@ -23,5 +23,4 @@ public class AddHolidayDto {
 
     @NotNull(message = "EmployeeId can not be null!")
     private Long employeeId;
-
 }
