@@ -1,14 +1,10 @@
 package de.szut.shift_backend.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import de.szut.shift_backend.model.Employee;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -32,5 +28,5 @@ public class DepartmentDto {
     private Long leadEmployee;
 
     @OneToMany
-    private List<Employee> employees; //getEmployeeDto in List<>
+    private List<GetEmployeeDto> employees; //getEmployeeDto in List<>
 }

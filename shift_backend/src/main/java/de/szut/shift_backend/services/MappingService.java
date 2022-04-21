@@ -34,6 +34,22 @@ public class MappingService {
         return departmentDto;
     }
 
+    public Employee getEmployeeDtoToEmployee(GetEmployeeDto getEmployeeDto) {
+        Employee employee = new Employee();
+        employee.setId(getEmployeeDto.getId());
+        employee.setFirstName(getEmployeeDto.getFirstName());
+        employee.setLastName(getEmployeeDto.getLastName());
+        employee.setUsername(getEmployeeDto.getUsername());
+        employee.setCity(getEmployeeDto.getCity());
+        employee.setPhone(getEmployeeDto.getPhone());
+        employee.setZipcode(getEmployeeDto.getZipcode());
+        employee.setDepartmentId(getEmployeeDto.getDepartmentId());
+        employee.setAcceptedHolidays(getEmployeeDto.getAcceptedHolidays());
+        employee.setAcceptedHolidays(getEmployeeDto.getAcceptedHolidays());
+
+
+    }
+
     public Department mapDepDtoToDep(DepartmentDto departmentDto) {
         Department department = new Department();
         Department tempDep = new Department();
