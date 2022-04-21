@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {AllDepartments} from "../models/dto/AllDepartments";
-import {Department} from "../models/dto/Department";
-import {HolidayType} from "../models/dto/HolidayType";
-import {Holiday} from "../models/dto/Holiday";
-import {SickDay} from "../models/dto/SickDay";
-import {ShiftType} from "../models/dto/ShiftType";
-import {Employee} from "../models/dto/Employee";
-import {AllEmployees} from "../models/dto/AllEmployees";
+import {GetDepartment} from "../models/dto/GetDepartment";
+import {GetEmployee} from "../models/dto/GetEmployee";
+import {GetHoliday} from "../models/dto/GetHoliday";
+import {GetSickDay} from "../models/dto/GetSickDay";
+import {GetShiftType} from "../models/dto/GetShiftType";
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +19,6 @@ export class DepartmentService {
   private bearertoken = "";
 
   constructor(private httpClient: HttpClient) {
-
-
-    let holType1 = new HolidayType(1, "Urlaub");
-    let holType2 = new HolidayType(2, "Sonderurlaub");
-    let holType3 = new HolidayType(3, "Bildungsurlaub");
 
     let dat1 = new Date();
     dat1.setFullYear(2020, 2, 16);
@@ -40,15 +33,15 @@ export class DepartmentService {
     let dat6 = new Date();
     dat6.setFullYear(2022, 3, 16);
 
-    let hol1 = new Holiday(1, holType1, dat1, dat2);
-    let hol2 = new Holiday(2, holType2, dat3, dat4);
-    let hol3 = new Holiday(3, holType3, dat5, dat6);
-    let hol4 = new Holiday(4, holType3, dat5, dat6);
-    let hol5 = new Holiday(5, holType2, dat3, dat4);
-    let hol6 = new Holiday(6, holType1, dat1, dat2);
+    let hol1 = new GetHoliday(1, 1, dat1, dat2);
+    let hol2 = new GetHoliday(2, 2, dat3, dat4);
+    let hol3 = new GetHoliday(3, 3, dat5, dat6);
+    let hol4 = new GetHoliday(4, 1, dat5, dat6);
+    let hol5 = new GetHoliday(5, 2, dat3, dat4);
+    let hol6 = new GetHoliday(6, 3, dat1, dat2);
 
-    let holList1: Holiday[] = [hol1, hol2, hol3];
-    let holList2: Holiday[] = [hol4, hol5, hol6];
+    let holList1: GetHoliday[] = [hol1, hol2, hol3];
+    let holList2: GetHoliday[] = [hol4, hol5, hol6];
 
     let date1 = new Date();
     date1.setFullYear(2020, 4, 16);
@@ -63,12 +56,12 @@ export class DepartmentService {
     let date6 = new Date();
     date6.setFullYear(2022, 5, 16);
 
-    let sickDay1 = new SickDay(1, date1, date2);
-    let sickDay2 = new SickDay(2, date3, date4);
-    let sickDay3 = new SickDay(3, date5, date6);
+    let sickDay1 = new GetSickDay();
+    let sickDay2 = new GetSickDay();
+    let sickDay3 = new GetSickDay();
 
-    let sickDayList1: SickDay[] = [sickDay1, sickDay2];
-    let sickDayList2: SickDay[] = [sickDay3];
+    let sickDayList1: GetSickDay[] = [sickDay1, sickDay2];
+    let sickDayList2: GetSickDay[] = [sickDay3];
 
     let sdate1 = new Date();
     sdate1.setHours(6,0,0,0);
@@ -79,19 +72,19 @@ export class DepartmentService {
     let sdate4 = new Date();
     sdate4.setHours(22,0,0,0);
 
-    let shifttype1 = new ShiftType(1, sdate1, sdate2);
-    let shifttype2 = new ShiftType(2, sdate3, sdate4);
+    let shifttype1 = new GetShiftType(1, sdate1, sdate2);
+    let shifttype2 = new GetShiftType(2, sdate3, sdate4);
 
-    let emp1 = new Employee(1, "fn1", "ln1", "addr1", "zip1", "city1", "tel1", "email1", holList1, sickDayList1, 10, "", shifttype1, 1);
-    let emp2 = new Employee(2, "fn2", "ln2", "addr2", "zip2", "city2", "tel2", "email2", holList2, sickDayList2, 10, "", shifttype2, 2);
+    let emp1 = new GetEmployee(1,"u1", "fn1", "ln1", "addr1", "zip1", "city1", "tel1", "email1", 0, holList1, sickDayList1, "10", shifttype1, 1);
+    let emp2 = new GetEmployee(2,"u2", "fn2", "ln2", "addr2", "zip2", "city2", "tel2", "email2", 0, holList2, sickDayList2, "10", shifttype2, 2);
 
-    let emplist: AllEmployees = new AllEmployees();
-    emplist.employees = [emp1, emp2];
+    let emplist: GetEmployee[];
+    emplist = [emp1, emp2];
 
-    let dep1 = new Department(1, "department1", "dep1", 1, emplist.employees);
-    let dep2 = new Department(2, "department2", "dep2", 2, emplist.employees);
+    let dep1 = new GetDepartment(1, "department1", "dep1", 1, emplist);
+    let dep2 = new GetDepartment(2, "department2", "dep2", 2, emplist);
 
-    this.depList.departments = [dep1, dep2];
+    this.depList.departmentDto = [dep1, dep2];
   }
 
   getAllDepartments(): Observable<AllDepartments>{
@@ -106,9 +99,9 @@ export class DepartmentService {
     return of(this.depList);
   }
 
-  getDepartmentById(department: Department): Observable<Department>{
+  getDepartmentById(department: GetDepartment): Observable<GetDepartment>{
     /*
-    return this.httpClient.get<Department>(this.urlPre + `/${department.departmentId}`,{
+    return this.httpClient.get<GetDepartment>(this.urlPre + `/${department.departmentId}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearertoken}`)
@@ -121,7 +114,7 @@ export class DepartmentService {
     return of(dep);
   }
 
-  addDepartment(department: Department){
+  addDepartment(department: GetDepartment){
     /*
     this.httpClient.post(this.urlPre, {
       "name": department.name,
@@ -135,10 +128,10 @@ export class DepartmentService {
     }).toPromise();
     */
 
-    console.log("added Department");
+    console.log("added GetDepartment");
   }
 
-  updateDepartment(department: Department){
+  updateDepartment(department: GetDepartment){
     /*
     this.httpClient.put(this.urlPre + `/${department.departmentId}`,department,{
       headers: new HttpHeaders()
@@ -147,10 +140,10 @@ export class DepartmentService {
     }).toPromise();
     */
 
-    console.log("updated Department");
+    console.log("updated GetDepartment");
   }
 
-  deleteDepartment(department: Department){
+  deleteDepartment(department: GetDepartment){
     /*
     this.httpClient.delete(this.urlPre + `/${department.departmentId}`,{
       headers: new HttpHeaders()
@@ -159,6 +152,6 @@ export class DepartmentService {
     }).toPromise();
     */
 
-    console.log("deleted Department");
+    console.log("deleted GetDepartment");
   }
 }

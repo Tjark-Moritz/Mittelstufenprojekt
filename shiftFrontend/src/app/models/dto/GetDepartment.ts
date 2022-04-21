@@ -1,6 +1,6 @@
 import {GetEmployee} from "./GetEmployee";
-// WIRD VERMUTLICH NOCH GEAENDERT
-export class Department {
+
+export class GetDepartment {
   constructor(public departmentId?: number,
               public name?: string,
               public abbreviatedName?: string,

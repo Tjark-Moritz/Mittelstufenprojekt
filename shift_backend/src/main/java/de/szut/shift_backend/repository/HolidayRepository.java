@@ -25,6 +25,9 @@ public interface HolidayRepository extends JpaRepository<Holiday, Long> {
 //        return holidays;
 //    }
 
+    List<Holiday> findAllByEmployeeId(Long employeeId);
+    /*
     @Query("SELECT holiday FROM Holiday holiday WHERE holiday.employee.id = :employeeId")
     List<Holiday> findAllByEmployeeId(@Param("employeeId") Long employeeId);
+    */
 }
