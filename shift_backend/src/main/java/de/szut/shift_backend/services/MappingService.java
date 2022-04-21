@@ -121,8 +121,8 @@ public class MappingService {
         return empDto;
     }
 
-    public ShiftTradeRequest mapAddShiftTradeRequestDtoToShiftTradeRequest(AddShiftTradeRequestDto requestDto){
-        ShiftTradeRequest request = new ShiftTradeRequest();
+    public GetShiftTradeRequest mapAddShiftTradeRequestDtoToShiftTradeRequest(AddShiftTradeRequestDto requestDto){
+        GetShiftTradeRequest request = new GetShiftTradeRequest();
 
         request.setRequestingEmployee(this.employeeService.getEmployeeById(requestDto.getRequestingEmployeeId()));
         request.setReplyingEmployee(this.employeeService.getEmployeeById(requestDto.getReplyingEmployeeId()));
@@ -132,7 +132,7 @@ public class MappingService {
         return request;
     }
 
-    public GetShiftTradeRequestDto mapShiftTradeRequestToGetShiftTradeRequestDto(ShiftTradeRequest request){
+    public GetShiftTradeRequestDto mapShiftTradeRequestToGetShiftTradeRequestDto(GetShiftTradeRequest request){
         GetShiftTradeRequestDto requestDto = new GetShiftTradeRequestDto();
 
         GetEmployeeDto requestingEmployeeDto = this.mapEmployeeToGetEmployeeDto(request.getRequestingEmployee());

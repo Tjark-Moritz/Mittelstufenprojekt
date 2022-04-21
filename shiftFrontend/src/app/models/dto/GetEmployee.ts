@@ -1,7 +1,10 @@
+import {GetHoliday} from "./GetHoliday";
+import {GetSickDay} from "./GetSickDay";
 import {GetShiftType} from "./GetShiftType";
 
-export class AddEmployee {
-  constructor(public username?: string,
+export class GetEmployee {
+  constructor(public id?: number,
+              public username?: string,
               public lastname?: string,
               public firstname?: string,
               public street?: string,
@@ -10,9 +13,10 @@ export class AddEmployee {
               public phone?: string,
               public email?: string,
               public numHolidaysLeft?: number,
+              public acceptedHolidays?: GetHoliday[],
+              public sickDays?: GetSickDay[],
               public base64ProfilePic?: string,
               public preferredShiftType?: GetShiftType,
-              public departmentId?: number,
-  ) {
+              public departmentId?: number) {
   }
 }
