@@ -23,35 +23,36 @@
 
 
     <div class="outputTable">
-      <table mat-table [dataSource]="data" class="mat-elevation-z8">
+      <p>Tjark: Problem</p>
+<!--      <table mat-table [dataSource]="data" class="mat-elevation-z8">-->
 
-        <!-- Vocation Start Column -->
-        <ng-container matColumnDef="vocationStart">
-          <th mat-header-cell *matHeaderCellDef> Vocation Start </th>
-          <td mat-cell *matCellDef="let element"> {{element.holiday.startDate.toDateString()}} </td>
-        </ng-container>
+<!--        &lt;!&ndash; Vocation Start Column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="vocationStart">-->
+<!--          <th mat-header-cell *matHeaderCellDef> Vocation Start </th>-->
+<!--          <td mat-cell *matCellDef="let element"> {{element.holiday.startDate.toDateString()}} </td>-->
+<!--        </ng-container>-->
 
-        <!-- Vocation End Column -->
-        <ng-container matColumnDef="vocationEnd"><th mat-header-cell *matHeaderCellDef> Vocation End </th>
-          <td mat-cell *matCellDef="let element"> {{element.holiday.endDate.toDateString()}} </td>
-        </ng-container>
+<!--        &lt;!&ndash; Vocation End Column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="vocationEnd"><th mat-header-cell *matHeaderCellDef> Vocation End </th>-->
+<!--          <td mat-cell *matCellDef="let element"> {{element.holiday.endDate.toDateString()}} </td>-->
+<!--        </ng-container>-->
 
-        <!-- Days Column-->
-        <ng-container matColumnDef="days">
-          <th mat-header-cell *matHeaderCellDef> Days </th>
-          <td mat-cell *matCellDef="let element"> {{element.holiday.endDate.getDate()-element.holiday.startDate.getDate()}} </td>
-        </ng-container>
+<!--        &lt;!&ndash; Days Column&ndash;&gt;-->
+<!--        <ng-container matColumnDef="days">-->
+<!--          <th mat-header-cell *matHeaderCellDef> Days </th>-->
+<!--          <td mat-cell *matCellDef="let element"> {{element.holiday.endDate.getDate()-element.holiday.startDate.getDate()}} </td>-->
+<!--        </ng-container>-->
 
-        <!-- status Column -->
-        <ng-container matColumnDef="statuss">
-          <th mat-header-cell *matHeaderCellDef> Status </th>
-          <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-        </ng-container>
+<!--        &lt;!&ndash; status Column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="statuss">-->
+<!--          <th mat-header-cell *matHeaderCellDef> Status </th>-->
+<!--          <td mat-cell *matCellDef="let element"> {{element.status}} </td>-->
+<!--        </ng-container>-->
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+<!--        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
+<!--        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
 
-      </table>
+<!--      </table>-->
     </div>
   </div>
 
@@ -74,64 +75,65 @@
 
 
     <div class="outputTable">
-      <table mat-table [dataSource]="data" class="mat-elevation-z8">
+      <p>Tjark: Problem</p>
+<!--      <table mat-table [dataSource]="data" class="mat-elevation-z8">-->
 
-        <!-- Vocation Start Column -->
-        <ng-container matColumnDef="vocationStart">
-          <th mat-header-cell *matHeaderCellDef> Vocation Start </th>
-          <td mat-cell *matCellDef="let element"> {{element.holiday.startDate.toDateString()}} </td>
-        </ng-container>
+<!--        &lt;!&ndash; Vocation Start Column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="vocationStart">-->
+<!--          <th mat-header-cell *matHeaderCellDef> Vocation Start </th>-->
+<!--          <td mat-cell *matCellDef="let element"> {{element.holiday.startDate.toDateString()}} </td>-->
+<!--        </ng-container>-->
 
-        <!-- Vocation End Column -->
-        <ng-container matColumnDef="vocationEnd"><th mat-header-cell *matHeaderCellDef> Vocation End </th>
-          <td mat-cell *matCellDef="let element"> {{element.holiday.endDate.toDateString()}} </td>
-        </ng-container>
+<!--        &lt;!&ndash; Vocation End Column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="vocationEnd"><th mat-header-cell *matHeaderCellDef> Vocation End </th>-->
+<!--          <td mat-cell *matCellDef="let element"> {{element.holiday.endDate.toDateString()}} </td>-->
+<!--        </ng-container>-->
 
-        <!-- Days Column-->
-        <ng-container matColumnDef="days">
-          <th mat-header-cell *matHeaderCellDef> Days </th>
-          <td mat-cell *matCellDef="let element"> {{element.holiday.endDate.getDate()-element.holiday.startDate.getDate()}} </td>
-        </ng-container>
+<!--        &lt;!&ndash; Days Column&ndash;&gt;-->
+<!--        <ng-container matColumnDef="days">-->
+<!--          <th mat-header-cell *matHeaderCellDef> Days </th>-->
+<!--          <td mat-cell *matCellDef="let element"> {{element.holiday.endDate.getDate()-element.holiday.startDate.getDate()}} </td>-->
+<!--        </ng-container>-->
 
-        <!-- status Column -->
-        <ng-container [ngSwitch]="statusDisplay">
-          <div *ngSwitchCase="'normal'">
-            <!-- status Column -->
-            <ng-container matColumnDef="statuss">
-              <th mat-header-cell *matHeaderCellDef> Status </th>
-              <mat-cell *matCellDef="let element" >
-                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted()">✔</button></div>
-                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; canceledaccepted()">❌</button></div>
-              </mat-cell>
-            </ng-container>
-          </div>
-          <div *ngSwitchCase="'accepted'">
-            <!-- status Column -->
-            <ng-container matColumnDef="statuss">
-              <th mat-header-cell *matHeaderCellDef > Status </th>
-              <mat-cell *matCellDef="let element" bgcolor=#00FF00 >
-                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted();">✔</button></div>
-                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; canceledaccepted()">❌</button></div>
-              </mat-cell>
-            </ng-container>
-          </div>
-          <div *ngSwitchCase="'canceled'">
-            <!-- status Column -->
-            <ng-container matColumnDef="statuss">
-              <th mat-header-cell *matCellDef="let element" Status ></th>
-              <mat-cell *matCellDef="let element" >
-                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted()">✔</button></div>
-                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; canceledaccepted()">❌</button></div>
-              </mat-cell>
-            </ng-container>
-          </div>
-        </ng-container>
+<!--        &lt;!&ndash; status Column &ndash;&gt;-->
+<!--        <ng-container [ngSwitch]="statusDisplay">-->
+<!--          <div *ngSwitchCase="'normal'">-->
+<!--            &lt;!&ndash; status Column &ndash;&gt;-->
+<!--            <ng-container matColumnDef="statuss">-->
+<!--              <th mat-header-cell *matHeaderCellDef> Status </th>-->
+<!--              <mat-cell *matCellDef="let element" >-->
+<!--                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted()">✔</button></div>-->
+<!--                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; canceledaccepted()">❌</button></div>-->
+<!--              </mat-cell>-->
+<!--            </ng-container>-->
+<!--          </div>-->
+<!--          <div *ngSwitchCase="'accepted'">-->
+<!--            &lt;!&ndash; status Column &ndash;&gt;-->
+<!--            <ng-container matColumnDef="statuss">-->
+<!--              <th mat-header-cell *matHeaderCellDef > Status </th>-->
+<!--              <mat-cell *matCellDef="let element" bgcolor=#00FF00 >-->
+<!--                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted();">✔</button></div>-->
+<!--                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; canceledaccepted()">❌</button></div>-->
+<!--              </mat-cell>-->
+<!--            </ng-container>-->
+<!--          </div>-->
+<!--          <div *ngSwitchCase="'canceled'">-->
+<!--            &lt;!&ndash; status Column &ndash;&gt;-->
+<!--            <ng-container matColumnDef="statuss">-->
+<!--              <th mat-header-cell *matCellDef="let element" Status ></th>-->
+<!--              <mat-cell *matCellDef="let element" >-->
+<!--                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted()">✔</button></div>-->
+<!--                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; canceledaccepted()">❌</button></div>-->
+<!--              </mat-cell>-->
+<!--            </ng-container>-->
+<!--          </div>-->
+<!--        </ng-container>-->
 
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+<!--        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
+<!--        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
 
-      </table>
+<!--      </table>-->
     </div>
   </div>
 </ng-container>

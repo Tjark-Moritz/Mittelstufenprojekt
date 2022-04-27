@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {AllEmployees} from "../../models/dto/AllEmployees";
-import {EmployeeService} from "../../services/employee.service"
-import {HolidayRequest} from "../../models/dto/HolidayRequest";
-import {Holiday} from "../../models/dto/Holiday";
-import {HolidayType} from "../../models/dto/HolidayType";
 import {delay} from "rxjs";
+import {GetEmployee} from "../../models/dto/GetEmployee";
+import {GetHoliday} from "../../models/dto/GetHoliday";
+import {EmployeeService} from "../../services/employee.service";
 
 
 @Component({
@@ -21,9 +19,17 @@ export class HolidayPlanerComponent implements OnInit {
   chossenStartDate: Date = new Date();
   chossenEndDate: Date = new Date();
 
+  // data:HolidayRequest[] = []; // Siehe unten
 
-  getUserData():AllEmployees {
-    let empList = new AllEmployees();
+  displayedColumns = ['vocationStart', 'vocationEnd', 'days', 'statuss'];
+
+  constructor(private employeeService: EmployeeService) { }
+
+  ngOnInit(): void {
+  }
+
+  getUserData():GetEmployee[] {
+    let empList: GetEmployee[] = [];
     this.employeeService.getAllEmployees().subscribe(val => empList = val)
     return empList;
   }
@@ -59,25 +65,26 @@ export class HolidayPlanerComponent implements OnInit {
 
     let date: Date = new Date();
 
-    let holidayType: HolidayType = new HolidayType()
-    holidayType.typeName = "Urlaub";
+    let holidayType: GetHoliday = new GetHoliday()
+    holidayType.holidayTypeId = 1; // Nur noch Id
 
-    let holiday: Holiday = new Holiday();
-    holiday.holidayType = holidayType;
+    let holiday: GetHoliday = new GetHoliday();
+    holiday.holidayTypeId = 1; // Nur noch Id
     holiday.startDate = this.chossenStartDate;
     holiday.endDate = this.chossenEndDate;
 
+    // Muss Überarbeitet werden; Existiert noch?
+    /*
     let holidayRequest: HolidayRequest = new HolidayRequest()
     holidayRequest.requestDate = date;
     holidayRequest.holidayRequestId = this.requestcounter+1;
     holidayRequest.holiday = holiday;
-    if (empList.employees) { holidayRequest.requestingEmployeeId = empList.employees[0].employeeId;}
+    if (empList[0]) { holidayRequest.requestingEmployeeId = empList[0].id;}
     holidayRequest.status = false;
 
 
     this.data.push(holidayRequest);
-
-
+    */
   }
 
   holidayaccepted()
@@ -89,17 +96,5 @@ export class HolidayPlanerComponent implements OnInit {
   {
     this.statusDisplay = "canceled";
   }
-
-  data:HolidayRequest[] = [
-
-  ];
-
-  displayedColumns = ['vocationStart', 'vocationEnd', 'days', 'statuss'];
-
-  constructor(private employeeService: EmployeeService) { }
-
-  ngOnInit(): void {
-  }
-
 }
 

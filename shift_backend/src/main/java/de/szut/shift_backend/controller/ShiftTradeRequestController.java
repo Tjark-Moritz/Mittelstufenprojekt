@@ -1,7 +1,7 @@
 package de.szut.shift_backend.controller;
 
 import de.szut.shift_backend.model.Employee;
-import de.szut.shift_backend.model.GetShiftTradeRequest;
+import de.szut.shift_backend.model.ShiftTradeRequest;
 import de.szut.shift_backend.model.dto.*;
 import de.szut.shift_backend.services.MappingService;
 import de.szut.shift_backend.services.ShiftTradeRequestService;
@@ -37,8 +37,8 @@ public class ShiftTradeRequestController {
     @PostMapping
     public ResponseEntity<GetShiftTradeRequestDto> createShiftTradeRequest(@Valid @RequestBody final AddShiftTradeRequestDto requestDto)
     {
-        GetShiftTradeRequest request = this.mappingService.mapAddShiftTradeRequestDtoToShiftTradeRequest(requestDto);
-        GetShiftTradeRequest savedRequest = this.shiftTradeRequestService.create(request);
+        ShiftTradeRequest request = this.mappingService.mapAddShiftTradeRequestDtoToShiftTradeRequest(requestDto);
+        ShiftTradeRequest savedRequest = this.shiftTradeRequestService.create(request);
 
         final GetShiftTradeRequestDto requestConfirmation = this.mappingService.mapShiftTradeRequestToGetShiftTradeRequestDto(savedRequest);
         return new ResponseEntity<>(requestConfirmation, HttpStatus.OK);
@@ -54,13 +54,13 @@ public class ShiftTradeRequestController {
     public ResponseEntity<List<GetShiftTradeRequestDto>> answerShiftTradeRequest(@Valid @PathVariable("id") final Long requestId,
                                                                                  @Valid @RequestBody final RequestAnswerDto answerDto)
     {
-        GetShiftTradeRequest request = this.shiftTradeRequestService.getShiftTradeRequestByRequestId(requestId);
+        ShiftTradeRequest request = this.shiftTradeRequestService.getShiftTradeRequestByRequestId(requestId);
         this.shiftTradeRequestService.updateShiftTradeRequests(request, answerDto.isAccepted());
 
-        List<GetShiftTradeRequest> updatedRequestList = this.shiftTradeRequestService.getShiftTradeRequestsForRespondingEmployee(request.getReplyingEmployee().getId());
+        List<ShiftTradeRequest> updatedRequestList = this.shiftTradeRequestService.getShiftTradeRequestsForRespondingEmployee(request.getReplyingEmployee().getId());
         List<GetShiftTradeRequestDto> updatedRequestDtoList = new ArrayList<>();
 
-        for (GetShiftTradeRequest req : updatedRequestList){
+        for (ShiftTradeRequest req : updatedRequestList){
             updatedRequestDtoList.add(this.mappingService.mapShiftTradeRequestToGetShiftTradeRequestDto(req));
         }
 
@@ -76,10 +76,10 @@ public class ShiftTradeRequestController {
     @GetMapping("/respondent/{id}")
     public ResponseEntity<List<GetShiftTradeRequestDto>> getShiftTradeRequestsForRespondingEmployee(@Valid @PathVariable("id") final Long employeeId )
     {
-        List<GetShiftTradeRequest> requestList = this.shiftTradeRequestService.getShiftTradeRequestsForRespondingEmployee(employeeId);
+        List<ShiftTradeRequest> requestList = this.shiftTradeRequestService.getShiftTradeRequestsForRespondingEmployee(employeeId);
         List<GetShiftTradeRequestDto> resultList = new ArrayList<>();
 
-        for(GetShiftTradeRequest request : requestList){
+        for(ShiftTradeRequest request : requestList){
             resultList.add(this.mappingService.mapShiftTradeRequestToGetShiftTradeRequestDto(request));
         }
 
@@ -95,10 +95,10 @@ public class ShiftTradeRequestController {
     @GetMapping("/requestor/{id}")
     public ResponseEntity<List<GetShiftTradeRequestDto>> getShiftTradeRequestsForRequestingEmployee(@Valid @PathVariable("id") final Long employeeId )
     {
-        List<GetShiftTradeRequest> requestList = this.shiftTradeRequestService.getShiftTradeRequestsForRequestingEmployee(employeeId);
+        List<ShiftTradeRequest> requestList = this.shiftTradeRequestService.getShiftTradeRequestsForRequestingEmployee(employeeId);
         List<GetShiftTradeRequestDto> resultList = new ArrayList<>();
 
-        for(GetShiftTradeRequest request : requestList){
+        for(ShiftTradeRequest request : requestList){
             resultList.add(this.mappingService.mapShiftTradeRequestToGetShiftTradeRequestDto(request));
         }
 

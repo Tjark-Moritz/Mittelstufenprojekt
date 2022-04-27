@@ -1,6 +1,6 @@
-import {Department} from "./Department";
+import {GetDepartment} from "./GetDepartment";
 
 export class AllDepartments {
-  constructor(public departmentDto?: Department) {
+  constructor(public departmentDto?: GetDepartment[]) {
   }
 }
