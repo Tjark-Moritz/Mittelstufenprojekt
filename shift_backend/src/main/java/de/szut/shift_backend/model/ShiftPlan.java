@@ -21,7 +21,7 @@ public class ShiftPlan {
     private Long id;
 
     @OneToOne
-    private Department departmentId;
+    private Department department;
 
     @NotBlank
     private LocalDate validMonth;

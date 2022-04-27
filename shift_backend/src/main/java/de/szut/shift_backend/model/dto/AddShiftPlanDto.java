@@ -12,7 +12,5 @@ public class AddShiftPlanDto {
 
     private LocalDate validMonth;
 
-    private List<AddShiftDto> shifts;
-
     private List<AddShiftTypeDto> shiftTypes;
 }

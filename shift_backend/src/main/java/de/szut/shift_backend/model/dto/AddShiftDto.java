@@ -7,6 +7,8 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
 
+
+//not actually needed, will be kept just in case
 @Data
 public class AddShiftDto {
     @NotBlank
