@@ -5,31 +5,30 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-public class ShiftTradeRequest {
+public class ShiftPlan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @NotNull
-    private Employee requestingEmployee;
+    private Department departmentId;
 
-    @OneToOne
-    @NotNull
-    private Employee replyingEmployee;
+    @NotBlank
+    private LocalDate validMonth;
 
-    @OneToOne
-    @NotNull
-    private Shift oldShift;
+    @OneToMany
+    private List<Shift> shifts;
 
-    @OneToOne
-    @NotNull
-    private Shift newShift;
+    @OneToMany
+    private List<ShiftType> shiftTypes;
 }

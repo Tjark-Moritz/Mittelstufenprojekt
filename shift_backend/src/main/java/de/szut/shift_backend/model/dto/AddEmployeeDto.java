@@ -25,7 +25,7 @@ public class AddEmployeeDto {
 
     private String base64ProfilePic;
 
-    private GetShiftTypeDto preferredShiftType;
+    private Long preferredShiftTypeId;
 
     private Long departmentId;
 }
