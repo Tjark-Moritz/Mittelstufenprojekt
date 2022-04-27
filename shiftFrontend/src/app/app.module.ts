@@ -21,6 +21,7 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
 
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
 import {MatInputModule} from "@angular/material/input";
+import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
 
 //MatLuxonDateModule
 
@@ -33,7 +34,8 @@ import {MatInputModule} from "@angular/material/input";
     HolidayPlanerComponent,
     DepartmentListComponent,
     ShiftPlanComponent,
-    LoginComponent
+    LoginComponent,
+    DepartmentDetailsComponent
   ],
   imports: [
     BrowserModule,
