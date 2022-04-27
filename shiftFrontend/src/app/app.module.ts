@@ -6,7 +6,6 @@ import {HttpClientModule} from "@angular/common/http";
 import { DepartmentListComponent } from './components/department-list/department-list.component';
 import { HighliterPipe } from './pipes/highliter.pipe';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
-import { HighliterPipe } from './pipes/highliter.pipe';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import {ReactiveFormsModule} from "@angular/forms";
