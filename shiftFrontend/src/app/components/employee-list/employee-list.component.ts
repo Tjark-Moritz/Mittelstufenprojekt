@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {DepartmentService} from "../../services/department.service";
-import {Department} from "../../models/dto/Department";
+import {GetDepartment} from "../../models/dto/GetDepartment";
 import {SelectionModel} from "@angular/cdk/collections";
-import {Employee} from "../../models/dto/Employee";
+import {GetEmployee} from "../../models/dto/GetEmployee";
 import {EmployeeService} from "../../services/employee.service";
 
 @Component({
@@ -13,30 +13,30 @@ import {EmployeeService} from "../../services/employee.service";
 })
 export class EmployeeListComponent implements OnInit {
 
-  private employees: Employee[] = [];
-  public selection: SelectionModel<Employee>;
+  private employees: GetEmployee[] = [];
+  public selection: SelectionModel<GetEmployee>;
   private selectionLength = 0;
-  private depIdAbbrDict: { [id: number]: Department; }  = {};
+  private depIdAbbrDict: { [id: number]: GetDepartment; }  = {};
   public searchkey = "";
 
   constructor(private empService: EmployeeService, private depService: DepartmentService) {
-    this.selection = new SelectionModel<Employee>(true, []);
+    this.selection = new SelectionModel<GetEmployee>(true, []);
   }
 
   ngOnInit() {
     this.empService.getAllEmployees().subscribe(res => {
-      res.employees?.forEach(temp => {
+      res.forEach(temp => {
         this.employees.push(temp);
       })
-      this.selection = new SelectionModel<Employee>(true, res.employees);
+      this.selection = new SelectionModel<GetEmployee>(true, res);
     }, error => {
-      this.selection = new SelectionModel<Employee>(true, []);
+      this.selection = new SelectionModel<GetEmployee>(true, []);
       console.log("There was an error getting the Departments: ", error);
     })
     this.selectionLength = this.selection.selected.length;
 
     this.depService.getAllDepartments().subscribe(res => {
-      res.departments?.forEach(temp => {
+      res.departmentDto?.forEach(temp => {
         if(temp.departmentId){
           this.depIdAbbrDict[temp.departmentId] = temp;
         }
