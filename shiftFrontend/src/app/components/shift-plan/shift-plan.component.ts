@@ -5,7 +5,7 @@ import {ShiftPlan} from "../../models/dto/ShiftPlan";
 import {AllEmployees} from "../../models/dto/AllEmployees";
 import {Shift} from "../../models/dto/Shift";
 import {ShiftType} from "../../models/dto/ShiftType";
-import {Employee} from "../../Employee";
+import {Employee} from "../../models/dto/Employee";
 
 @Component({
   selector: 'app-shift-plan',
@@ -23,10 +23,9 @@ export class ShiftPlanComponent implements OnInit {
 
   currentDate: Date = new Date();
   chosenDate: Date = new Date();
+  chosenShiftPlan: ShiftPlan = new ShiftPlan();
 
-
-  shiftPlan = new ShiftPlan();
-
+  currentUser: Employee = new Employee();
 
   constructor(private employeeService: EmployeeService) {
     let shift1Start = new Date();
@@ -36,8 +35,8 @@ export class ShiftPlanComponent implements OnInit {
     let shift2End = new Date();
     shift2End.setHours(22, 0, 0);
 
-    let shiftType1: ShiftType = new ShiftType(1, shift1Start, shift1End, "Frühschicht", "blau");
-    let shiftType2: ShiftType = new ShiftType(2, shift1End, shift2End, "Spätschicht", "grün");
+    let shiftType1: ShiftType = new ShiftType(1, shift1Start, shift1End, "Frühschicht", "#B5FFE1");
+    let shiftType2: ShiftType = new ShiftType(2, shift1End, shift2End, "Spätschicht", "#E5FFB5");
 
     let empList = new AllEmployees();
     this.employeeService.getAllEmployees().subscribe(val => empList = val)
@@ -52,9 +51,9 @@ export class ShiftPlanComponent implements OnInit {
     }
 
     let shift1Date = new Date()
-    shift1Date.setFullYear(2022, 1, 1)
+    shift1Date.setFullYear(2022, 3, 1)
     let shift2Date = new Date()
-    shift2Date.setFullYear(2022, 1, 2)
+    shift2Date.setFullYear(2022, 3, 2)
 
     let shift1: Shift = new Shift(1, shift1List, 1, shift1Date);
     let shift2: Shift = new Shift(2, shift2List, 2, shift2Date);
@@ -64,23 +63,23 @@ export class ShiftPlanComponent implements OnInit {
     shifts.push(shift2)
 
     let validMonthYear = new Date()
-    validMonthYear.setFullYear(2022, 1)
+    validMonthYear.setFullYear(2022, 3)
 
     let shiftTypes: ShiftType[] = [];
     shiftTypes.push(shiftType1)
     shiftTypes.push(shiftType2)
 
-    this.shiftPlan = new ShiftPlan(1, shifts, validMonthYear, shiftTypes)
+    this.chosenShiftPlan = new ShiftPlan(1, shifts, validMonthYear, shiftTypes)
 
-    /*if(empList.employees[0] != undefined) {
-      let currentUser: Employee = empList.employees[0];
-    }*/
+    if(empList.employees) {
+      this.currentUser = empList.employees[1];
+    }
   }
 
   ngOnInit(): void {
     this.calculateMonthStructure();
     this.calculateWeekStructure();
-    console.log(this.shiftPlan)
+    console.log(this.chosenShiftPlan)
   }
 
 
@@ -96,6 +95,7 @@ export class ShiftPlanComponent implements OnInit {
     let months: string[] = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
     return months[month];
   }
+
 
   calculateMonthStructure(): void {
     let tempDate: Date = new Date();
@@ -191,82 +191,72 @@ export class ShiftPlanComponent implements OnInit {
   }
 
 
-  openDatePicker(datepicker?: any) {
-    datepicker.open();
-  }
-
   closeDatePicker(eventData: any, datepicker?:any) {
-    if(eventData.getMonth() == this.currentDate.getMonth() && eventData.getFullYear() == this.currentDate.getFullYear()) {
-      eventData = this.currentDate
+    if(eventData._d.getMonth() == this.currentDate.getMonth() && eventData._d.getFullYear() == this.currentDate.getFullYear()) {
+      eventData._d = this.currentDate
     }
 
-    datepicker.close();
-    this.chosenDate = eventData;
+    this.chosenDate = eventData._d;
     this.updateMonthStructure()
+    datepicker.close();
   }
 
 
-  getEmployeesFromShift(shiftPlan: ShiftPlan, date: Date): string {
+  getEmployeesFromShift(shiftPlan: ShiftPlan, date: Date): Employee[] {
+    let employees: Employee[] = [];
+
     if(date.getMonth() != this.chosenDate.getMonth()) {
-      return "";
+      return employees;
     }
 
-    if(shiftPlan.shifts == undefined || shiftPlan.shifts[date.getDate() - 1] == undefined || shiftPlan.shifts[date.getDate() - 1].activeEmployee == undefined) {
-      return "";
+    if(!shiftPlan.shifts || !shiftPlan.shifts[date.getDate() - 1] || !shiftPlan.shifts[date.getDate() - 1].activeEmployee) {
+      return employees;
     }
-
-    let employees: string = ""
 
     // @ts-ignore
     for(let i = 0; i < shiftPlan.shifts[date.getDate() - 1].activeEmployee.length; i++) {
       // @ts-ignore
       if(shiftPlan.shifts[date.getDate() - 1].activeEmployee[i] != undefined) {
         // @ts-ignore
-        employees += "\n" + shiftPlan.shifts[date.getDate() - 1].activeEmployee[i].firstname.toString() + shiftPlan.shifts[date.getDate() - 1].activeEmployee[i].lastname.toString() + ",";
+        employees.push(shiftPlan.shifts[date.getDate() - 1].activeEmployee[i])
       }
     }
     return employees
   }
 
-  getShiftType(shiftPlan: ShiftPlan, date: Date): number {
-    if(date.getMonth() != this.chosenDate.getMonth() || date == this.currentDate) {
-      return 999;
+  colorizeShifts(shiftPlan: ShiftPlan, date: Date): string {
+    let shiftColor: string = "#FFFFFF"
+
+    if(!shiftPlan.shifts || !shiftPlan.shiftType || !shiftPlan.validMonthYear) {
+      return shiftColor;
     }
 
-    if(shiftPlan.shifts != undefined && shiftPlan.shifts[date.getDate() - 1] != undefined) {
-      // @ts-ignore
-      return shiftPlan.shifts[date.getDate() - 1].shiftTypeId;
+    if(this.currentDate.toDateString() == date.toDateString()) {
+      shiftColor = "#C8F6FF"    // Lightblue
+      return shiftColor
     }
 
-    return 999
+    let tempShift = shiftPlan.shifts.find(shift => shift.shiftDate?.toDateString() == date.toDateString())
+    let tempShiftType: ShiftType | undefined;
+    if(tempShift?.activeEmployee?.find(employee => employee.employeeId == this.currentUser.employeeId)) {
+      tempShiftType = shiftPlan.shiftType.find(type => type.shiftTypeId == tempShift?.shiftTypeId);
+      if(tempShiftType?.shiftTypeColor) {
+        shiftColor = tempShiftType?.shiftTypeColor
+      }
+    }
+    
+    if(this.chosenDate.getMonth() != date.getMonth() && shiftColor == "#FFFFFF") {
+      shiftColor = "#D3D3D3";   // Grey
+    }
+
+    return shiftColor;
   }
 
-
-  //TODO: colored shifts for current user
-  //      which color is more important when overlapping? currentDate, lastMonth, shiftColor
-  //      class.table-success, class.table-warning, class.table-info
-  //      [class.table-success] = ""
-  //      *ngFor="let day of monthStructure" : foreach shift of shiftPlan.shifts : if(shifts[shift].activeEmployee[].contains(currentUser) -> if(shiftType == 1) -> color 1 - elseif (shiftType == 2) -> color 2
-  //      [class.table-success] = ""
-
-  /*colorShift(shiftPlan: ShiftPlan, currentUser: Employee): string {
-    if(shiftPlan.shifts == undefined) {
-      return "";
+  setOpacity(shiftPlan: ShiftPlan, date: Date): string {
+    let opacity: string = "1";
+    if(this.chosenDate.getFullYear() != date.getFullYear() || this.chosenDate.getMonth() != date.getMonth()) {
+      opacity = "0.5";
     }
-
-    for(let shift = 0; shift < shiftPlan.shifts?.length; shift++) {
-      if(shiftPlan.shifts[shift].activeEmployee == undefined) {
-        return "";
-      }
-
-      // @ts-ignore
-      if(shiftPlan.shifts[shift].activeEmployee.indexOf(currentUser) != -1) {
-        if(shiftPlan.shiftType?.shiftTypeColor == undefined) {
-          return "";
-        }
-        return shiftPlan.shiftType?.shiftTypeColor.toString();
-      }
-    }
-    return "";
-  }*/
+    return opacity;
+  }
 }

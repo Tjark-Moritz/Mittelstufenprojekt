@@ -2,7 +2,7 @@
   <div *ngSwitchCase="'month'">
     <h2>Schichtplan für {{getMonthTitle(chosenDate.getMonth())}} (01.{{chosenDate.getMonth()+1}}.{{chosenDate.getFullYear()}} bis {{getTotalDaysInMonth(chosenDate)}}.{{chosenDate.getMonth()+1}}.{{chosenDate.getFullYear()}})</h2>
     <button type="button" (click)="previousMonth()"><</button>
-    <button type="button" (click)="openDatePicker(datepicker)">{{getMonthTitle(chosenDate.getMonth())}}</button>
+    <button type="button" (click)="datepicker.open();">{{getMonthTitle(chosenDate.getMonth())}}</button>
     <button type="button" (click)="nextMonth()">></button>
     <button type="button" (click)="updateWeekStructure(); display = 'week'">Zur Wochenansicht</button>
 
@@ -20,7 +20,12 @@
       </thead>
       <tbody>
         <tr *ngFor="let week of monthStructure">
-          <td *ngFor="let date of week" [class.table-secondary] = "date.getMonth() != chosenDate.getMonth()" [class.table-primary] = "date.toDateString() == currentDate.toDateString()" [class.table-success] = "getShiftType(this.shiftPlan, date) == 1" [class.table-info] = "getShiftType(this.shiftPlan, date) == 2">{{date.getDate()}}{{getEmployeesFromShift(this.shiftPlan, date)}}</td>
+          <td class="single-day" *ngFor="let date of week" [style.background]="colorizeShifts(this.chosenShiftPlan, date)" [style.opacity]="setOpacity(this.chosenShiftPlan, date)">
+            {{date.getDate()}}
+            <!-- <div class="employee-list" *ngFor="let employee of getEmployeesFromShift(this.chosenShiftPlan, date)">
+              {{employee.firstname}} {{employee.lastname}}
+            </div> -->
+          </td>
       </tbody>
     </table>
   </div>
@@ -39,7 +44,9 @@
       </thead>
       <tbody>
         <tr>
-          <td *ngFor="let date of weekStructure" [class.table-secondary] = "date.getMonth() != chosenDate.getMonth()" [class.table-primary] = "date.toDateString() == currentDate.toDateString()">{{date.getDate()}}{{getEmployeesFromShift(this.shiftPlan, date)}}</td>
+          <td class="single-day" *ngFor="let date of weekStructure" [style.background]="colorizeShifts(this.chosenShiftPlan, date)" [style.opacity]="setOpacity(this.chosenShiftPlan, date)">
+            {{date.getDate()}}{{getEmployeesFromShift(this.chosenShiftPlan, date)}}
+          </td>
         </tr>
       </tbody>
     </table>

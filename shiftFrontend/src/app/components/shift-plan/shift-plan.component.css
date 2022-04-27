@@ -1,5 +1,15 @@
 table {
+  width: 100%;
+  min-width: 800px;
   height: 83.5vh;
+}
+
+td {
+  border: 1px solid lightgrey;
+}
+
+.single-day {
+  width: 14%;
 }
 
 ::ng-deep button.mat-calendar-period-button {
