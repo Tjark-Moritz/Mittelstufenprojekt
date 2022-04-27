@@ -1,15 +1,18 @@
-import {ShiftType} from "./ShiftType";
+import {GetShiftType} from "./GetShiftType";
 
 export class AddEmployee {
-  constructor(public firstname?: string,
+  constructor(public username?: string,
               public lastname?: string,
-              public address?: string,
+              public firstname?: string,
+              public street?: string,
               public zipcode?: string,
               public city?: string,
-              public telephone?: string,
+              public phone?: string,
               public email?: string,
               public numHolidaysLeft?: number,
-              public preferredShiftType?: ShiftType,
-              public encodededProfilePic?: string) {
+              public base64ProfilePic?: string,
+              public preferredShiftType?: GetShiftType,
+              public departmentId?: number,
+  ) {
   }
 }
