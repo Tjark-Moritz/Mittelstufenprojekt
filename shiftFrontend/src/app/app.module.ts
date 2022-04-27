@@ -3,8 +3,9 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
-import { EmployeeListComponent } from './components/employee-list/employee-list.component';
+import { DepartmentListComponent } from './components/department-list/department-list.component';
 import { HighliterPipe } from './pipes/highliter.pipe';
+import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import {ReactiveFormsModule} from "@angular/forms";
@@ -30,6 +31,7 @@ import {MatInputModule} from "@angular/material/input";
     HighliterPipe,
     NavbarComponent,
     HolidayPlanerComponent,
+    DepartmentListComponent,
     ShiftPlanComponent,
     LoginComponent
   ],
@@ -47,7 +49,7 @@ import {MatInputModule} from "@angular/material/input";
     MatMomentDateModule,
     MatInputModule
   ],
-  providers: [],
+  providers: [HighliterPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {
