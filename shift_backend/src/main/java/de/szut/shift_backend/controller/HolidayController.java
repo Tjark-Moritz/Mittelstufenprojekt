@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/holiday")
+@RequestMapping("/requests/holiday")
 public class HolidayController {
-    private final MappingService mappingService; //todo: add logic
-    private final HolidayService holidayService; //todo: add logic
+    private final MappingService mappingService;
+    private final HolidayService holidayService;
 
     public HolidayController(MappingService mappingService, HolidayService holidayService) {
         this.mappingService = mappingService;
@@ -36,11 +36,11 @@ public class HolidayController {
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @PostMapping
-    public ResponseEntity<AddHolidayDto> create(@RequestHeader Map<String, String> headers,
+    public ResponseEntity<GetHolidayDto> create(@RequestHeader Map<String, String> headers,
                                                 @Valid @RequestBody final AddHolidayDto addHolidayDto) {
-        Holiday holiday= this.mappingService.mapAddHolidayDtoToHoliday(addHolidayDto);
+        Holiday holiday = this.mappingService.mapAddHolidayDtoToHoliday(addHolidayDto);
         this.holidayService.create(holiday);
-        final AddHolidayDto request = this.mappingService.mapHolidayToAddHolidayDto(holiday);
+        final GetHolidayDto request = this.mappingService.mapHolidayToGetHolidayDto(holiday);
         return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
@@ -62,7 +62,7 @@ public class HolidayController {
         return new ResponseEntity<>(holidayDtoList, HttpStatus.OK);
     }
 
-    @Operation(summary = "delete holiday request")
+    @Operation(summary = "delete holidays")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "deleted holiday successfully"),
             @ApiResponse(responseCode = "400", description = "delete holiday failed", content = @Content),

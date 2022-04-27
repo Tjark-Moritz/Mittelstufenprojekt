@@ -12,7 +12,7 @@ import java.util.List;
 public class Department {
 
     @Id
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long departmentId;
 
     @NotNull
@@ -21,8 +21,8 @@ public class Department {
     @NotNull
     private String abbreviatedName;
 
-    @NotNull
-    private Long leadEmployee;
+    @OneToOne
+    private Employee leadEmployee;
 
     @OneToMany
     private List<Employee> employees;

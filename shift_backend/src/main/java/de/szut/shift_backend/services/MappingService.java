@@ -22,28 +22,98 @@ public class MappingService {
         this.shiftService = shiftService;
     }
 
-    public DepartmentDto mapDepToDepDto(Department department) {
-        DepartmentDto departmentDto = new DepartmentDto();
-        DepartmentDto tempDepDto = new DepartmentDto();
+    public GetDepartmentDto mapDepToDepDto(Department department) {
+        List<GetEmployeeDto> getEmployeeDtoList = new ArrayList<>();
+
+        List<Employee> employeeList = department.getEmployees();
+
+        for (Employee employee : employeeList) {
+            GetEmployeeDto getEmployeeDto = mapEmployeeToGetEmployeeDto(employee);
+            getEmployeeDtoList.add(getEmployeeDto);
+        }
+
+        GetDepartmentDto getDepartmentDto = new GetDepartmentDto();
+        GetDepartmentDto tempDepDto = new GetDepartmentDto();
         tempDepDto.setDepartmentId(department.getDepartmentId());
         tempDepDto.setName(department.getName());
         tempDepDto.setAbbreviatedName(department.getAbbreviatedName());
-        tempDepDto.setLeadEmployee(department.getLeadEmployee());
-        tempDepDto.setEmployees(department.getEmployees());
+        tempDepDto.setLeadEmployee(department.getLeadEmployee().getId());
+        tempDepDto.setEmployees(getEmployeeDtoList);
 
-        return departmentDto;
+        return getDepartmentDto;
     }
 
-    public Department mapDepDtoToDep(DepartmentDto departmentDto) {
+    public Department mapAddDepartmentDtoToDepartment(AddDepartmentDto deptDto){
+        Department dept = new Department();
+
+        dept.setName(deptDto.getName());
+        dept.setAbbreviatedName(deptDto.getAbbreviatedName());
+
+        dept.setLeadEmployee(employeeService.getEmployeeById(deptDto.getLeadEmployeeId()));
+        List<Employee> empList = new ArrayList<>();
+
+        for (Long empId : deptDto.getEmployeeIds()){
+            empList.add(employeeService.getEmployeeById(empId));
+        }
+
+        dept.setEmployees(empList);
+
+        return dept;
+    }
+
+    public Department mapDepDtoToDep(GetDepartmentDto getDepartmentDto) {
+        List<Employee> employeeList = new ArrayList<>();
         Department department = new Department();
         Department tempDep = new Department();
-        tempDep.setDepartmentId(departmentDto.getDepartmentId());
-        tempDep.setName(departmentDto.getName());
-        tempDep.setAbbreviatedName(departmentDto.getAbbreviatedName());
-        tempDep.setLeadEmployee(departmentDto.getLeadEmployee());
-        tempDep.setEmployees(departmentDto.getEmployees());
+
+        Employee leadEmployee = employeeService.getEmployeeById(getDepartmentDto.getLeadEmployee());
+        List<GetEmployeeDto> getEmployeeDtoList = getDepartmentDto.getEmployees();
+
+        for (GetEmployeeDto getEmployeeDto : getEmployeeDtoList) {
+            Employee employee = mapGetEmployeeDtoToEmployee(getEmployeeDto);
+            employeeList.add(employee);
+        }
+
+        tempDep.setDepartmentId(getDepartmentDto.getDepartmentId());
+        tempDep.setName(getDepartmentDto.getName());
+        tempDep.setAbbreviatedName(getDepartmentDto.getAbbreviatedName());
+        tempDep.setLeadEmployee(leadEmployee);
+        tempDep.setEmployees(employeeList);
 
         return department;
+    }
+
+    public Employee mapGetEmployeeDtoToEmployee(GetEmployeeDto getEmployeeDto) {
+        Employee employee = new Employee();
+
+        ShiftType shiftType = mapGetShiftTypeDtoToShiftType(getEmployeeDto.getPreferredShiftType());
+
+        employee.setId(getEmployeeDto.getId());
+        employee.setUsername(getEmployeeDto.getUsername());
+        employee.setFirstName(getEmployeeDto.getFirstName());
+        employee.setLastName(getEmployeeDto.getLastName());
+        employee.setStreet(getEmployeeDto.getStreet());
+        employee.setZipcode(getEmployeeDto.getZipcode());
+        employee.setCity(getEmployeeDto.getCity());
+        employee.setPhone(getEmployeeDto.getPhone());
+        employee.setEmail(getEmployeeDto.getEmail());
+        employee.setNumHolidaysLeft(getEmployeeDto.getNumHolidaysLeft());
+        employee.setBase64ProfilePic(getEmployeeDto.getBase64ProfilePic());
+        employee.setPreferredShiftType(shiftType);
+        employee.setDepartmentId(getEmployeeDto.getDepartmentId());
+
+        return employee;
+    }
+
+    public ShiftType mapGetShiftTypeDtoToShiftType(GetShiftTypeDto getShiftTypeDto) {
+        ShiftType shiftType = new ShiftType();
+        shiftType.setId(getShiftTypeDto.getId());
+        shiftType.setTypeName(getShiftTypeDto.getTypeName());
+        shiftType.setShiftStartTime(getShiftTypeDto.getShiftStartTime());
+        shiftType.setShiftEndTime(getShiftTypeDto.getShiftEndTime());
+        shiftType.setShiftTypeColor(getShiftTypeDto.getShiftTypeColor());
+
+        return shiftType;
     }
 
     public AddHolidayDto mapHolidayToAddHolidayDto(Holiday holiday) {
@@ -52,7 +122,7 @@ public class MappingService {
         addHolidayDto.setTypeId(holiday.getHolidayTypeId());
         addHolidayDto.setStartDate(holiday.getStartDate());
         addHolidayDto.setEndDate(holiday.getEndDate());
-        addHolidayDto.setEmployeeId(holiday.getEmployee().getId());
+        addHolidayDto.setEmployeeId(holiday.getEmployeeId());
 
         return addHolidayDto;
     }
@@ -64,10 +134,11 @@ public class MappingService {
 
         holiday.setHolidayId(addHolidayDto.getId());
         holiday.setHolidayTypeId(addHolidayDto.getTypeId());
-        holiday.setEmployee(employee);
+        holiday.setEmployeeId(employee.getId());
         holiday.setStartDate(addHolidayDto.getStartDate());
         holiday.setEndDate(addHolidayDto.getEndDate());
         holiday.setRequestDate(LocalDateTime.now());
+        holiday.setStatus(Holiday.HolidayStatus.UNANSWERED);
 
         return holiday;
     }
@@ -77,9 +148,9 @@ public class MappingService {
 
         getHolidayDto.setHolidayId(holiday.getHolidayId());
         getHolidayDto.setHolidayTypeId(holiday.getHolidayTypeId());
-        getHolidayDto.setEmployeeId(holiday.getEmployee().getId());
         getHolidayDto.setStartDate(holiday.getStartDate());
         getHolidayDto.setEndDate(holiday.getEndDate());
+        getHolidayDto.setEmployeeId(holiday.getEmployeeId());
 
         return getHolidayDto;
     }
@@ -121,8 +192,8 @@ public class MappingService {
         return empDto;
     }
 
-    public GetShiftTradeRequest mapAddShiftTradeRequestDtoToShiftTradeRequest(AddShiftTradeRequestDto requestDto){
-        GetShiftTradeRequest request = new GetShiftTradeRequest();
+    public ShiftTradeRequest mapAddShiftTradeRequestDtoToShiftTradeRequest(AddShiftTradeRequestDto requestDto){
+        ShiftTradeRequest request = new ShiftTradeRequest();
 
         request.setRequestingEmployee(this.employeeService.getEmployeeById(requestDto.getRequestingEmployeeId()));
         request.setReplyingEmployee(this.employeeService.getEmployeeById(requestDto.getReplyingEmployeeId()));
@@ -132,7 +203,7 @@ public class MappingService {
         return request;
     }
 
-    public GetShiftTradeRequestDto mapShiftTradeRequestToGetShiftTradeRequestDto(GetShiftTradeRequest request){
+    public GetShiftTradeRequestDto mapShiftTradeRequestToGetShiftTradeRequestDto(ShiftTradeRequest request){
         GetShiftTradeRequestDto requestDto = new GetShiftTradeRequestDto();
 
         GetEmployeeDto requestingEmployeeDto = this.mapEmployeeToGetEmployeeDto(request.getRequestingEmployee());
@@ -148,6 +219,26 @@ public class MappingService {
         requestDto.setNewShift(newShiftDto);
 
         return requestDto;
+    }
+
+    public GetDepartmentDto mapDepartmentToGetDepartmentDto(Department department) {
+        GetDepartmentDto getDepartmentDto = new GetDepartmentDto();
+        List<GetEmployeeDto> getEmployeeDtoList = new ArrayList<>();
+
+        List<Employee> employeeList = department.getEmployees();
+
+        for (Employee employee : employeeList) {
+            GetEmployeeDto getEmployeeDto = mapEmployeeToGetEmployeeDto(employee);
+            getEmployeeDtoList.add(getEmployeeDto);
+        }
+
+        getDepartmentDto.setDepartmentId(department.getDepartmentId());
+        getDepartmentDto.setName(department.getName());
+        getDepartmentDto.setAbbreviatedName(department.getAbbreviatedName());
+        getDepartmentDto.setLeadEmployee(department.getLeadEmployee().getId());
+        getDepartmentDto.setEmployees(getEmployeeDtoList);
+
+        return getDepartmentDto;
     }
 
     private GetShiftDto mapShiftToGetShiftDto(Shift shift) {

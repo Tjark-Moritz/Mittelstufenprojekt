@@ -31,7 +31,7 @@ public class HolidayService {
         holiday.setHolidayTypeId(newHoliday.getHolidayTypeId());
         holiday.setStartDate(newHoliday.getStartDate());
         holiday.setEndDate(newHoliday.getEndDate());
-        holiday.setEmployee(newHoliday.getEmployee());
+        holiday.setEmployeeId(newHoliday.getEmployeeId());
 
         holiday = holidayRepository.save(holiday);
         return holiday;
@@ -67,7 +67,7 @@ public class HolidayService {
         List<Holiday> matchedHolidays = new ArrayList<>();
 
         for (Holiday holiday : holidayList) {
-            Department department = employeeService.getDepartmentByEmployeeId(holiday.getEmployee().getId());
+            Department department = employeeService.getDepartmentByEmployeeId(holiday.getEmployeeId());
 
             if (department.getDepartmentId() == departmentId)
                 matchedHolidays.add(holiday);
