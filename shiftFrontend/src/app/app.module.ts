@@ -5,6 +5,8 @@ import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import { DepartmentListComponent } from './components/department-list/department-list.component';
 import { HighliterPipe } from './pipes/highliter.pipe';
+import { EmployeeListComponent } from './components/employee-list/employee-list.component';
+import { HighliterPipe } from './pipes/highliter.pipe';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import {ReactiveFormsModule} from "@angular/forms";
@@ -17,18 +19,22 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatDateFnsModule} from "@angular/material-date-fns-adapter";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
+
+import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
+import {MatInputModule} from "@angular/material/input";
+
 //MatLuxonDateModule
 
 @NgModule({
   declarations: [
     AppComponent,
+    EmployeeListComponent,
+    HighliterPipe,
     NavbarComponent,
-    LoginComponent,
     HolidayPlanerComponent,
     DepartmentListComponent,
-    HighliterPipe,
-    AppComponent,
-    NavbarComponent
+    ShiftPlanComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +47,8 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
     MatFormFieldModule,
     MatNativeDateModule,
     MatDateFnsModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatInputModule
   ],
   providers: [HighliterPipe],
   bootstrap: [AppComponent]
