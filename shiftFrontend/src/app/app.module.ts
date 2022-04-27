@@ -24,7 +24,7 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
     AppComponent,
     NavbarComponent,
     LoginComponent,
-    HolidayPlanerComponent
+    HolidayPlanerComponent,
     DepartmentListComponent,
     HighliterPipe,
     AppComponent,

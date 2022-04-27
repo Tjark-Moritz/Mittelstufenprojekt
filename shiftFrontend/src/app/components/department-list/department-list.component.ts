@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {DepartmentService} from "../../services/department.service";
-import {Department} from "../../models/dto/Department";
+import {GetDepartment} from "../../models/dto/GetDepartment";
 import {SelectionModel} from "@angular/cdk/collections";
 
 @Component({
@@ -10,22 +10,22 @@ import {SelectionModel} from "@angular/cdk/collections";
   encapsulation: ViewEncapsulation.None
 })
 export class DepartmentListComponent implements OnInit{
-  private departments: Department[] = [];
-  public selection: SelectionModel<Department>;
+  private departments: GetDepartment[] = [];
+  public selection: SelectionModel<GetDepartment>;
   public searchkey = "";
 
   constructor(private depService: DepartmentService) {
-    this.selection = new SelectionModel<Department>(true, []);
+    this.selection = new SelectionModel<GetDepartment>(true, []);
   }
 
   ngOnInit() {
     this.depService.getAllDepartments().subscribe(res => {
-        res.departments?.forEach(temp => {
+        res.departmentDto?.forEach(temp => {
           this.departments.push(temp);
         })
-        this.selection = new SelectionModel<Department>(true, res.departments);
+        this.selection = new SelectionModel<GetDepartment>(true, res.departmentDto);
       }, error => {
-      this.selection = new SelectionModel<Department>(true, []);
+      this.selection = new SelectionModel<GetDepartment>(true, []);
       console.log("There was an error getting the Departments: ", error);
     })
   }

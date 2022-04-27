@@ -1,4 +1,3 @@
-import {Employee} from "./Employee";
 import {GetEmployee} from "./GetEmployee";
 
 export class GetDepartment {
