@@ -1,7 +1,11 @@
 package de.szut.shift_backend.controller;
 
+import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.Holiday;
 import de.szut.shift_backend.model.dto.AddHolidayDto;
+import de.szut.shift_backend.model.dto.GetEmployeeDto;
+import de.szut.shift_backend.model.dto.GetHolidayDto;
+import de.szut.shift_backend.model.dto.RequestAnswerDto;
 import de.szut.shift_backend.services.HolidayService;
 import de.szut.shift_backend.services.MappingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,13 +40,16 @@ public class RequestController {
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @PostMapping
-    public ResponseEntity<Void> create(@RequestHeader Map<String, String> headers,
-                                       @Valid @RequestBody final AddHolidayDto addHolidayDto
+    public ResponseEntity<Holiday> create(@RequestHeader Map<String, String> headers,
+                                          @Valid @RequestBody final AddHolidayDto addHolidayDto
     ) {
         Holiday request = this.mappingService.mapAddHolidayDtoToHoliday(addHolidayDto);
-        holidayService.create(request);
 
-        return ResponseEntity.ok().build();
+        if (!holidayService.checkIfHolidayExists(request)) {
+            holidayService.create(request);
+        }
+
+        return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
     @Operation(summary = "gets holiday requests by status")
@@ -72,20 +79,16 @@ public class RequestController {
             @ApiResponse(responseCode = "400", description = "update holiday failed", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
-    @PatchMapping("/{id}")
-    public ResponseEntity<AddHolidayDto> updateHolidayRequest(@RequestHeader Map<String, String> headers,
-                                                              @Valid @RequestBody final AddHolidayDto dto,
-                                                              @PathVariable final Long id
+    @PatchMapping("/{id}/update")
+    public ResponseEntity<GetHolidayDto> updateHolidayRequest(@RequestHeader Map<String, String> headers,
+                                                              @Valid @PathVariable("id") final Long holidayId,
+                                                              @Valid @RequestBody final Map<String,Object> fieldsToPatch
     ) {
-        Holiday holiday = mappingService.mapAddHolidayDtoToHoliday(dto);
+        Holiday holUpdate = this.holidayService.update(holidayId, fieldsToPatch); //todo: String to LocalDate
 
-        this.holidayService.update(holiday, id);
-        final AddHolidayDto request = this.mappingService.mapHolidayToAddHolidayDto(holiday);
+        GetHolidayDto holidayGetDto = this.mappingService.mapHolidayToGetHolidayDto(holUpdate);
 
-        return new ResponseEntity<>(request, HttpStatus.OK);
-
-        //todo: beim Update muss alte Request gelöscht werden und neue gesendet
-        //todo: Zugriffsbeschränkung!
+        return new ResponseEntity<>(holidayGetDto, HttpStatus.OK);
     }
 
 
@@ -95,16 +98,13 @@ public class RequestController {
             @ApiResponse(responseCode = "400", description = "answering holiday request failed", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
-    @PatchMapping("/{id}/{status}")
-    public ResponseEntity<AddHolidayDto> answerHolidayRequest(@RequestHeader Map<String, String> headers,
-                                                              HttpServletRequest httpServletRequest,
-                                                              @PathVariable final Long id
-    ) {
-        String status = httpServletRequest.getParameter("status");
-        Holiday holiday = holidayService.setHolidayStatus(id, status);
+    @PatchMapping("/{id}/answer")
+    public ResponseEntity<Holiday> answerHolidayRequest(@RequestHeader Map<String, String> headers,
+                                                        @PathVariable Long id,
+                                                        @RequestParam Holiday.HolidayStatus holidayStatus
+                                                        ) {
+        this.holidayService.answer(id, holidayStatus);
 
-        final AddHolidayDto request = this.mappingService.mapHolidayToAddHolidayDto(holiday);
-
-        return new ResponseEntity<>(request, HttpStatus.OK);
+        return new ResponseEntity<>(this.holidayService.getById(id), HttpStatus.OK);
     }
 }
