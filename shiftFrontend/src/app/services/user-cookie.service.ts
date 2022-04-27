@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CookieService} from "ngx-cookie-service";
 import { BearerToken } from "../models/bearerToken";
-import { BearerTokenService } from "./bearer-token.service";
+import jwtDecode from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,12 @@ export class UserCookieService {
   }
 
   public static setBearerToken(bearerToken: BearerToken) {
-    UserCookieService.cookieService.set(UserCookieService.bearerTokenCookieName, JSON.stringify(bearerToken), bearerToken.expires_in);
+    if (bearerToken.access_token != null) {
+      let decodedToken = jwtDecode(bearerToken.access_token);
+      // @ts-ignore
+      let expDate = new Date(decodedToken.exp * 1000);
+      UserCookieService.cookieService.set(UserCookieService.bearerTokenCookieName, JSON.stringify(bearerToken), expDate);
+    }
   }
 
   public static getBearerToken() : BearerToken {
