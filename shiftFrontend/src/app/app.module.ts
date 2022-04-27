@@ -3,6 +3,8 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
+import { EmployeeListComponent } from './components/employee-list/employee-list.component';
+import { HighliterPipe } from './pipes/highliter.pipe';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import {ReactiveFormsModule} from "@angular/forms";
@@ -20,6 +22,8 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
 @NgModule({
   declarations: [
     AppComponent,
+    EmployeeListComponent,
+    HighliterPipe,
     NavbarComponent,
     LoginComponent,
     HolidayPlanerComponent
