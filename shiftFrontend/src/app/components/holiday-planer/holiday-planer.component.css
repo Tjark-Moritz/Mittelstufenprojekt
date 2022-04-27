@@ -1,0 +1,17 @@
+table {
+  width: 100%;
+}
+
+.datePickerSpace {
+  border: 1px solid black;
+  text-align: right;
+  margin-right: 30%;
+  margin-left: 43%;
+  padding-right: 3px;
+}
+
+.outputTable {
+  margin-top: 1%;
+  margin-left: 30%;
+  margin-right: 30%;
+}
