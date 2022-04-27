@@ -2,10 +2,9 @@ import {Component, OnInit} from '@angular/core';
 
 import {EmployeeService} from "../../services/employee.service";
 import {ShiftPlan} from "../../models/dto/ShiftPlan";
-import {AllEmployees} from "../../models/dto/AllEmployees";
-import {Shift} from "../../models/dto/Shift";
-import {ShiftType} from "../../models/dto/ShiftType";
-import {Employee} from "../../models/dto/Employee";
+import {GetShift} from "../../models/dto/GetShift";
+import {GetShiftType} from "../../models/dto/GetShiftType";
+import {GetEmployee} from "../../models/dto/GetEmployee";
 
 @Component({
   selector: 'app-shift-plan',
@@ -25,7 +24,7 @@ export class ShiftPlanComponent implements OnInit {
   chosenDate: Date = new Date();
   chosenShiftPlan: ShiftPlan = new ShiftPlan();
 
-  currentUser: Employee = new Employee();
+  currentUser: GetEmployee = new GetEmployee();
 
   constructor(private employeeService: EmployeeService) {
     let shift1Start = new Date();
@@ -35,19 +34,19 @@ export class ShiftPlanComponent implements OnInit {
     let shift2End = new Date();
     shift2End.setHours(22, 0, 0);
 
-    let shiftType1: ShiftType = new ShiftType(1, shift1Start, shift1End, "Frühschicht", "#B5FFE1");
-    let shiftType2: ShiftType = new ShiftType(2, shift1End, shift2End, "Spätschicht", "#E5FFB5");
+    let shiftType1: GetShiftType = new GetShiftType(1, shift1Start, shift1End, "Frühschicht", "#B5FFE1");
+    let shiftType2: GetShiftType = new GetShiftType(2, shift1End, shift2End, "Spätschicht", "#E5FFB5");
 
-    let empList = new AllEmployees();
+    let empList: GetEmployee[] = [];
     this.employeeService.getAllEmployees().subscribe(val => empList = val)
 
-    let shift1List: Employee[] = [];
-    let shift2List: Employee[] = [];
+    let shift1List: GetEmployee[] = [];
+    let shift2List: GetEmployee[] = [];
 
-    if(empList.employees) {
-      shift1List.push(empList.employees[0]);
-      shift1List.push(empList.employees[1]);
-      shift2List.push(empList.employees[1]);
+    if(empList) {
+      shift1List.push(empList[0]);
+      shift1List.push(empList[1]);
+      shift2List.push(empList[1]);
     }
 
     let shift1Date = new Date()
@@ -55,24 +54,24 @@ export class ShiftPlanComponent implements OnInit {
     let shift2Date = new Date()
     shift2Date.setFullYear(2022, 3, 2)
 
-    let shift1: Shift = new Shift(1, shift1List, 1, shift1Date);
-    let shift2: Shift = new Shift(2, shift2List, 2, shift2Date);
+    let shift1: GetShift = new GetShift(1, shift1Date, shiftType1, shift1List);
+    let shift2: GetShift = new GetShift(2, shift2Date, shiftType2, shift2List);
 
-    let shifts: Shift[] = [];
+    let shifts: GetShift[] = [];
     shifts.push(shift1)
     shifts.push(shift2)
 
     let validMonthYear = new Date()
     validMonthYear.setFullYear(2022, 3)
 
-    let shiftTypes: ShiftType[] = [];
+    let shiftTypes: GetShiftType[] = [];
     shiftTypes.push(shiftType1)
     shiftTypes.push(shiftType2)
 
     this.chosenShiftPlan = new ShiftPlan(1, shifts, validMonthYear, shiftTypes)
 
-    if(empList.employees) {
-      this.currentUser = empList.employees[1];
+    if(empList) {
+      this.currentUser = empList[1];
     }
   }
 
@@ -202,14 +201,14 @@ export class ShiftPlanComponent implements OnInit {
   }
 
 
-  getEmployeesFromShift(shiftPlan: ShiftPlan, date: Date): Employee[] {
-    let employees: Employee[] = [];
+  getEmployeesFromShift(shiftPlan: ShiftPlan, date: Date): GetEmployee[] {
+    let employees: GetEmployee[] = [];
 
     if(date.getMonth() != this.chosenDate.getMonth()) {
       return employees;
     }
 
-    if(!shiftPlan.shifts || !shiftPlan.shifts[date.getDate() - 1] || !shiftPlan.shifts[date.getDate() - 1].activeEmployee) {
+    if(!shiftPlan.shifts || !shiftPlan.shifts[date.getDate() - 1] || !shiftPlan.shifts[date.getDate() - 1].activeEmployees) {
       return employees;
     }
 
@@ -237,14 +236,14 @@ export class ShiftPlanComponent implements OnInit {
     }
 
     let tempShift = shiftPlan.shifts.find(shift => shift.shiftDate?.toDateString() == date.toDateString())
-    let tempShiftType: ShiftType | undefined;
-    if(tempShift?.activeEmployee?.find(employee => employee.employeeId == this.currentUser.employeeId)) {
-      tempShiftType = shiftPlan.shiftType.find(type => type.shiftTypeId == tempShift?.shiftTypeId);
+    let tempShiftType: GetShiftType | undefined;
+    if(tempShift?.activeEmployees?.find(employee => employee.id == this.currentUser.id)) {
+      tempShiftType = shiftPlan.shiftType.find(type => type.id == tempShift?.id);
       if(tempShiftType?.shiftTypeColor) {
         shiftColor = tempShiftType?.shiftTypeColor
       }
     }
-    
+
     if(this.chosenDate.getMonth() != date.getMonth() && shiftColor == "#FFFFFF") {
       shiftColor = "#D3D3D3";   // Grey
     }
