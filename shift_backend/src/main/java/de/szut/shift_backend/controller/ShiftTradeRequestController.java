@@ -95,7 +95,7 @@ public class ShiftTradeRequestController {
     @GetMapping("/requestor/{id}")
     public ResponseEntity<List<GetShiftTradeRequestDto>> getShiftTradeRequestsForRequestingEmployee(@Valid @PathVariable("id") final Long employeeId )
     {
-        List<GetShiftTradeRequest> requestList = this.shiftTradeRequestService.getShiftTradeRequestsForRequestingEmployee(employeeId);
+        List<ShiftTradeRequest> requestList = this.shiftTradeRequestService.getShiftTradeRequestsForRequestingEmployee(employeeId);
         List<GetShiftTradeRequestDto> resultList = new ArrayList<>();
 
         for(ShiftTradeRequest request : requestList){
