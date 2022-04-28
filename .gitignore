@@ -3,6 +3,7 @@ target/
 !**/shift_backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+**/Shiftplanner-realm.json
 
 ### STS ###
 .apt_generated
