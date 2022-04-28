@@ -4,6 +4,9 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.module.ResolutionException;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Map;
 
 public class ClassReflectionHelper {
@@ -15,9 +18,13 @@ public class ClassReflectionHelper {
 
             if(field == null)
                 throw new ResolutionException("Field with name '" + key + "' does not exist");
+            if(field.getType() == LocalDate.class){
+                value = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse((CharSequence) value));
+            }
+
 
             field.setAccessible(true);
-            ReflectionUtils.setField(field, baseObject, value);
+            ReflectionUtils.setField(field, baseObject, field.getType().cast(value));
         });
 
         return baseObject;
