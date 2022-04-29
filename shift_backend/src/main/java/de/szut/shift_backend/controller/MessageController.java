@@ -2,7 +2,9 @@ package de.szut.shift_backend.controller;
 
 import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.dto.AddEmployeeDto;
+import de.szut.shift_backend.model.dto.AddMessageDto;
 import de.szut.shift_backend.model.dto.GetEmployeeDto;
+import de.szut.shift_backend.model.dto.GetMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,7 +27,7 @@ public class MessageController {
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @PostMapping
-    public ResponseEntity<xxx> create(@Valid @RequestBody final Dto dto)
+    public ResponseEntity<GetMessageDto> create(@Valid @RequestBody final AddMessageDto addMessageDto)
     {
 
         return new ResponseEntity<>(request, HttpStatus.OK);
@@ -33,11 +35,11 @@ public class MessageController {
 
     @Operation(summary = "get Message by Id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "xxx was created"),
+            @ApiResponse(responseCode = "200", description = "successfully got message"),
             @ApiResponse(responseCode = "400", description = "xxx parameter is null", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
-    @PostMapping
+    @GetMapping("/{id}")
     public ResponseEntity<xxx> getById(@Valid @PathVariable("id") final Long messageId)
     {
 
@@ -46,12 +48,12 @@ public class MessageController {
 
     @Operation(summary = "get Messages by Channel")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "xxx was created"),
+            @ApiResponse(responseCode = "200", description = "successfully got messages by channel"),
             @ApiResponse(responseCode = "400", description = "xxx parameter is null", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
-    @PostMapping
-    public ResponseEntity<xxx> getByChannel(@Valid @PathVariable("id") final Long channelId)
+    @GetMapping("/channel/{id}")
+    public ResponseEntity<Object> getByChannel(@Valid @PathVariable("id") final Long channelId)
     {
 
         return new ResponseEntity<>(request, HttpStatus.OK);
@@ -59,11 +61,11 @@ public class MessageController {
 
     @Operation(summary = "gets all Messages")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "xxx was created"),
+            @ApiResponse(responseCode = "200", description = "successfully got all messages"),
             @ApiResponse(responseCode = "400", description = "xxx parameter is null", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
-    @PostMapping
+    @GetMapping
     public ResponseEntity<xxx> getAll()
     {
 
@@ -72,7 +74,7 @@ public class MessageController {
 
     @Operation(summary = "update Message")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "xxx was created"),
+            @ApiResponse(responseCode = "200", description = "updated message successfully"),
             @ApiResponse(responseCode = "400", description = "xxx parameter is null", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
@@ -86,12 +88,12 @@ public class MessageController {
 
     @Operation(summary = "delete Message")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "xxx was created"),
+            @ApiResponse(responseCode = "200", description = "deleted message successfully"),
             @ApiResponse(responseCode = "400", description = "xxx parameter is null", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
-    @PostMapping
-    public ResponseEntity<xxx> delete()
+    @DeleteMapping("/{id}")
+    public ResponseEntity<xxx> deleteById()
     {
 
         return new ResponseEntity<>(request, HttpStatus.OK);
