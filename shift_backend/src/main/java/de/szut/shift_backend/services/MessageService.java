@@ -3,6 +3,7 @@ package de.szut.shift_backend.services;
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Message;
+import de.szut.shift_backend.repository.MessageChannelRepository;
 import de.szut.shift_backend.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,11 @@ import java.util.Optional;
 public class MessageService {
 
     private final MessageRepository messageRepository;
+    private final MessageChannelRepository messageChannelRepository;
 
-    public MessageService(MessageRepository messageRepository) {
+    public MessageService(MessageRepository messageRepository, MessageChannelRepository messageChannelRepository) {
         this.messageRepository = messageRepository;
+        this.messageChannelRepository = messageChannelRepository;
     }
 
     public void create(Message newMessage) {
@@ -33,7 +36,7 @@ public class MessageService {
     }
 
     public List<Message> getMessagesByChannelId(Long channelId) {
-        List<Message> messages = this.messageChannelRepository.findAllById(channelId);
+        List<Message> messages = this.messageChannelRepository.findAllById(channelId); //todo: refactor here
 
         if (messages.isEmpty())
             throw new ResourceNotFoundException("No messages found for channelId '"+ channelId + "' could not be found");

@@ -48,6 +48,26 @@ public class MappingService {
         return message;
     }
 
+    public MessageChannel mapAddMessageChannelDtoToMessageChannel(AddMessageChannelDto addMessageChannelDto) {
+        MessageChannel messageChannel = new MessageChannel();
+        messageChannel.setId(addMessageChannelDto.getId());
+        messageChannel.setName(addMessageChannelDto.getName());
+        messageChannel.setDescription(addMessageChannelDto.getDescription());
+        messageChannel.setMessages(addMessageChannelDto.getMessages());
+
+        return messageChannel;
+    }
+
+    public GetMessageChannelDto mapMessageChannelToGetMessageChannelDto(MessageChannel messageChannel) {
+        GetMessageChannelDto getMessageChannelDto = new GetMessageChannelDto();
+        getMessageChannelDto.setId(messageChannel.getId());
+        getMessageChannelDto.setName(messageChannel.getName());
+        getMessageChannelDto.setDescription(messageChannel.getDescription());
+        getMessageChannelDto.setMessages(messageChannel.getMessages());
+
+        return getMessageChannelDto;
+    }
+
     public GetDepartmentDto mapDepToDepDto(Department department) {
         List<GetEmployeeDto> getEmployeeDtoList = new ArrayList<>();
 

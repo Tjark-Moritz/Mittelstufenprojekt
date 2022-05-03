@@ -2,7 +2,6 @@ package de.szut.shift_backend.controller;
 
 import de.szut.shift_backend.model.Message;
 import de.szut.shift_backend.model.dto.AddMessageDto;
-import de.szut.shift_backend.model.dto.AllMessagesDto;
 import de.szut.shift_backend.model.dto.GetMessageDto;
 import de.szut.shift_backend.services.MappingService;
 import de.szut.shift_backend.services.MessageService;
@@ -18,7 +17,6 @@ import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/message")
@@ -32,7 +30,7 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @Operation(summary = "create")
+    @Operation(summary = "create message")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "message was created"),
             @ApiResponse(responseCode = "400", description = "message parameter is null", content = @Content),
@@ -70,11 +68,16 @@ public class MessageController {
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @GetMapping("/channel/{id}")
-    public ResponseEntity<Object> getByChannel(@Valid @PathVariable("id") final Long channelId)
+    public ResponseEntity<List<GetMessageDto>> getAllByChannel(@Valid @PathVariable("id") final Long channelId)
     {
         List<Message> messages = this.messageService.getMessagesByChannelId(channelId);
-        AllMessagesDto allMessagesDto = this.mappingService.mapMessagesToAllMessageDto(message);
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<GetMessageDto> messageDtoList = new LinkedList<>();
+
+        for (Message message : messages) {
+            messageDtoList.add(this.mappingService.mapMessageToGetMessageDto(message));
+        }
+
+        return new ResponseEntity<>(messageDtoList, HttpStatus.OK);
     }
 
     @Operation(summary = "gets all Messages")
