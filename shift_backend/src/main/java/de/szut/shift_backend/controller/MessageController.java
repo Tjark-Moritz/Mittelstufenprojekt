@@ -1,10 +1,11 @@
 package de.szut.shift_backend.controller;
 
-import de.szut.shift_backend.model.Employee;
-import de.szut.shift_backend.model.dto.AddEmployeeDto;
+import de.szut.shift_backend.model.Message;
 import de.szut.shift_backend.model.dto.AddMessageDto;
-import de.szut.shift_backend.model.dto.GetEmployeeDto;
+import de.szut.shift_backend.model.dto.AllMessagesDto;
 import de.szut.shift_backend.model.dto.GetMessageDto;
+import de.szut.shift_backend.services.MappingService;
+import de.szut.shift_backend.services.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,88 +15,115 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/message")
 public class MessageController {
 
+    private final MappingService mappingService;
+    private final MessageService messageService;
+
+    public MessageController(MappingService mappingService, MessageService messageService) {
+        this.mappingService = mappingService;
+        this.messageService = messageService;
+    }
+
     @Operation(summary = "create")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "xxx was created"),
-            @ApiResponse(responseCode = "400", description = "xxx parameter is null", content = @Content),
+            @ApiResponse(responseCode = "200", description = "message was created"),
+            @ApiResponse(responseCode = "400", description = "message parameter is null", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @PostMapping
     public ResponseEntity<GetMessageDto> create(@Valid @RequestBody final AddMessageDto addMessageDto)
     {
-
+        Message message = this.mappingService.mapAddMessageDtoToMessage(addMessageDto);
+        this.messageService.create(message);
+        final GetMessageDto request = this.mappingService.mapMessageToGetMessageDto(message);
         return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
     @Operation(summary = "get Message by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successfully got message"),
-            @ApiResponse(responseCode = "400", description = "xxx parameter is null", content = @Content),
+            @ApiResponse(responseCode = "400", description = "messageId parameter is null", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @GetMapping("/{id}")
-    public ResponseEntity<xxx> getById(@Valid @PathVariable("id") final Long messageId)
+    public ResponseEntity<GetMessageDto> getById(@Valid @PathVariable("id") final Long messageId)
     {
+        Message message = this.messageService.getMessageById(messageId);
+        GetMessageDto getMessageDto = this.mappingService.mapMessageToGetMessageDto(message);
 
-        return new ResponseEntity<>(request, HttpStatus.OK);
+
+        return new ResponseEntity<>(getMessageDto, HttpStatus.OK);
     }
 
     @Operation(summary = "get Messages by Channel")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successfully got messages by channel"),
-            @ApiResponse(responseCode = "400", description = "xxx parameter is null", content = @Content),
+            @ApiResponse(responseCode = "400", description = "channelId parameter is null", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @GetMapping("/channel/{id}")
     public ResponseEntity<Object> getByChannel(@Valid @PathVariable("id") final Long channelId)
     {
-
-        return new ResponseEntity<>(request, HttpStatus.OK);
+        List<Message> messages = this.messageService.getMessagesByChannelId(channelId);
+        AllMessagesDto allMessagesDto = this.mappingService.mapMessagesToAllMessageDto(message);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "gets all Messages")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successfully got all messages"),
-            @ApiResponse(responseCode = "400", description = "xxx parameter is null", content = @Content),
+            @ApiResponse(responseCode = "400", description = "message parameter is null", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @GetMapping
-    public ResponseEntity<xxx> getAll()
+    public ResponseEntity<List<GetMessageDto>> getAll()
     {
+        List<Message> messages = this.messageService.getAllMessages();
+        List<GetMessageDto> messageDtoList = new LinkedList<>();
 
-        return new ResponseEntity<>(request, HttpStatus.OK);
+        for (Message message : messages) {
+            messageDtoList.add(this.mappingService.mapMessageToGetMessageDto(message));
+        }
+
+        return new ResponseEntity<>(messageDtoList, HttpStatus.OK);
     }
 
     @Operation(summary = "update Message")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "updated message successfully"),
-            @ApiResponse(responseCode = "400", description = "xxx parameter is null", content = @Content),
+            @ApiResponse(responseCode = "400", description = "message parameter is null", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
-    @PostMapping
-    public ResponseEntity<xxx> update(@Valid @PathVariable("id") final Long messageId,
+    @PatchMapping("/{id}")
+    public ResponseEntity<GetMessageDto> update(@Valid @PathVariable("id") final Long messageId,
                                       @Valid @RequestBody final Map<String, Object> fieldsToPatch)
     {
+        Message msgUpdate = this.messageService.updateMessage(messageId, fieldsToPatch);
 
-        return new ResponseEntity<>(request, HttpStatus.OK);
+        GetMessageDto getMessageDto = this.mappingService.mapMessageToGetMessageDto(msgUpdate);
+
+        return new ResponseEntity<>(getMessageDto, HttpStatus.OK);
     }
 
     @Operation(summary = "delete Message")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "deleted message successfully"),
-            @ApiResponse(responseCode = "400", description = "xxx parameter is null", content = @Content),
+            @ApiResponse(responseCode = "400", description = "messageId parameter is null", content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<xxx> deleteById()
+    public ResponseEntity<String> deleteById(@Valid @RequestBody final long messageId)
     {
+        this.messageService.delete(messageId);
 
-        return new ResponseEntity<>(request, HttpStatus.OK);
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 }

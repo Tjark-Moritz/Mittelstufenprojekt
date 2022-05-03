@@ -22,6 +22,32 @@ public class MappingService {
         this.shiftService = shiftService;
     }
 
+    public GetMessageDto mapMessageToGetMessageDto(Message message) {
+        GetMessageDto getMessageDto = new GetMessageDto();
+        getMessageDto.setId(message.getId());
+        getMessageDto.setChannelId(message.getChannelId());
+        getMessageDto.setRequestedEmployeeId(message.getRequestedEmployeeId());
+        getMessageDto.setSendingEmployeeId(message.getSendingEmployeeId());
+        getMessageDto.setDateTime(message.getDateTime());
+        getMessageDto.setType(message.getType());
+        getMessageDto.setStatus(message.getStatus());
+
+        return getMessageDto;
+    }
+
+    public Message mapAddMessageDtoToMessage(AddMessageDto addMessageDto) {
+        Message message = new Message();
+        message.setId(addMessageDto.getId());
+        message.setChannelId(addMessageDto.getChannelId());
+        message.setRequestedEmployeeId(addMessageDto.getRequestedEmployeeId());
+        message.setSendingEmployeeId(addMessageDto.getSendingEmployeeId());
+        message.setDateTime(addMessageDto.getDateTime());
+        message.setType(addMessageDto.getType());
+        message.setStatus(addMessageDto.getStatus());
+
+        return message;
+    }
+
     public GetDepartmentDto mapDepToDepDto(Department department) {
         List<GetEmployeeDto> getEmployeeDtoList = new ArrayList<>();
 
