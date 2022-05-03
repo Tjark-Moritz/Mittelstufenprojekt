@@ -47,8 +47,6 @@ public class MessageChannelController {
         return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
-    //TODO: work from here
-
     @Operation(summary = "get message-channel by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successfully got message-channel"),
@@ -56,10 +54,15 @@ public class MessageChannelController {
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @GetMapping("/{id}")
-    public ResponseEntity<xxx> getById(@Valid @PathVariable("id") final Long messageChannelId)
+    public ResponseEntity<GetMessageChannelDto> getById(@Valid @PathVariable("id") final Long messageChannelId)
     {
+        MessageChannel messageChannel = this.messageChannelService.getMessageChannelById(messageChannelId);
+         GetMessageChannelDto getMessageChannelDto =
+                 this.mappingService.mapMessageChannelToGetMessageChannelDto(messageChannel);
 
+         return new ResponseEntity<>(getMessageChannelDto, HttpStatus.OK);
     }
+
 
     @Operation(summary = "gets all Messages")
     @ApiResponses(value = {
@@ -68,9 +71,19 @@ public class MessageChannelController {
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @GetMapping
-    public ResponseEntity<List<MessageChannel>> getAll()
+    public ResponseEntity<List<GetMessageChannelDto>> getAll()
     {
+        List<MessageChannel> messageChannels = this.messageChannelService.getAll();
+        List<GetMessageChannelDto> getMessageChannelDto = new LinkedList<>();
+
+        for (MessageChannel messageChannel : messageChannels) {
+            getMessageChannelDto.add(this.mappingService.mapMessageChannelToGetMessageChannelDto(messageChannel));
+        }
+
+        return new ResponseEntity<>(getMessageChannelDto, HttpStatus.OK);
     }
+
+    //TODO: work from here
 
     @Operation(summary = "update message-channel")
     @ApiResponses(value = {
@@ -82,6 +95,7 @@ public class MessageChannelController {
     public ResponseEntity<GetMessageChannelDto> update(@Valid @PathVariable("id") final Long messageId,
                                                 @Valid @RequestBody final Map<String, Object> fieldsToPatch)
     {
+
     }
 
     @Operation(summary = "delete message-channel")

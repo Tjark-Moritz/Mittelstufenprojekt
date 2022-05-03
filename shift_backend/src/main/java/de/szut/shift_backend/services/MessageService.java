@@ -3,10 +3,12 @@ package de.szut.shift_backend.services;
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Message;
+import de.szut.shift_backend.model.MessageChannel;
 import de.szut.shift_backend.repository.MessageChannelRepository;
 import de.szut.shift_backend.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -36,12 +38,18 @@ public class MessageService {
     }
 
     public List<Message> getMessagesByChannelId(Long channelId) {
-        List<Message> messages = this.messageChannelRepository.findAllById(channelId); //todo: refactor here
+        List<Message> messages = this.messageRepository.findAll(); //todo: refactor here with findAllById
+        List<Message> messageList = new ArrayList<>();
 
-        if (messages.isEmpty())
-            throw new ResourceNotFoundException("No messages found for channelId '"+ channelId + "' could not be found");
+        for (Message message : messages) {
+            if (message.getChannelId().equals(channelId))
+                messageList.add(message);
+        }
 
-        return messages;
+        if (messageList.isEmpty())
+            throw new ResourceNotFoundException("No messages found for channelId "+ channelId + "' could not be found");
+
+        return messageList;
     }
 
     public List<Message> getAllMessages() {

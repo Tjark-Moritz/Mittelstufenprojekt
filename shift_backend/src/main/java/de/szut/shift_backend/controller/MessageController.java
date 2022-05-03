@@ -57,7 +57,6 @@ public class MessageController {
         Message message = this.messageService.getMessageById(messageId);
         GetMessageDto getMessageDto = this.mappingService.mapMessageToGetMessageDto(message);
 
-
         return new ResponseEntity<>(getMessageDto, HttpStatus.OK);
     }
 
