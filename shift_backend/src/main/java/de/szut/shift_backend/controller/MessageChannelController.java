@@ -63,8 +63,7 @@ public class MessageChannelController {
          return new ResponseEntity<>(getMessageChannelDto, HttpStatus.OK);
     }
 
-
-    @Operation(summary = "gets all Messages")
+    @Operation(summary = "gets all message-channels")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successfully got all message-channels"),
             @ApiResponse(responseCode = "400", description = "message-channel parameter is null", content = @Content),
@@ -83,8 +82,6 @@ public class MessageChannelController {
         return new ResponseEntity<>(getMessageChannelDto, HttpStatus.OK);
     }
 
-    //TODO: work from here
-
     @Operation(summary = "update message-channel")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "updated message-channel successfully"),
@@ -92,10 +89,15 @@ public class MessageChannelController {
             @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
     })
     @PatchMapping("/{id}")
-    public ResponseEntity<GetMessageChannelDto> update(@Valid @PathVariable("id") final Long messageId,
+    public ResponseEntity<GetMessageChannelDto> update(@Valid @PathVariable("id") final Long messageChannelId,
                                                 @Valid @RequestBody final Map<String, Object> fieldsToPatch)
     {
+        MessageChannel messageChannel = this.messageChannelService.update(messageChannelId, fieldsToPatch);
 
+        GetMessageChannelDto getMessageChannelDto =
+                this.mappingService.mapMessageChannelToGetMessageChannelDto(messageChannel);
+
+        return new ResponseEntity<>(getMessageChannelDto, HttpStatus.OK);
     }
 
     @Operation(summary = "delete message-channel")

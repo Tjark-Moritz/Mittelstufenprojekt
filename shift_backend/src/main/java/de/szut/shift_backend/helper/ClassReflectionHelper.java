@@ -24,7 +24,7 @@ public class ClassReflectionHelper {
 
 
             field.setAccessible(true);
-            ReflectionUtils.setField(field, baseObject, field.getType().cast(value));
+            ReflectionUtils.setField(field, baseObject, field.getType().cast(value)); //TODO: fix here @MessageController->update("status" => "unsend" || "type" => 0 )
         });
 
         return baseObject;
