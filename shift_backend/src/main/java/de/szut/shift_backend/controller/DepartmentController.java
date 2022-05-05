@@ -1,8 +1,10 @@
 package de.szut.shift_backend.controller;
 
 import de.szut.shift_backend.model.Department;
+import de.szut.shift_backend.model.Holiday;
 import de.szut.shift_backend.model.dto.AddDepartmentDto;
 import de.szut.shift_backend.model.dto.GetDepartmentDto;
+import de.szut.shift_backend.model.dto.GetHolidayDto;
 import de.szut.shift_backend.services.DepartmentService;
 import de.szut.shift_backend.services.MappingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -42,6 +46,24 @@ public class DepartmentController {
 
         final GetDepartmentDto request = this.mappingService.mapDepartmentToGetDepartmentDto(savedDept);
         return new ResponseEntity<>(request, HttpStatus.OK);
+    }
+
+    @Operation(summary = "gets all departments")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "get all departments successfully"),
+            @ApiResponse(responseCode = "400", description = "get all departments failed", content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
+    })
+    @GetMapping
+    public ResponseEntity<List<GetDepartmentDto>> getAll() {
+        List<Department> departmentList = this.departmentService.getAllDepartments();
+        List<GetDepartmentDto> departmentDtoList = new LinkedList<>();
+
+        for (Department department : departmentList) {
+            departmentDtoList.add(this.mappingService.mapDepartmentToGetDepartmentDto(department));
+        }
+
+        return new ResponseEntity<>(departmentDtoList, HttpStatus.OK);
     }
 
     @Operation(summary = "update department")

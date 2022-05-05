@@ -4,6 +4,7 @@ import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Department;
 import de.szut.shift_backend.model.Employee;
+import de.szut.shift_backend.model.Holiday;
 import de.szut.shift_backend.repository.DepartmentRepository;
 import de.szut.shift_backend.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,9 @@ public class DepartmentService {
             throw new ResourceNotFoundException("Department could not be found");
 
         return dep.get();
+    }
+
+    public List<Department> getAllDepartments() {
+        return departmentRepository.findAll();
     }
 }
