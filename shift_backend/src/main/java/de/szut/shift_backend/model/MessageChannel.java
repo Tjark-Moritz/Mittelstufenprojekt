@@ -1,33 +1,30 @@
 package de.szut.shift_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-
 @Getter
 @Setter
-@NoArgsConstructor
+@Data
 @Entity
-public class Department {
+public class MessageChannel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long departmentId;
+    private Long id;
 
-    @NotNull
+    @NotNull(message = "Channel name can not be null!")
     private String name;
 
-    @NotNull
-    private String abbreviatedName;
-
-    @OneToOne
-    private Employee leadEmployee;
+    @NotNull(message = "Channel description can not be null!")
+    private String description;
 
     @OneToMany
-    private List<Employee> employees;
+    private List<Message> messages;
 }

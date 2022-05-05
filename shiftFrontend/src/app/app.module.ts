@@ -22,6 +22,8 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
 import {MatInputModule} from "@angular/material/input";
 import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
+import { AppRoutingModule } from './app-routing.module';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 //MatLuxonDateModule
 
@@ -35,7 +37,9 @@ import { DepartmentDetailsComponent } from './components/department-details/depa
     DepartmentListComponent,
     ShiftPlanComponent,
     LoginComponent,
-    DepartmentDetailsComponent
+    DepartmentDetailsComponent,
+    LoginComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +53,8 @@ import { DepartmentDetailsComponent } from './components/department-details/depa
     MatNativeDateModule,
     MatDateFnsModule,
     MatMomentDateModule,
-    MatInputModule
+    MatInputModule,
+    AppRoutingModule
   ],
   providers: [HighliterPipe],
   bootstrap: [AppComponent]
