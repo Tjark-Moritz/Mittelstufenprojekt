@@ -29,7 +29,6 @@ public class MappingService {
         getMessageDto.setRequestedEmployeeId(message.getRequestedEmployeeId());
         getMessageDto.setSendingEmployeeId(message.getSendingEmployeeId());
         getMessageDto.setDateTime(message.getDateTime());
-        getMessageDto.setType(message.getType());
         getMessageDto.setStatus(message.getStatus());
 
         return getMessageDto;
@@ -42,7 +41,6 @@ public class MappingService {
         message.setRequestedEmployeeId(addMessageDto.getRequestedEmployeeId());
         message.setSendingEmployeeId(addMessageDto.getSendingEmployeeId());
         message.setDateTime(addMessageDto.getDateTime());
-        message.setType(addMessageDto.getType());
         message.setStatus(addMessageDto.getStatus());
 
         return message;

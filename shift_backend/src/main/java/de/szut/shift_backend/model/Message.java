@@ -45,10 +45,5 @@ public class Message {
 
     private LocalDateTime dateTime;
 
-    @NotNull(message = "Message-Type can not be null!")
-    private Long type;
-
     private Message.MessageStatus status;
-
-
 }
