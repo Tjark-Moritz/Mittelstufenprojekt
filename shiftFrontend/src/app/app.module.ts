@@ -21,6 +21,7 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
 
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
 import {MatInputModule} from "@angular/material/input";
+import { AppRoutingModule } from './app-routing.module';
 
 //MatLuxonDateModule
 
@@ -47,7 +48,8 @@ import {MatInputModule} from "@angular/material/input";
     MatNativeDateModule,
     MatDateFnsModule,
     MatMomentDateModule,
-    MatInputModule
+    MatInputModule,
+    AppRoutingModule
   ],
   providers: [HighliterPipe],
   bootstrap: [AppComponent]
