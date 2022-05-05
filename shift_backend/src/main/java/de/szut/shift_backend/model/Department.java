@@ -1,14 +1,18 @@
 package de.szut.shift_backend.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Data
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-@Table(name="department")
 public class Department {
 
     @Id

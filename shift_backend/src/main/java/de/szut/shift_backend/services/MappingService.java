@@ -1,5 +1,6 @@
 package de.szut.shift_backend.services;
 
+import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.*;
 import de.szut.shift_backend.model.dto.*;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,14 @@ import java.util.List;
 public class MappingService {
 
     private final HolidayService holidayService;
+    private final DepartmentService departmentService;
     private final EmployeeService employeeService;
     private final ShiftService shiftService;
 
-    public MappingService(HolidayService holidayService, EmployeeService employeeService, ShiftService shiftService)
+    public MappingService(HolidayService holidayService, DepartmentService departmentService, EmployeeService employeeService, ShiftService shiftService)
     {
         this.holidayService = holidayService;
+        this.departmentService = departmentService;
         this.employeeService = employeeService;
         this.shiftService = shiftService;
     }
@@ -303,6 +306,12 @@ public class MappingService {
         return shiftDto;
     }
 
+    private ShiftType mapAddShiftTypeDtoToShiftType(AddShiftTypeDto shiftTypeDto){
+        ShiftType stype = new ShiftType();
+
+        return ClassReflectionHelper.FastParamMap(stype, shiftTypeDto);
+    };
+
     private GetShiftTypeDto mapShiftTypeToGetShiftTypeDto(ShiftType shiftType) {
         GetShiftTypeDto shiftTypeDto = new GetShiftTypeDto();
 
@@ -314,4 +323,39 @@ public class MappingService {
 
         return shiftTypeDto;
     }
+
+    public ShiftPlan mapAddShiftPlanDtoToShiftPlan(AddShiftPlanDto shiftPlanDto) {
+        ShiftPlan splan = new ShiftPlan();
+
+        splan.setDepartment(this.departmentService.getDepartmentById(shiftPlanDto.getDepartmentId()));
+        splan.setValidMonth(shiftPlanDto.getValidMonth());
+
+        List<ShiftType> stypes = new ArrayList<>();
+        for(AddShiftTypeDto stypeDto : shiftPlanDto.getShiftTypes())
+            stypes.add(this.mapAddShiftTypeDtoToShiftType(stypeDto));
+
+        splan.setShiftTypes(stypes);
+
+        return splan;
+    }
+
+    public GetShiftPlanDto mapShiftPlanToGetShiftPlanDto(ShiftPlan shiftPlan){
+        GetShiftPlanDto shiftPlanDto = new GetShiftPlanDto();
+
+        shiftPlanDto.setDepartmentId(this.mapDepartmentToGetDepartmentDto(shiftPlan.getDepartment()));
+
+        List<GetShiftDto> shiftDto = new ArrayList<>();
+        for(Shift s : shiftPlan.getShifts())
+            shiftDto.add(this.mapShiftToGetShiftDto(s));
+
+        List<GetShiftTypeDto> shiftTypeDtos = new ArrayList<>();
+        for(ShiftType stype : shiftPlan.getShiftTypes())
+            shiftTypeDtos.add(this.mapShiftTypeToGetShiftTypeDto(stype));
+
+        shiftPlanDto.setShifts(shiftDto);
+        shiftPlanDto.setShiftTypes(shiftTypeDtos);
+
+        return shiftPlanDto;
+    }
+
 }
