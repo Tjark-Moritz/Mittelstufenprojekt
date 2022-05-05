@@ -1,10 +1,10 @@
 {
-  "/backend": {
-    "target": "http://localhost:8089/employees",
+  "/auth": {
+    "target": "http://localhost:8089/auth/realms/Shiftplanner/protocol/openid-connect/token",
     "secure": false,
     "logLevel": "debug",
     "pathRewrite": {
-      "^/backend": ""
+      "^/auth": ""
     },
     "changeOrigin": true
   }

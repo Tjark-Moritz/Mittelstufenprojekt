@@ -3,7 +3,12 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
+import { DepartmentListComponent } from './components/department-list/department-list.component';
+import { HighliterPipe } from './pipes/highliter.pipe';
+import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { LoginComponent } from './components/login/login.component';
+import {ReactiveFormsModule} from "@angular/forms";
 import { HolidayPlanerComponent } from './components/holiday-planer/holiday-planer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -13,16 +18,27 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatDateFnsModule} from "@angular/material-date-fns-adapter";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
+
+import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
+import {MatInputModule} from "@angular/material/input";
+
 //MatLuxonDateModule
 
 @NgModule({
   declarations: [
     AppComponent,
+    EmployeeListComponent,
+    HighliterPipe,
     NavbarComponent,
-    HolidayPlanerComponent
+    HolidayPlanerComponent,
+    DepartmentListComponent,
+    ShiftPlanComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatTableModule,
@@ -30,9 +46,10 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
     MatFormFieldModule,
     MatNativeDateModule,
     MatDateFnsModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatInputModule
   ],
-  providers: [],
+  providers: [HighliterPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

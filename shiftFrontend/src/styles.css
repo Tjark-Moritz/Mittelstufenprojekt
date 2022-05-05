@@ -1,4 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.cAccessibilityHiddenLabel {
+  /*
+    Use this  class for label fields to guarantee the web-accessibility.
+    Only use this on labels that should be hidden. Otherwise use the default label.
+    Source(31.Mar.2022): https://www.w3.org/WAI/tutorials/forms/labels/
+  */
+
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.cPointer {
+  cursor: pointer;
+}
