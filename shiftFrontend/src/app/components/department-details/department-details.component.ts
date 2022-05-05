@@ -9,6 +9,8 @@ import {DepartmentService} from "../../services/department.service";
 import {EmployeeService} from "../../services/employee.service";
 import {GetEmployee} from "../../models/dto/GetEmployee";
 
+
+
 @Component({
   selector: 'app-department-details',
   templateUrl: './department-details.component.html',
@@ -32,6 +34,12 @@ export class DepartmentDetailsComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) private data: GetEmployee) {
   }
   ngOnInit() {
+
+    let temp: GetDepartment[] = []
+    temp[0] = new GetDepartment();
+    this.selection = new SelectionModel<GetDepartment>(true, temp);
+    this.dataSource = new MatTableDataSource<GetDepartment>(temp);
+
     /*
     this.departmentService.getQualificationEmployees(this.data).subscribe(res => {
       this.selection = new SelectionModel<GetEmployee>(true, res.employees);

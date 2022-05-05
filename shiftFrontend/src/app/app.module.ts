@@ -22,6 +22,9 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
 import {MatInputModule} from "@angular/material/input";
 import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
+import { MatDialogModule} from "@angular/material/dialog";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+
 
 //MatLuxonDateModule
 
@@ -43,7 +46,9 @@ import { DepartmentDetailsComponent } from './components/department-details/depa
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatDialogModule,
     MatTableModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
