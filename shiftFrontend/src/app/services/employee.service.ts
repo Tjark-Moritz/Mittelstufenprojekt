@@ -11,14 +11,66 @@ import {AddEmployee} from "../models/dto/AddEmployee";
   providedIn: 'root'
 })
 export class EmployeeService {
-  private urlPre = "/employees"
+  private urlPre = "/employee"
 
   // DUMMY
   //private emplist: GetEmployee[];
-  private bearertoken = "";
+  private bearertoken = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJsNTMzXzVOTDJNU2Y4UU50TENXNXF5VTliel9GaDZDZ0ZBT2ktZlZ5WDVjIn0.eyJleHAiOjE2NTE3Mzg2MTksImlhdCI6MTY1MTczMTQxOSwianRpIjoiMjAyYWRmODYtNTRiNy00YTUzLWIwYzQtNjdmODViZjI0YjgyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg5L2F1dGgvcmVhbG1zL1NoaWZ0cGxhbm5lciIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiI3NmVhZmU4Yi03N2M5LTRjMTEtODU4YS1jMDExODA4MjRlYjEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJzaGlmdHBsYW5uZXIiLCJzZXNzaW9uX3N0YXRlIjoiMGIyZjQ2YmMtZGJmMy00MDA0LWJiYWMtN2QwYWE0ODVmYzUwIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJzaGlmdHVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJUZXN0IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ1c2VyIiwiZ2l2ZW5fbmFtZSI6IlRlc3QiLCJmYW1pbHlfbmFtZSI6IlVzZXIifQ.h6MZYpxM7Emi3-Yib8rtgK9ZCCTz1U8MYzQ3hKPubbMjoEQxdjW6IeXfJi-EHyRcAxjoulIMDIHAdV65aJw264dYa-s9QuTwlEKsQQRRiJmwNob7HvAuYipNG1Vqrnr9vesyM95STZgVQYN6GhJxExapL9Ue03JErxb1VRgRPlM5Jr9KgyKHLe3KjnQD9hml7c4YjD77oUqgn8MZ2V2KWl1pZCByZSrL8NNRLUkH42-5OZyK8VgwMytJAbCcLwIbH6t_wfDH2zZ6LZ4KlTj86xXL-QI50LK280XW9e4XrJHlzdxUauDiSxrDyMvQqreIe_AiApW--G5Dqjt2J5mXGw";
 
   constructor(private httpClient: HttpClient) {
-    /*
+
+  }
+
+  getAllEmployees(): Observable<GetEmployee[]>{
+    return this.httpClient.get<GetEmployee[]>(this.urlPre, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${this.bearertoken}`)
+    });
+  }
+
+  getEmployeeById(employeeId: number): Observable<GetEmployee>{
+    return this.httpClient.get<GetEmployee>(this.urlPre + `/${employeeId}`,{
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${this.bearertoken}`)
+    });
+  }
+
+  addEmployee(employee: AddEmployee){
+    this.httpClient.post(this.urlPre, employee,{
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${this.bearertoken}`)
+    }).toPromise();
+
+    console.log("added Employee");
+  }
+
+  deleteEmployee(employeeId: number){
+    this.httpClient.delete(this.urlPre + `/${employeeId}`,{
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${this.bearertoken}`)
+    }).toPromise();
+
+    console.log("deleted Employee");
+  }
+
+  updateEmployee(employeeMap: Map<string, string>, employeeId: number){
+    this.httpClient.patch(this.urlPre + `/${employeeId}`, employeeMap,{
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${this.bearertoken}`)
+    }).toPromise();
+
+    console.log("updated Employee");
+  }
+}
+
+
+
+/*
     let dat1 = new Date();
     dat1.setFullYear(2020, 2, 16);
     let dat2 = new Date();
@@ -79,51 +131,3 @@ export class EmployeeService {
 
     this.emplist = [emp1, emp2];
     */
-  }
-
-  getAllEmployees(): Observable<GetEmployee[]>{
-    return this.httpClient.get<GetEmployee[]>(this.urlPre, {
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${this.bearertoken}`)
-    });
-  }
-
-  getEmployeeById(employeeId: number): Observable<GetEmployee>{
-    return this.httpClient.get<GetEmployee>(this.urlPre + `/${employeeId}`,{
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${this.bearertoken}`)
-    });
-  }
-
-  addEmployee(employee: AddEmployee){
-    this.httpClient.post(this.urlPre, employee,{
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${this.bearertoken}`)
-    }).toPromise();
-
-    console.log("added Employee");
-  }
-
-  deleteEmployee(employeeId: number){
-    this.httpClient.delete(this.urlPre + `/${employeeId}`,{
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${this.bearertoken}`)
-    }).toPromise();
-
-    console.log("deleted Employee");
-  }
-
-  updateEmployee(employeeMap: Map<string, object>, employeeId: number){
-    this.httpClient.put(this.urlPre + `/${employeeId}`, employeeMap,{
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${this.bearertoken}`)
-    }).toPromise();
-
-    console.log("updated Employee");
-  }
-}

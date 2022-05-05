@@ -7,5 +7,15 @@
       "^/auth": ""
     },
     "changeOrigin": true
+  },
+
+  "/employee": {
+    "target": "http://localhost:8090/employee",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/employee": ""
+    },
+    "changeOrigin": true
   }
 }
