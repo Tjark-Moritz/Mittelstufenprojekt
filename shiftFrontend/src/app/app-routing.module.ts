@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "./components/login/login.component";
 import {DepartmentListComponent} from "./components/department-list/department-list.component";
@@ -7,13 +6,15 @@ import {EmployeeListComponent} from "./components/employee-list/employee-list.co
 import {HolidayPlanerComponent} from "./components/holiday-planer/holiday-planer.component";
 import {ShiftPlanComponent} from "./components/shift-plan/shift-plan.component";
 import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
+import {AuthenticationGuardService} from "./services/authentication-guard.service";
 
 const routes: Routes = [
   {path:'login', component: LoginComponent},
-  {path:'departments', component: DepartmentListComponent},
-  {path:'employees', component: EmployeeListComponent},
-  {path:'holiday', component: HolidayPlanerComponent},
-  {path:'shift', component: ShiftPlanComponent},
+  {path:'index', redirectTo: '/shift', pathMatch:'full'},
+  {path:'departments', component: DepartmentListComponent, canActivate:[AuthenticationGuardService]},
+  {path:'employees', component: EmployeeListComponent, canActivate:[AuthenticationGuardService]},
+  {path:'holiday', component: HolidayPlanerComponent, canActivate:[AuthenticationGuardService]},
+  {path:'shift', component: ShiftPlanComponent, canActivate:[AuthenticationGuardService]},
   {path:'', redirectTo: '/login', pathMatch: 'full'},
   {path:'**', component: PageNotFoundComponent}
 ];
@@ -23,4 +24,6 @@ const routes: Routes = [
   imports: [ RouterModule.forRoot(routes) ],
   exports: [ RouterModule ]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+
+}
