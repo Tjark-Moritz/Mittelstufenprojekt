@@ -13,10 +13,11 @@ import {GetShiftType} from "../models/dto/GetShiftType";
 })
 export class DepartmentService {
   private urlPre = "/department";
+  private bearertoken = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJsNTMzXzVOTDJNU2Y4UU50TENXNXF5VTliel9GaDZDZ0ZBT2ktZlZ5WDVjIn0.eyJleHAiOjE2NTE3Mzg2MTksImlhdCI6MTY1MTczMTQxOSwianRpIjoiMjAyYWRmODYtNTRiNy00YTUzLWIwYzQtNjdmODViZjI0YjgyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg5L2F1dGgvcmVhbG1zL1NoaWZ0cGxhbm5lciIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiI3NmVhZmU4Yi03N2M5LTRjMTEtODU4YS1jMDExODA4MjRlYjEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJzaGlmdHBsYW5uZXIiLCJzZXNzaW9uX3N0YXRlIjoiMGIyZjQ2YmMtZGJmMy00MDA0LWJiYWMtN2QwYWE0ODVmYzUwIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJzaGlmdHVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJUZXN0IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ1c2VyIiwiZ2l2ZW5fbmFtZSI6IlRlc3QiLCJmYW1pbHlfbmFtZSI6IlVzZXIifQ.h6MZYpxM7Emi3-Yib8rtgK9ZCCTz1U8MYzQ3hKPubbMjoEQxdjW6IeXfJi-EHyRcAxjoulIMDIHAdV65aJw264dYa-s9QuTwlEKsQQRRiJmwNob7HvAuYipNG1Vqrnr9vesyM95STZgVQYN6GhJxExapL9Ue03JErxb1VRgRPlM5Jr9KgyKHLe3KjnQD9hml7c4YjD77oUqgn8MZ2V2KWl1pZCByZSrL8NNRLUkH42-5OZyK8VgwMytJAbCcLwIbH6t_wfDH2zZ6LZ4KlTj86xXL-QI50LK280XW9e4XrJHlzdxUauDiSxrDyMvQqreIe_AiApW--G5Dqjt2J5mXGw";
+
 
   // DUMMY
   private depList = new AllDepartments();
-  private bearertoken = "";
 
   constructor(private httpClient: HttpClient) {
 
@@ -88,34 +89,29 @@ export class DepartmentService {
   }
 
   getAllDepartments(): Observable<AllDepartments>{
-    /*
     return this.httpClient.get<AllDepartments>(this.urlPre, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearertoken}`)
     });
-    */
 
-    return of(this.depList);
+    //return of(this.depList);
   }
 
-  getDepartmentById(department: GetDepartment): Observable<GetDepartment>{
-    /*
-    return this.httpClient.get<GetDepartment>(this.urlPre + `/${department.departmentId}`,{
+  getDepartmentById(departmentId: number): Observable<GetDepartment>{
+    return this.httpClient.get<GetDepartment>(this.urlPre + `/${departmentId}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearertoken}`)
     });
-    */
 
     // @ts-ignore
-    let dep = this.depList.departments[1];
+    //let dep = this.depList.departments[1];
 
-    return of(dep);
+    //return of(dep);
   }
 
   addDepartment(department: GetDepartment){
-    /*
     this.httpClient.post(this.urlPre, {
       "name": department.name,
       "abbreviatedName": department.abbreviatedName,
@@ -126,32 +122,27 @@ export class DepartmentService {
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearertoken}`)
     }).toPromise();
-    */
 
-    console.log("added GetDepartment");
+    //console.log("added GetDepartment");
   }
 
-  updateDepartment(department: GetDepartment){
-    /*
-    this.httpClient.put(this.urlPre + `/${department.departmentId}`,department,{
+  updateDepartment(departmentMap: Map<string, string>, departmentId: number){
+    this.httpClient.put(this.urlPre + `/${departmentId}`,departmentMap,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearertoken}`)
     }).toPromise();
-    */
 
-    console.log("updated GetDepartment");
+    //console.log("updated GetDepartment");
   }
 
-  deleteDepartment(department: GetDepartment){
-    /*
-    this.httpClient.delete(this.urlPre + `/${department.departmentId}`,{
+  deleteDepartment(departmentId: number){
+    this.httpClient.delete(this.urlPre + `/${departmentId}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearertoken}`)
     }).toPromise();
-    */
 
-    console.log("deleted GetDepartment");
+    //console.log("deleted GetDepartment");
   }
 }

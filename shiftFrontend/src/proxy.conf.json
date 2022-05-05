@@ -17,5 +17,15 @@
       "^/employee": ""
     },
     "changeOrigin": true
+  },
+
+  "/department": {
+    "target": "http://localhost:8090/department",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/department": ""
+    },
+    "changeOrigin": true
   }
 }
