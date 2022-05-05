@@ -22,6 +22,7 @@ export class UserCookieService {
     if (bearerToken.access_token != null) {
       let decodedToken = jwtDecode(bearerToken.access_token);
       // @ts-ignore
+      // Ignore needed because there is a error detected that isn't actually there.
       let expDate = new Date(decodedToken.exp * 1000);
       UserCookieService.cookieService.set(UserCookieService.bearerTokenCookieName, JSON.stringify(bearerToken), expDate);
     }
