@@ -32,14 +32,14 @@ public class ShiftPlanController {
         this.shiftPlanService = shiftPlanService;
     }
 
-    @Operation(summary = "creates Employee")
+    @Operation(summary = "creates Shiftplan")
     @ApiResponses(value = {
-            @ApiResponse(responseCode =  "200", description = "employee was created"),
-            @ApiResponse(responseCode =  "400", description = "employee parameter is null", content = @Content),
+            @ApiResponse(responseCode =  "200", description = "shiftplan was created"),
+            @ApiResponse(responseCode =  "400", description = "shiftplan parameter is null", content = @Content),
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
     @PostMapping
-    public ResponseEntity<GetShiftPlanDto> createDepartment(@Valid @RequestBody final AddShiftPlanDto shiftPlanDto)
+    public ResponseEntity<GetShiftPlanDto> createShiftPlan(@Valid @RequestBody final AddShiftPlanDto shiftPlanDto)
     {
         ShiftPlan shiftPlan = this.mappingService.mapAddShiftPlanDtoToShiftPlan(shiftPlanDto);
 
