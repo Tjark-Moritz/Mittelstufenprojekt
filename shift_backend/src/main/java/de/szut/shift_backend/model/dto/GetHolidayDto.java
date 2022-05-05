@@ -1,5 +1,6 @@
 package de.szut.shift_backend.model.dto;
 
+import de.szut.shift_backend.model.Holiday;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -16,4 +17,6 @@ public class GetHolidayDto {
     private LocalDate endDate;
 
     private Long employeeId;
+
+    private Holiday.HolidayStatus holidayStatus;
 }
