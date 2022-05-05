@@ -22,6 +22,7 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
 import {MatInputModule} from "@angular/material/input";
 import { AppRoutingModule } from './app-routing.module';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 //MatLuxonDateModule
 
@@ -34,7 +35,8 @@ import { AppRoutingModule } from './app-routing.module';
     HolidayPlanerComponent,
     DepartmentListComponent,
     ShiftPlanComponent,
-    LoginComponent
+    LoginComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
