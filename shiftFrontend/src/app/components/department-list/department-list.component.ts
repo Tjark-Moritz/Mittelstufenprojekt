@@ -21,7 +21,6 @@ export class DepartmentListComponent implements OnInit{
 
   ngOnInit() {
     this.depService.getAllDepartments().subscribe(res => {
-      console.log(res);
         this.departments = res;
         this.selection = new SelectionModel<GetDepartment>(true, res);
         }, error => {
