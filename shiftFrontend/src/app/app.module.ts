@@ -21,6 +21,7 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
 
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
 import {MatInputModule} from "@angular/material/input";
+import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
@@ -35,6 +36,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     HolidayPlanerComponent,
     DepartmentListComponent,
     ShiftPlanComponent,
+    LoginComponent,
+    DepartmentDetailsComponent,
     LoginComponent,
     PageNotFoundComponent
   ],

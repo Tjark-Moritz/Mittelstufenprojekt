@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {DepartmentService} from "../../services/department.service";
 import {GetDepartment} from "../../models/dto/GetDepartment";
 import {SelectionModel} from "@angular/cdk/collections";
+import {AddDepartment} from "../../models/dto/AddDepartment";
 
 @Component({
   selector: 'app-department-list',
@@ -20,13 +21,11 @@ export class DepartmentListComponent implements OnInit{
 
   ngOnInit() {
     this.depService.getAllDepartments().subscribe(res => {
-        res.departmentDto?.forEach(temp => {
-          this.departments.push(temp);
-        })
-        this.selection = new SelectionModel<GetDepartment>(true, res.departmentDto);
-      }, error => {
-      this.selection = new SelectionModel<GetDepartment>(true, []);
-      console.log("There was an error getting the Departments: ", error);
+        this.departments = res;
+        this.selection = new SelectionModel<GetDepartment>(true, res);
+        }, error => {
+          this.selection = new SelectionModel<GetDepartment>(true, []);
+          console.log("There was an error getting the Departments: ", error);
     })
   }
 
