@@ -11,8 +11,8 @@ import {AuthenticationGuardService} from "./services/authentication-guard.servic
 const routes: Routes = [
   {path:'login', component: LoginComponent},
   {path:'index', redirectTo: '/shift', pathMatch:'full'},
-  {path:'departments', component: DepartmentListComponent, canActivate:[AuthenticationGuardService]},
-  {path:'employees', component: EmployeeListComponent, canActivate:[AuthenticationGuardService]},
+  {path:'deps', component: DepartmentListComponent, canActivate:[AuthenticationGuardService]},
+  {path:'emps', component: EmployeeListComponent, canActivate:[AuthenticationGuardService]},
   {path:'holiday', component: HolidayPlanerComponent, canActivate:[AuthenticationGuardService]},
   {path:'shift', component: ShiftPlanComponent, canActivate:[AuthenticationGuardService]},
   {path:'', redirectTo: '/login', pathMatch: 'full'},
