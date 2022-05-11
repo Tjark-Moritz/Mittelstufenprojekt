@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {DepartmentService} from "../../services/department.service";
 import {GetDepartment} from "../../models/dto/GetDepartment";
 import {SelectionModel} from "@angular/cdk/collections";
+import {AddDepartment} from "../../models/dto/AddDepartment";
 
 @Component({
   selector: 'app-department-list',
@@ -19,35 +20,14 @@ export class DepartmentListComponent implements OnInit{
   }
 
   ngOnInit() {
-    console.log("consturctor");
     this.depService.getAllDepartments().subscribe(res => {
       console.log(res);
         this.departments = res;
-      /*
-      res.departmentDto?.forEach(temp => {
-          this.departments.push(temp);
-          console.log(this.departments[0]);
-          console.log(this.departments[1]);
-        })
-       */
         this.selection = new SelectionModel<GetDepartment>(true, res);
         }, error => {
           this.selection = new SelectionModel<GetDepartment>(true, []);
           console.log("There was an error getting the Departments: ", error);
     })
-    console.log("consturctor2");
-  }
-
-  test(){
-    console.log("test");
-    this.depService.getAllDepartments();
-    this.depService.getDepartmentById(3);
-    this.depService.addDepartment(this.departments[0]);
-    let depMap = new Map<string, string>();
-    depMap.set("name", "Bla");
-    depMap.set("leadEmployeeId", "1");
-    this.depService.updateDepartment(depMap, 3);
-    this.depService.deleteDepartment(3);
   }
 
   async search(){
