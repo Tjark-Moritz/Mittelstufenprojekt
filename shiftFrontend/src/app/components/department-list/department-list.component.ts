@@ -19,30 +19,22 @@ export class DepartmentListComponent implements OnInit{
   }
 
   ngOnInit() {
+    console.log("consturctor");
     this.depService.getAllDepartments().subscribe(res => {
         res.departmentDto?.forEach(temp => {
           this.departments.push(temp);
+          console.log(this.departments[0]);
+          console.log(this.departments[1]);
         })
         this.selection = new SelectionModel<GetDepartment>(true, res.departmentDto);
       }, error => {
       this.selection = new SelectionModel<GetDepartment>(true, []);
       console.log("There was an error getting the Departments: ", error);
     })
-    /*
-    this.depService.getDepartmentById(1).subscribe(res => {
-      this.departments[0] = res;
-    })
-    */
   }
 
-  /*
-  public name?: string,
-              public abbreviatedName?: string,
-              public leadEmployeeId?: number,
-              public employeesIds?: number[]
-  */
-
   test(){
+    console.log("test");
     this.depService.getAllDepartments();
     this.depService.getDepartmentById(1);
     this.depService.addDepartment(this.departments[0]);
