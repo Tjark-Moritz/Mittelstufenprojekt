@@ -27,5 +27,8 @@ public class AddMessageDto {
     @NotNull(message = "Message-Type can not be null!")
     private Long type;
 
+    @NotNull(message = "Content can not be null!")
+    private String content;
+
     private Message.MessageStatus status;
 }

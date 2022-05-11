@@ -37,6 +37,9 @@ public class Message {
     @NotNull(message = "Channel can not be null!")
     private Long channelId;
 
+    @NotNull(message = "Content can not be null!")
+    private String content;
+
     @NotNull(message = "Requested-EmployeeId can not be null!")
     private Long requestedEmployeeId;
 
