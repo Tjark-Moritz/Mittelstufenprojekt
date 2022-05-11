@@ -89,8 +89,8 @@ export class DepartmentService {
     this.depList.departmentDto = [dep1, dep2];
   }
 
-  getAllDepartments(): Observable<AllDepartments>{
-    return this.httpClient.get<AllDepartments>(this.urlPre, {
+  getAllDepartments(): Observable<GetDepartment[]>{
+    return this.httpClient.get<GetDepartment[]>(this.urlPre, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
@@ -116,7 +116,7 @@ export class DepartmentService {
     this.httpClient.post(this.urlPre, {
       "name": department.name,
       "abbreviatedName": department.abbreviatedName,
-      "leadEmployee": department.leadEmployee,
+      "leadEmployeeId": department.leadEmployee,
       "employees": department.employees,
     },{
       headers: new HttpHeaders()
@@ -128,7 +128,7 @@ export class DepartmentService {
   }
 
   updateDepartment(departmentMap: Map<string, string>, departmentId: number){
-    this.httpClient.put(this.urlPre + `/${departmentId}`,departmentMap,{
+    this.httpClient.patch(this.urlPre + `/${departmentId}`,departmentMap,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
