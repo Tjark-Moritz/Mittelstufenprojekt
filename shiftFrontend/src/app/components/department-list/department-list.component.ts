@@ -19,7 +19,6 @@ export class DepartmentListComponent implements OnInit{
   }
 
   ngOnInit() {
-    /*
     this.depService.getAllDepartments().subscribe(res => {
         res.departmentDto?.forEach(temp => {
           this.departments.push(temp);
@@ -29,10 +28,11 @@ export class DepartmentListComponent implements OnInit{
       this.selection = new SelectionModel<GetDepartment>(true, []);
       console.log("There was an error getting the Departments: ", error);
     })
-    */
+    /*
     this.depService.getDepartmentById(1).subscribe(res => {
       this.departments[0] = res;
     })
+    */
   }
 
   /*
@@ -43,7 +43,7 @@ export class DepartmentListComponent implements OnInit{
   */
 
   test(){
-    //this.depService.getAllDepartments();
+    this.depService.getAllDepartments();
     this.depService.getDepartmentById(1);
     this.depService.addDepartment(this.departments[0]);
     let depMap = new Map<string, string>();
