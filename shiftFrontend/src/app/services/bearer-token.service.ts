@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {BearerToken} from "../models/bearerToken";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {UserCookieService} from "./user-cookie.service";
 
 @Injectable({
   providedIn: 'root'
@@ -26,11 +27,18 @@ export class BearerTokenService {
     })
   }
 
-  set bearerToken(token) {
+  public static set bearerToken(token) {
     BearerTokenService.staticBearerToken = token;
   }
 
-  get bearerToken(): BearerToken {
+  public static get bearerToken(): BearerToken {
+    if(UserCookieService.isBearerTokenSet() && !BearerTokenService.staticBearerToken)
+      BearerTokenService.staticBearerToken = UserCookieService.getBearerToken();
+
     return BearerTokenService.staticBearerToken;
+  }
+
+  public static get isLoggedIn(): boolean {
+    return !!BearerTokenService.bearerToken;
   }
 }

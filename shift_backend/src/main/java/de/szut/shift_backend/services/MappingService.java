@@ -1,5 +1,6 @@
 package de.szut.shift_backend.services;
 
+import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.*;
 import de.szut.shift_backend.model.dto.*;
 import org.springframework.stereotype.Service;
@@ -7,19 +8,66 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MappingService {
 
     private final HolidayService holidayService;
+    private final DepartmentService departmentService;
     private final EmployeeService employeeService;
     private final ShiftService shiftService;
 
-    public MappingService(HolidayService holidayService, EmployeeService employeeService, ShiftService shiftService)
+    public MappingService(HolidayService holidayService, DepartmentService departmentService, EmployeeService employeeService, ShiftService shiftService)
     {
         this.holidayService = holidayService;
+        this.departmentService = departmentService;
         this.employeeService = employeeService;
         this.shiftService = shiftService;
+    }
+
+    public GetMessageDto mapMessageToGetMessageDto(Message message) {
+        GetMessageDto getMessageDto = new GetMessageDto();
+        getMessageDto.setId(message.getId());
+        getMessageDto.setChannelId(message.getChannelId());
+        getMessageDto.setRequestedEmployeeId(message.getRequestedEmployeeId());
+        getMessageDto.setSendingEmployeeId(message.getSendingEmployeeId());
+        getMessageDto.setDateTime(message.getDateTime());
+        getMessageDto.setStatus(message.getStatus());
+
+        return getMessageDto;
+    }
+
+    public Message mapAddMessageDtoToMessage(AddMessageDto addMessageDto) {
+        Message message = new Message();
+        message.setId(addMessageDto.getId());
+        message.setChannelId(addMessageDto.getChannelId());
+        message.setRequestedEmployeeId(addMessageDto.getRequestedEmployeeId());
+        message.setSendingEmployeeId(addMessageDto.getSendingEmployeeId());
+        message.setDateTime(addMessageDto.getDateTime());
+        message.setStatus(addMessageDto.getStatus());
+
+        return message;
+    }
+
+    public MessageChannel mapAddMessageChannelDtoToMessageChannel(AddMessageChannelDto addMessageChannelDto) {
+        MessageChannel messageChannel = new MessageChannel();
+        messageChannel.setId(addMessageChannelDto.getId());
+        messageChannel.setName(addMessageChannelDto.getName());
+        messageChannel.setDescription(addMessageChannelDto.getDescription());
+        messageChannel.setMessages(addMessageChannelDto.getMessages());
+
+        return messageChannel;
+    }
+
+    public GetMessageChannelDto mapMessageChannelToGetMessageChannelDto(MessageChannel messageChannel) {
+        GetMessageChannelDto getMessageChannelDto = new GetMessageChannelDto();
+        getMessageChannelDto.setId(messageChannel.getId());
+        getMessageChannelDto.setName(messageChannel.getName());
+        getMessageChannelDto.setDescription(messageChannel.getDescription());
+        getMessageChannelDto.setMessages(messageChannel.getMessages());
+
+        return getMessageChannelDto;
     }
 
     public GetDepartmentDto mapDepToDepDto(Department department) {
@@ -119,7 +167,7 @@ public class MappingService {
     public AddHolidayDto mapHolidayToAddHolidayDto(Holiday holiday) {
         AddHolidayDto addHolidayDto = new AddHolidayDto();
         addHolidayDto.setId(holiday.getHolidayId());
-        addHolidayDto.setTypeId(holiday.getHolidayTypeId());
+        addHolidayDto.setTypeId(holiday.getHolidayTypeId().getId());
         addHolidayDto.setStartDate(holiday.getStartDate());
         addHolidayDto.setEndDate(holiday.getEndDate());
         addHolidayDto.setEmployeeId(holiday.getEmployeeId());
@@ -131,9 +179,11 @@ public class MappingService {
         Holiday holiday = new Holiday();
 
         Employee employee = employeeService.getEmployeeById(addHolidayDto.getEmployeeId());
+        Optional<HolidayType> holidayType = holidayService.getByTypeId(addHolidayDto.getTypeId());
+
+        holidayType.ifPresent(holiday::setHolidayTypeId);
 
         holiday.setHolidayId(addHolidayDto.getId());
-        holiday.setHolidayTypeId(addHolidayDto.getTypeId());
         holiday.setEmployeeId(employee.getId());
         holiday.setStartDate(addHolidayDto.getStartDate());
         holiday.setEndDate(addHolidayDto.getEndDate());
@@ -147,7 +197,7 @@ public class MappingService {
         GetHolidayDto getHolidayDto = new GetHolidayDto();
 
         getHolidayDto.setHolidayId(holiday.getHolidayId());
-        getHolidayDto.setHolidayTypeId(holiday.getHolidayTypeId());
+        getHolidayDto.setHolidayTypeId(holiday.getHolidayTypeId().getId());
         getHolidayDto.setStartDate(holiday.getStartDate());
         getHolidayDto.setEndDate(holiday.getEndDate());
         getHolidayDto.setEmployeeId(holiday.getEmployeeId());
@@ -259,6 +309,12 @@ public class MappingService {
         return shiftDto;
     }
 
+    private ShiftType mapAddShiftTypeDtoToShiftType(AddShiftTypeDto shiftTypeDto){
+        ShiftType stype = new ShiftType();
+
+        return ClassReflectionHelper.FastParamMap(stype, shiftTypeDto);
+    }
+
     private GetShiftTypeDto mapShiftTypeToGetShiftTypeDto(ShiftType shiftType) {
         GetShiftTypeDto shiftTypeDto = new GetShiftTypeDto();
 
@@ -270,4 +326,39 @@ public class MappingService {
 
         return shiftTypeDto;
     }
+
+    public ShiftPlan mapAddShiftPlanDtoToShiftPlan(AddShiftPlanDto shiftPlanDto) {
+        ShiftPlan splan = new ShiftPlan();
+
+        splan.setDepartment(this.departmentService.getDepartmentById(shiftPlanDto.getDepartmentId()));
+        splan.setValidMonth(shiftPlanDto.getValidMonth());
+
+        List<ShiftType> stypes = new ArrayList<>();
+        for(AddShiftTypeDto stypeDto : shiftPlanDto.getShiftTypes())
+            stypes.add(this.mapAddShiftTypeDtoToShiftType(stypeDto));
+
+        splan.setShiftTypes(stypes);
+
+        return splan;
+    }
+
+    public GetShiftPlanDto mapShiftPlanToGetShiftPlanDto(ShiftPlan shiftPlan){
+        GetShiftPlanDto shiftPlanDto = new GetShiftPlanDto();
+
+        shiftPlanDto.setDepartmentId(this.mapDepartmentToGetDepartmentDto(shiftPlan.getDepartment()));
+
+        List<GetShiftDto> shiftDto = new ArrayList<>();
+        for(Shift s : shiftPlan.getShifts())
+            shiftDto.add(this.mapShiftToGetShiftDto(s));
+
+        List<GetShiftTypeDto> shiftTypeDtos = new ArrayList<>();
+        for(ShiftType stype : shiftPlan.getShiftTypes())
+            shiftTypeDtos.add(this.mapShiftTypeToGetShiftTypeDto(stype));
+
+        shiftPlanDto.setShifts(shiftDto);
+        shiftPlanDto.setShiftTypes(shiftTypeDtos);
+
+        return shiftPlanDto;
+    }
+
 }

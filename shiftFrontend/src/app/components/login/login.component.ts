@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BearerTokenService} from "../../services/bearer-token.service";
 import {UserCookieService} from "../../services/user-cookie.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
   wrongLogin: boolean = false;
   private autoLoginChecked: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private bearerTokenService: BearerTokenService) {
+  constructor(private formBuilder: FormBuilder, private bearerTokenService: BearerTokenService, private router: Router) {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -21,6 +22,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(BearerTokenService.isLoggedIn)
+      this.router.navigate(["index"]);
   }
 
   get form() {
@@ -34,7 +37,7 @@ export class LoginComponent implements OnInit {
 
     this.bearerTokenService.generateBearerToken(this.form['username'].value, this.form['password'].value).subscribe(
       res => {
-        this.bearerTokenService.bearerToken = res;
+        BearerTokenService.bearerToken = res;
 
         if(this.autoLoginChecked) {
           UserCookieService.setBearerToken(res);
@@ -42,8 +45,8 @@ export class LoginComponent implements OnInit {
 
         this.wrongLogin = false;
 
-        // Todo: Redirect on successfull login (LF12-54)
-      }, error => {
+        this.router.navigate(['/index']);
+      }, () => {
         this.wrongLogin = true;
       })
   }

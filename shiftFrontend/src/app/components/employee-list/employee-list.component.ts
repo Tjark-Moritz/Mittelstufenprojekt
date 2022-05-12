@@ -36,7 +36,7 @@ export class EmployeeListComponent implements OnInit {
     this.selectionLength = this.selection.selected.length;
 
     this.depService.getAllDepartments().subscribe(res => {
-      res.departmentDto?.forEach(temp => {
+      res.forEach(temp => {
         if(temp.departmentId){
           this.depIdAbbrDict[temp.departmentId] = temp;
         }

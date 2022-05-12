@@ -36,8 +36,9 @@ public class Holiday {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long holidayId;
 
+    @OneToOne
     @NotNull(message = "HolidayTypeId can not be null!")
-    private Long holidayTypeId;
+    private HolidayType holidayTypeId;
 
     @NotNull(message = "EmployeeId can not be null!")
     private Long employeeId;

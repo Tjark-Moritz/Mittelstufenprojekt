@@ -25,6 +25,8 @@ import { DepartmentDetailsComponent } from './components/department-details/depa
 import { MatDialogModule} from "@angular/material/dialog";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 
+import { AppRoutingModule } from './app-routing.module';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 //MatLuxonDateModule
 
@@ -38,7 +40,9 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
     DepartmentListComponent,
     ShiftPlanComponent,
     LoginComponent,
-    DepartmentDetailsComponent
+    DepartmentDetailsComponent,
+    LoginComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +58,8 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
     MatNativeDateModule,
     MatDateFnsModule,
     MatMomentDateModule,
-    MatInputModule
+    MatInputModule,
+    AppRoutingModule
   ],
   providers: [HighliterPipe],
   bootstrap: [AppComponent]
