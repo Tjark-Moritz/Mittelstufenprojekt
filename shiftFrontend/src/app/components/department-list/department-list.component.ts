@@ -32,16 +32,15 @@ export class DepartmentListComponent implements OnInit{
     })
   }
 
-  test(){
+  openModal(){
 
-    this.departments[0] = new GetDepartment();
     let modal = this.dialog.open(DepartmentDetailsComponent, {
       position: {
         top: "0",
         right: "0",
       },
       height: "100vh",
-      direction: "rtl",
+      direction: "ltr",
       data: this.departments[0]
     });
 
