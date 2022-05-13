@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/trash")
+@MessageMapping("/trash")
 public class MessageHandlingController {
 
     private final MappingService mappingService;
