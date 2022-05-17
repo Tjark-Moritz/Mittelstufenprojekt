@@ -18,8 +18,9 @@
   <div class="col-5"></div>
   <div class="col-2">
     <a class="cSymbol">
-      <img *ngIf="profilePictureBase64 == ''" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
-      <img *ngIf="profilePictureBase64 != ''" id="ProfilePicture" class="cSymbolImg" [src]="safeProfilePicture" alt="Profile Picture"/>
+<!--      <img *ngIf="activeDep.abbreviatedName == ''" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>-->
+<!--      <img *ngIf="activeDep.abbreviatedName != ''" id="ProfilePicture" class="cSymbolImg" [src]="safeProfilePicture" alt="Profile Picture"/>-->
+      <img src="{{activeDep.abbreviatedName}}" alt="Red dot"/>
     </a>
   </div>
   <div class="col-5"></div>
