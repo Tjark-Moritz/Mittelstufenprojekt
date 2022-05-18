@@ -11,7 +11,7 @@ export class AddEmployee {
               public email?: string,
               public numHolidaysLeft?: number,
               public base64ProfilePic?: string,
-              public preferredShiftTypeId?: GetShiftType,
+              public preferredShiftTypeId?: number,
               public departmentId?: number,
   ) {
   }
