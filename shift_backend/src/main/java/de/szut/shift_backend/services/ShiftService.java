@@ -1,6 +1,7 @@
 package de.szut.shift_backend.services;
 
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
+import de.szut.shift_backend.model.Message;
 import de.szut.shift_backend.model.Shift;
 import de.szut.shift_backend.repository.ShiftRepository;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,11 @@ public class ShiftService {
 
     public ShiftService(ShiftRepository shiftRepository) {
         this.shiftRepository = shiftRepository;
+    }
+
+    public Shift create(Shift shift)
+    {
+       return shiftRepository.save(shift);
     }
 
     public Shift getShiftById(Long shiftId){

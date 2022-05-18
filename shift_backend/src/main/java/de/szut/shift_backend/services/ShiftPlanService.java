@@ -20,6 +20,7 @@ public class ShiftPlanService {
     public ShiftPlan create(ShiftPlan splan) {
         return this.shiftPlanRepository.save(splan);
     }
+
     public ShiftPlan getShiftPlanById(Long shiftPlanId) {
         Optional<ShiftPlan> shiftPlan = this.shiftPlanRepository.findById(shiftPlanId);
 
@@ -28,6 +29,7 @@ public class ShiftPlanService {
 
         return shiftPlan.get();
     }
+
     public ShiftPlan generateShiftPlan(ShiftPlan shiftPlan) {
         Department dept = shiftPlan.getDepartment();
         LocalDate activeMonth = shiftPlan.getValidMonth();
@@ -36,11 +38,8 @@ public class ShiftPlanService {
         List<ShiftType> sTypes = shiftPlan.getShiftTypes();
         List<Shift> shiftsTemp = new ArrayList<>();
 
-        HashMap<Long,List<Employee>> favTypeMap = new HashMap<>();
+        HashMap<Long,List<Employee>> empsByPrefShiftType = getEmployeesForShiftType(emps);
         int numDaysPerMonth = activeMonth.lengthOfMonth();
-
-        for(ShiftType stype : sTypes)
-            favTypeMap.put(stype.getId(), getEmployeesForShiftType(emps, stype));
 
         for(int i = 0; i < numDaysPerMonth; i++){
             LocalDate currentDay = activeMonth.plusDays(i);
@@ -52,7 +51,13 @@ public class ShiftPlanService {
                     shift.setShiftType(sType);
                     shift.setShiftDate(currentDay);
 
-                    List<Employee> availableEmps = checkAvailability(favTypeMap.get(sType.getId()),currentDay);
+                    List<Employee> possibleEmps = empsByPrefShiftType.get(sType.getId());
+
+                    if (possibleEmps == null)
+                        possibleEmps = getAlternativeEmps(empsByPrefShiftType, sType.getId());
+
+                    List<Employee> availableEmps = checkAvailability(possibleEmps,currentDay);
+
                     shift.setActiveEmployees(availableEmps);
 
                     shiftsTemp.add(shift);
@@ -64,28 +69,59 @@ public class ShiftPlanService {
         return shiftPlan;
     }
 
+    private List<Employee> getAlternativeEmps(HashMap<Long, List<Employee>> empsByPrefShiftType, Long id) {
+        List<Employee> emps = new ArrayList<>();
+
+        for(Long stypeId : empsByPrefShiftType.keySet()){
+            List<Employee> empsForShiftTypeId = empsByPrefShiftType.get(stypeId);
+            if (stypeId.equals(id) || empsForShiftTypeId.isEmpty())
+                continue;
+
+            emps = empsForShiftTypeId;
+            break;
+        }
+
+        return emps;
+    }
+
     private List<Employee> checkAvailability(List<Employee> employees, LocalDate date) {
         List<Employee> availableEmps = new ArrayList<>();
 
         for(Employee emp : employees){
+            boolean isAvailable = true;
             for(Holiday holiday : emp.getHolidays()){
                 if(holiday.getStatus() == Holiday.HolidayStatus.ACCEPTED
                         && !(date.isBefore(holiday.getStartDate()) || date.isAfter(holiday.getEndDate())))
-                    availableEmps.add(emp);
+                    isAvailable = false;
             }
+
+            if (isAvailable)
+                availableEmps.add(emp);
         }
 
         return availableEmps;
     }
 
-    private List<Employee> getEmployeesForShiftType(List<Employee> allEmps, ShiftType sType) {
-        List<Employee> matchedEmployees = new ArrayList<>();
+    private HashMap<Long,List<Employee>> getEmployeesForShiftType(List<Employee> allEmps) {
+        HashMap<Long,List<Employee>> empsByPrefShiftType = new HashMap<>();
 
-        for(Employee emp : allEmps)
-            if(emp.getPreferredShiftType().getId().equals(sType.getId()))
-                matchedEmployees.add(emp);
+        empsByPrefShiftType.put(0L, new ArrayList<>());
 
-        return matchedEmployees;
+        for(Employee emp : allEmps){
+            if(emp.getPreferredShiftType() == null){
+                empsByPrefShiftType.get(0L).add(emp);
+                continue;
+            }
+
+            Long prefShifTypeId = emp.getPreferredShiftType().getId();
+
+            if (!empsByPrefShiftType.containsKey(prefShifTypeId))
+                empsByPrefShiftType.put(prefShifTypeId, new ArrayList<>());
+
+            empsByPrefShiftType.get(prefShifTypeId).add(emp);
+        }
+
+        return empsByPrefShiftType;
     }
 
 

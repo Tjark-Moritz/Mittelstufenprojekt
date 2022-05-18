@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +26,6 @@ public class Shift {
     @OneToOne
     private ShiftType shiftType;
 
-    @OneToMany
+    @ManyToMany
     private List<Employee> activeEmployees;
 }

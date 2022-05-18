@@ -17,13 +17,15 @@ public class MappingService {
     private final DepartmentService departmentService;
     private final EmployeeService employeeService;
     private final ShiftService shiftService;
+    private final ShiftTypeService shiftTypeService;
 
-    public MappingService(HolidayService holidayService, DepartmentService departmentService, EmployeeService employeeService, ShiftService shiftService)
+    public MappingService(HolidayService holidayService, DepartmentService departmentService, EmployeeService employeeService, ShiftService shiftService, ShiftTypeService shiftTypeService)
     {
         this.holidayService = holidayService;
         this.departmentService = departmentService;
         this.employeeService = employeeService;
         this.shiftService = shiftService;
+        this.shiftTypeService = shiftTypeService;
     }
 
     public GetMessageDto mapMessageToGetMessageDto(Message message) {
@@ -217,8 +219,18 @@ public class MappingService {
         emp.setPhone(empDto.getPhone());
         emp.setEmail(empDto.getEmail());
         emp.setNumHolidaysLeft(empDto.getNumHolidaysLeft());
-        emp.setBase64ProfilePic(empDto.getBase64ProfilePic());
-        emp.setDepartmentId(empDto.getDepartmentId());
+
+        //optional parameters
+        if (empDto.getBase64ProfilePic() != null)
+            emp.setBase64ProfilePic(empDto.getBase64ProfilePic());
+        else
+            emp.setBase64ProfilePic("");
+
+        if (empDto.getDepartmentId() != null)
+            emp.setDepartmentId(empDto.getDepartmentId());
+
+        if (empDto.getPreferredShiftTypeId() != null)
+            emp.setPreferredShiftType(this.shiftTypeService.getShiftTypeById(empDto.getPreferredShiftTypeId()));
 
         return emp;
     }
