@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {BearerTokenService} from "../../services/bearer-token.service";
 
 @Component({
   selector: 'app-navbar',
@@ -7,6 +8,8 @@ import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  classApplied: boolean = false;
+  userIsLoggedIn: boolean = (BearerTokenService.isLoggedIn);
   public notificationAvailable : boolean = false;
   public safeProfilePicture: SafeResourceUrl;
   public profilePictureBase64 : string = "";   // Todo: implement database profile getter
@@ -18,4 +21,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  sideNavIsOpen(val: boolean) {
+    this.classApplied = val;
+  }
 }

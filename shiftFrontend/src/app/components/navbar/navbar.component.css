@@ -2,7 +2,45 @@
   background-color: #35383a;
 }
 
+#cMenuLinesDiv > span{
+  display: block;
+  width: 28px;
+  height: 2px;
+  border-radius: 9999px;
+  background-color: white;
+}
+
+#cMenuLinesDiv > span:not(:last-child) {
+  margin-bottom: 7px;
+}
+
+#cMenuLinesDiv , #cMenuLinesDiv > span {
+  transition: all .4s ease-in-out;
+}
+
+#cMenuLinesDiv.active {
+  transition-delay: 0.8s;
+  transform: rotate(45deg);
+}
+
+#cMenuLinesDiv.active > span:nth-child(2) {
+  width: 0;
+}
+
+#cMenuLinesDiv.active > span:nth-child(1), #cMenuLinesDiv.active > span:nth-child(3) {
+  transition-delay: .4s;
+}
+
+#cMenuLinesDiv.active > span:nth-child(1) {
+  transform: translateY(9px);
+}
+
+#cMenuLinesDiv.active > span:nth-child(3) {
+  transform: translateY(-9px) rotate(90deg);
+}
+
 .cMenuLinesDiv {
+  margin: 10px 5px 0px 0px;
   cursor: pointer;
   display: inline-block;
 }
@@ -12,13 +50,6 @@
   display: inline-block;
   vertical-align: top;
   margin-left: 5px;
-}
-
-.cMenuLine {
-  width: 35px;
-  height: 5px;
-  background-color: white;
-  margin: 6px 0;
 }
 
 .cLogo {
