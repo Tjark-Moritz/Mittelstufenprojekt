@@ -75,11 +75,11 @@ export class EmployeeListComponent implements OnInit {
       while(newFound){
         newFound = false;
         let notFitting = this.selection.selected.find(value => {
-          if(value.lastname && value.firstname){
-            if(value.lastname.includes(this.searchkey)){
+          if(value.lastName && value.firstName){
+            if(value.lastName.includes(this.searchkey)){
               return;
             }
-            if(value.firstname.includes(this.searchkey)){
+            if(value.firstName.includes(this.searchkey)){
               return;
             }
             let depAbbr = this.getDepAbbr(value.departmentId);
