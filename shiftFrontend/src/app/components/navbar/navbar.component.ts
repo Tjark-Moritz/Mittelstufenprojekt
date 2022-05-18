@@ -9,7 +9,6 @@ import {BearerTokenService} from "../../services/bearer-token.service";
 })
 export class NavbarComponent implements OnInit {
   classApplied: boolean = false;
-  userIsLoggedIn: boolean = (BearerTokenService.isLoggedIn);
   public notificationAvailable : boolean = false;
   public safeProfilePicture: SafeResourceUrl;
   public profilePictureBase64 : string = "";   // Todo: implement database profile getter
