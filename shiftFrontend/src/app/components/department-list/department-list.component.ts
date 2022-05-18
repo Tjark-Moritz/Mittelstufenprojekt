@@ -17,6 +17,7 @@ export class DepartmentListComponent implements OnInit{
   private departments: GetDepartment[] = [];
   public selection: SelectionModel<GetDepartment>;
   public searchkey = "";
+  public emptyDep: GetDepartment = new GetDepartment();
 
   constructor(private depService: DepartmentService, private dialog: MatDialog) {
     this.selection = new SelectionModel<GetDepartment>(true, []);
@@ -32,7 +33,7 @@ export class DepartmentListComponent implements OnInit{
     })
   }
 
-  openModal(){
+  openModal(department: GetDepartment){
 
     let modal = this.dialog.open(DepartmentDetailsComponent, {
       position: {
@@ -41,7 +42,7 @@ export class DepartmentListComponent implements OnInit{
       },
       height: "100vh",
       direction: "ltr",
-      data: this.departments[0]
+      data: department
     });
 
     let observable: Observable<any>;

@@ -211,3 +211,14 @@ input:invalid{
   height: 42px;
   width: 42px;
 }
+
+.circle {
+  height: 100px;
+  width: 100px;
+  line-height: 100px;
+  border-radius: 50%;
+  font-size: 30px;
+  color: #fff;
+  text-align: center;
+  background: #000
+}

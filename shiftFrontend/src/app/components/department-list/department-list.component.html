@@ -1,7 +1,6 @@
 <div class="d-flex justify-content-between topHeader">
   <h1>All Departments</h1>
-  <a role="button" class="btn addBtn" (click)="openModal()">Add</a>
-<!--  <a routerLink="/departments/add" role="button" class="btn addBtn">Add</a>-->
+  <a role="button" class="btn addBtn" (click)="openModal(emptyDep)">Add</a>
   <input id="inputSearch" type="text" placeholder="Search.." (input)="search()">
 </div>
 
@@ -15,8 +14,7 @@
 
   <tbody id="tb">
   <ng-container *ngFor="let dep of selection.selected">
-<!--    <tr class="tableRow" routerLink="/departments/edit/{{ dep.departmentId }}">-->
-    <tr class="tableRow">
+    <tr class="tableRow" (click)="openModal(dep)">
       <td><div [innerHtml]="dep.name | highlighter:searchkey:'partial'"  ></div></td>
       <td><div [innerHtml]="dep.abbreviatedName | highlighter:searchkey:'partial'"  ></div></td>
     </tr>
