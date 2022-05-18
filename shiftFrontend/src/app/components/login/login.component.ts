@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
           position: 'top',
           icon: 'error',
           title: 'Benutzername oder Passwort is fehlerhaft! Bitte überprüfen Sie die Eingaben und probieren sie es erneut!',
-          showConfirmButton: false,
+          showCloseButton: true,
           timer: 2500
         });
 
