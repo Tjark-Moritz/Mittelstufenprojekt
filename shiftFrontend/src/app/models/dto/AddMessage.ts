@@ -3,7 +3,7 @@ export class AddMessage {
               public channelId?: number,
               public requestedEmployeeId?: number,
               public sendingEmployeeId?: number,
-              public LocalDateTime?: Date,
+              public dateTime?: Date,
               public type?: number,
               public status?: string) {
   }
