@@ -1,7 +1,7 @@
 <nav class="navbar cNavBar">
   <div class="container-fluid">
     <div>
-      <div class="cMenuLinesDiv">
+      <div class="cMenuLinesDiv" (click)="sidenav.toggle()">
         <div class="cMenuLine"></div>
         <div class="cMenuLine"></div>
         <div class="cMenuLine"></div>
@@ -27,3 +27,20 @@
     </div>
   </div>
 </nav>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list>
+      <a mat-list-item [routerLink]="'/shift'"> Schichten Übersicht </a>
+      <a mat-list-item [routerLink]="'/emps'"> Mitarbeiter Liste </a>
+      <a mat-list-item [routerLink]="'/deps'"> Abteilungs Liste </a>
+      <a mat-list-item [routerLink]="'/holiday'"> Urlaub </a>
+      <a mat-list-item (click)="sidenav.toggle()">Close</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div style="height: 88vh;">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
