@@ -14,10 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -51,4 +48,18 @@ public class ShiftPlanController {
         return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
+    @Operation(summary = "get all Employee")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "employee was created"),
+            @ApiResponse(responseCode =  "400", description = "employee parameter is null", content = @Content),
+            @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<GetShiftPlanDto> getShiftPlan(@Valid @PathVariable("id") final Long shiftPlanId)
+    {
+        ShiftPlan splan = this.shiftPlanService.getShiftPlanById(shiftPlanId);
+        final GetShiftPlanDto request = this.mappingService.mapShiftPlanToGetShiftPlanDto(splan);
+
+        return new ResponseEntity<>(request, HttpStatus.OK);
+    }
 }

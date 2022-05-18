@@ -236,6 +236,14 @@ public class MappingService {
         empDto.setPhone(emp.getPhone());
         empDto.setEmail(emp.getEmail());
         empDto.setNumHolidaysLeft(emp.getNumHolidaysLeft());
+
+        List<GetHolidayDto> holidays = new ArrayList<>();
+        if(emp.getHolidays() != null) {
+            for (Holiday hol : emp.getHolidays())
+                holidays.add(this.mapHolidayToGetHolidayDto(hol));
+        }
+
+        empDto.setHolidays(holidays);
         empDto.setBase64ProfilePic(emp.getBase64ProfilePic());
         empDto.setDepartmentId(emp.getDepartmentId());
 
@@ -344,6 +352,9 @@ public class MappingService {
 
     public GetShiftPlanDto mapShiftPlanToGetShiftPlanDto(ShiftPlan shiftPlan){
         GetShiftPlanDto shiftPlanDto = new GetShiftPlanDto();
+
+        shiftPlanDto.setId(shiftPlan.getId());
+        shiftPlanDto.setValidMonth(shiftPlan.getValidMonth());
 
         shiftPlanDto.setDepartmentId(this.mapDepartmentToGetDepartmentDto(shiftPlan.getDepartment()));
 
