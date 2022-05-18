@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BearerTokenService} from "../../services/bearer-token.service";
 import {UserCookieService} from "../../services/user-cookie.service";
 import {Router} from "@angular/router";
+import * as swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -47,6 +48,14 @@ export class LoginComponent implements OnInit {
 
         this.router.navigate(['/index']);
       }, () => {
+        swal.default.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'Benutzername oder Passwort is fehlerhaft! Bitte überprüfen Sie die Eingaben und probieren sie es erneut!',
+          showConfirmButton: false,
+          timer: 2500
+        });
+
         this.wrongLogin = true;
       })
   }
