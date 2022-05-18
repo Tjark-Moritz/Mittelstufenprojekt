@@ -1,5 +1,6 @@
 package de.szut.shift_backend.config;
 
+import de.szut.shift_backend.controller.MessageHandlingController;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -18,9 +19,10 @@ class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/trash/chat");
+        config.enableSimpleBroker("/message/create");
     }
 
+    //Info: Für den Verbindungsaufbau
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/chat")
