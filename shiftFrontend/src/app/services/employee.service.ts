@@ -61,21 +61,18 @@ export class EmployeeService {
     console.log("updated Employee");
   }
 
-  getEmployeeIdByFirstAndLastName(firstName: string, lastName: string): number{
-    this.getAllEmployees().subscribe(res => {
-      let emp = res.find(element => {
-        if(element.firstName == firstName && element.lastName == lastName){
-          return true;
-        }
-        return false;
-      });
-      if(emp){
-        return emp.id;
+  async getEmployeeIdByFirstAndLastName(firstName: string, lastName: string): Promise<number>{
+    let emp: GetEmployee | undefined;
+    let empArray = await this.getAllEmployees().toPromise();
+    emp = empArray?.find(res => {
+      if(res.firstName == firstName && res.lastName == lastName){
+        return res;
       }
-      else {
-        return -1;
-      }
+      return;
     });
+    if(emp && emp.id){
+      return emp?.id;
+    }
     return -1;
   }
 }
