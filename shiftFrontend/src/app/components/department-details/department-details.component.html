@@ -1,12 +1,12 @@
-<div class="row">
+<div class="row" xmlns="http://www.w3.org/1999/html">
   <div class="col-3"></div>
   <div class="col-3">
     <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
   </div>
-  <div class="col-3" *ngIf="activeDep">
+  <div class="col-3" *ngIf="activeDep.departmentId">
     <a role="button" class="btn baseBtn saveBtn" (click)="save()">Save</a>
   </div>
-  <div class="col-3" *ngIf="!activeDep">
+  <div class="col-3" *ngIf="!activeDep.departmentId">
     <a role="button" class="btn baseBtn saveBtn" (click)="save()">Add</a>
   </div>
   <div *ngIf="activeDep" class="col-3">
@@ -17,9 +17,7 @@
 <div class="row">
   <div class="col-5"></div>
   <div class="col-2">
-    <a class="cSymbol">
-      <div class="circle">{{activeDep.abbreviatedName}}</div>
-    </a>
+    <input class="circle" type="text" id="abbNameInput" name="abbNameInput" value="{{activeDep.abbreviatedName}}">
   </div>
   <div class="col-5"></div>
 </div>
