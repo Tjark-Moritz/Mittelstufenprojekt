@@ -4,6 +4,7 @@ import {GetDepartment} from "../../models/dto/GetDepartment";
 import {DepartmentService} from "../../services/department.service";
 import {EmployeeService} from "../../services/employee.service";
 import {AddDepartment} from "../../models/dto/AddDepartment";
+import {GetEmployee} from "../../models/dto/GetEmployee";
 
 @Component({
   selector: 'app-department-details',
@@ -14,6 +15,7 @@ export class DepartmentDetailsComponent implements OnInit {
 
   activeDep: GetDepartment = new GetDepartment();
   isOld: boolean = false;
+  isAdmin: boolean = true; // Muss geändert werden
 
   constructor(private departmentService: DepartmentService,
               private employeeService: EmployeeService,
@@ -22,7 +24,22 @@ export class DepartmentDetailsComponent implements OnInit {
 
     this.activeDep = data;
     if(this.activeDep.departmentId){
-      this.isOld = true;
+      // Abteilung vorhanden
+      if(this.isAdmin){
+        if(this.activeDep.leadEmployee){
+          employeeService.getEmployeeById(this.activeDep.leadEmployee).subscribe(res => {
+            let tempFN: string = "";
+            tempFN += res.firstName;
+            (document.getElementById("leadEmpFirstNameInputNew") as HTMLInputElement).value = tempFN;
+            let tempLN: string = "";
+            tempLN += res.lastName;
+            (document.getElementById("leadEmpLastNameInputNew") as HTMLInputElement).value = tempLN;
+          });
+        }
+      }
+      else {
+        this.isOld = true;
+      }
     }
   }
   ngOnInit() {
