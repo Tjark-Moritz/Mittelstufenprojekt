@@ -14,18 +14,43 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="activeDep.departmentId">
   <div class="col-5"></div>
   <div class="col-2">
-    <input class="circle" type="text" id="abbNameInput" name="abbNameInput" value="{{activeDep.abbreviatedName}}">
+    <input class="circle" type="text" id="abbNameInputExists" name="abbNameInput" value="{{activeDep.abbreviatedName}}" disabled>
   </div>
   <div class="col-5"></div>
 </div>
+<div *ngIf="!activeDep.departmentId">
+  <div class="row">
+    <tr>
 
-<div class="row">
-  <div class="col-12">
-    <h2>{{activeDep.name}}</h2>
+    </tr>
+
+
+
+
+    <div class="col-4">
+      <p class="nameNew">Abteilungskürzel: </p>
+    </div>
+    <div class="col-8">
+      <input class="nameNew" type="text" id="abbNameInputNew" name="nameInput" value="{{activeDep.name}}">
+    </div>
   </div>
+  <div class="row">
+    <div class="col-4">
+      <p class="nameNew">Abteilungsname: </p>
+    </div>
+    <div class="col-8">
+      <input class="nameNew" type="text" id="nameInputNew" name="nameInput" value="{{activeDep.name}}" disabled>
+    </div>
+  </div>
+</div>
+
+<div class="col-12" *ngIf="activeDep.departmentId">
+  <input class="nameInput" type="text" id="nameInputExists" name="nameInput" value="{{activeDep.name}}" disabled>
+</div>
+<div class="row">
   <div class="cBorder order-2"></div>
   <div class="order-3 baseQualifications">
     <table class="table table-light table-striped table-hover">
