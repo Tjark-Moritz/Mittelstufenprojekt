@@ -2,6 +2,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {GetDepartment} from "../../models/dto/GetDepartment";
 import {DepartmentService} from "../../services/department.service";
+import {GetEmployee} from "../../models/dto/GetEmployee";
+import {EmployeeService} from "../../services/employee.service";
 
 @Component({
   selector: 'app-department-details',
@@ -11,12 +13,15 @@ import {DepartmentService} from "../../services/department.service";
 export class DepartmentDetailsComponent implements OnInit {
 
   activeDep: GetDepartment = new GetDepartment();
+  leadingEmployee: GetEmployee = new GetEmployee();
 
   constructor(private departmentService: DepartmentService,
+              private employeeService: EmployeeService,
               private dialogRef: MatDialogRef<DepartmentDetailsComponent>,
               @Inject(MAT_DIALOG_DATA) private data: GetDepartment) {
 
     this.activeDep = data;
+    employeeService.getEmployeeIdByFirstAndLastName("string", "string");
   }
   ngOnInit() {
   }

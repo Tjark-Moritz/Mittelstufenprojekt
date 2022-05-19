@@ -60,4 +60,22 @@ export class EmployeeService {
 
     console.log("updated Employee");
   }
+
+  getEmployeeIdByFirstAndLastName(firstName: string, lastName: string): number{
+    this.getAllEmployees().subscribe(res => {
+      let emp = res.find(element => {
+        if(element.firstName == firstName && element.lastName == lastName){
+          return true;
+        }
+        return false;
+      });
+      if(emp){
+        return emp.id;
+      }
+      else {
+        return -1;
+      }
+    });
+    return -1;
+  }
 }

@@ -80,12 +80,15 @@ input {
 }
 
 
-.nameNew {
+.inputSetName {
   height: 30px;
   width: 200px;
   font-size: 20px;
   border-width: 3px;
   border-color: black;
   outline: none;
-  margin-top: 10px;
+}
+
+.tdLabelName {
+  height: 30px;
 }

@@ -14,42 +14,60 @@
   </div>
 </div>
 
-<div class="row" *ngIf="activeDep.departmentId">
-  <div class="col-5"></div>
-  <div class="col-2">
-    <input class="circle" type="text" id="abbNameInputExists" name="abbNameInput" value="{{activeDep.abbreviatedName}}" disabled>
-  </div>
-  <div class="col-5"></div>
-</div>
 <div *ngIf="!activeDep.departmentId">
   <div class="row">
-    <tr>
+    <table>
+      <tr>
+        <td class="tdLabelName">
+          Abteilungskürzel:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="abbNameInputNew" name="abbNameInputNew" value="{{activeDep.abbreviatedName}}">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          Abteilungsname:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="nameInputNew" name="nameInput" value="{{activeDep.name}}">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          Vorname Führungskraft:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="leadEmpFirstNameInputNew" name="leadEmpIdInputNew" value="{{leadingEmployee.firstName}}">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          Nachname Führungskraft:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="leadEmpLastNameInputNew" name="leadEmpIdInputNew" value="{{leadingEmployee.lastName}}">
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
 
-    </tr>
-
-
-
-
-    <div class="col-4">
-      <p class="nameNew">Abteilungskürzel: </p>
+<div *ngIf="activeDep.departmentId">
+  <div class="row">
+    <div class="col-5"></div>
+    <div class="col-2">
+      <input class="circle" type="text" id="abbNameInputExists" name="abbNameInput" value="{{activeDep.abbreviatedName}}" disabled>
     </div>
-    <div class="col-8">
-      <input class="nameNew" type="text" id="abbNameInputNew" name="nameInput" value="{{activeDep.name}}">
-    </div>
+    <div class="col-5"></div>
   </div>
   <div class="row">
-    <div class="col-4">
-      <p class="nameNew">Abteilungsname: </p>
-    </div>
-    <div class="col-8">
-      <input class="nameNew" type="text" id="nameInputNew" name="nameInput" value="{{activeDep.name}}" disabled>
+    <div class="col-12">
+      <input class="nameInput" type="text" id="nameInputExists" name="nameInput" value="{{activeDep.name}}" disabled>
     </div>
   </div>
 </div>
 
-<div class="col-12" *ngIf="activeDep.departmentId">
-  <input class="nameInput" type="text" id="nameInputExists" name="nameInput" value="{{activeDep.name}}" disabled>
-</div>
 <div class="row">
   <div class="cBorder order-2"></div>
   <div class="order-3 baseQualifications">
