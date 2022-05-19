@@ -31,11 +31,16 @@ export class DepartmentService {
   }
 
   addDepartment(department: AddDepartment){
-    console.log(this.httpClient.post(this.urlPre, department,{
+    this.httpClient.post(this.urlPre, {
+      "name": department.name,
+      "abbreviatedName": department.abbreviatedName,
+      "leadEmployeeId": department.leadEmployeeId,
+      "employeeIds": department.employeesIds,
+    },{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
-    }).toPromise());
+    }).toPromise();
   }
 
   updateDepartment(departmentMap: Map<string, string>, departmentId: number){

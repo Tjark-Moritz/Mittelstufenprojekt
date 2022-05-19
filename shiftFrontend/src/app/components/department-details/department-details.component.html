@@ -1,20 +1,27 @@
-<div class="row" xmlns="http://www.w3.org/1999/html">
-  <div class="col-3"></div>
-  <div class="col-3">
-    <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
+<div xmlns="http://www.w3.org/1999/html">
+  <div class="row" *ngIf="isOld">
+    <div class="col-4">
+      <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
+    </div>
+    <div class="col-4">
+      <a role="button" class="btn baseBtn saveBtn" (click)="save()">Save</a>
+    </div>
+    <div class="col-4">
+      <a role="button" class="btn baseBtn deleteBtn" (click)="delete()">Delete</a>
+    </div>
   </div>
-  <div class="col-3" *ngIf="activeDep.departmentId">
-    <a role="button" class="btn baseBtn saveBtn" (click)="save()">Save</a>
-  </div>
-  <div class="col-3" *ngIf="!activeDep.departmentId">
-    <a role="button" class="btn baseBtn saveBtn" (click)="save()">Add</a>
-  </div>
-  <div *ngIf="activeDep" class="col-3">
-    <a role="button" class="btn baseBtn deleteBtn" (click)="delete()">Delete</a>
+  <div class="row" *ngIf="!isOld">
+    <div class="col-4">
+      <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
+    </div>
+    <div class="col-4">
+      <a role="button" class="btn baseBtn saveBtn" (click)="save()">Add</a>
+    </div>
+    <div class="col-4"></div>
   </div>
 </div>
 
-<div *ngIf="!activeDep.departmentId">
+<div *ngIf="!isOld">
   <div class="row">
     <table>
       <tr>
@@ -53,7 +60,7 @@
   </div>
 </div>
 
-<div *ngIf="activeDep.departmentId">
+<div *ngIf="isOld">
   <div class="row">
     <div class="col-5"></div>
     <div class="col-2">

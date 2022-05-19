@@ -13,6 +13,7 @@ import {AddDepartment} from "../../models/dto/AddDepartment";
 export class DepartmentDetailsComponent implements OnInit {
 
   activeDep: GetDepartment = new GetDepartment();
+  isOld: boolean = false;
 
   constructor(private departmentService: DepartmentService,
               private employeeService: EmployeeService,
@@ -20,6 +21,9 @@ export class DepartmentDetailsComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) private data: GetDepartment) {
 
     this.activeDep = data;
+    if(this.activeDep.departmentId){
+      this.isOld = true;
+    }
   }
   ngOnInit() {
   }
@@ -46,18 +50,29 @@ export class DepartmentDetailsComponent implements OnInit {
     addDepObj.name = (document.getElementById("nameInputNew") as HTMLInputElement).value;
     addDepObj.employeesIds = [leadEmpId];
 
-    // Ende / Fehlerausgabe
+    if(addDepObj.name == ""){
+      anyError = true
+      errorMessage += "Abteilungsname nicht eingetragen. ";
+    }
+    if(addDepObj.abbreviatedName == ""){
+      anyError = true
+      errorMessage += "Abteilungskürzel nicht eingetragen. ";
+    }
+
     if(anyError){
       alert(errorMessage);
     }
     else {
       this.departmentService.addDepartment(addDepObj);
       this.dialogRef.close({ event: 'close', data: undefined });
+      // deps neuladen
     }
   }
 
   delete() {
-    // http Anfrage
+    if(this.activeDep.departmentId){
+      this.departmentService.deleteDepartment(this.activeDep.departmentId);
+    }
     this.dialogRef.close({ event: 'close', data: undefined });
   }
 }
