@@ -19,18 +19,18 @@ class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/message/create");
+        config.enableSimpleBroker("/message/create", "/message/delete"); //TODO: Alle Endpunkte rein
     }
 
     //Info: Für den Verbindungsaufbau
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/chat")
+        registry.addEndpoint("/connect")
                 .setAllowedOrigins("http://localhost:8090", "chrome-extension://ggnhohnkfcpcanfekomdkjffnfcjnjam")
                 .setHandshakeHandler(new DefaultHandshakeHandler());
 
 
-        registry.addEndpoint("/chat")
+        registry.addEndpoint("/connect")
                 .withSockJS();
     }
 }
