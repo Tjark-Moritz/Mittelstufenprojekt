@@ -35,7 +35,7 @@ export class DepartmentService {
       "name": department.name,
       "abbreviatedName": department.abbreviatedName,
       "leadEmployeeId": department.leadEmployeeId,
-      "employeeIds": department.employeesIds,
+      "employeeIds": department.employeeIds,
     },{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
