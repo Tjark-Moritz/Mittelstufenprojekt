@@ -1,5 +1,5 @@
 <div xmlns="http://www.w3.org/1999/html">
-  <div class="row" *ngIf="isOld">
+  <div class="row" *ngIf="isOld && isAdmin">
     <div class="col-4">
       <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
     </div>
@@ -10,7 +10,7 @@
       <a role="button" class="btn baseBtn deleteBtn" (click)="delete()">Delete</a>
     </div>
   </div>
-  <div class="row" *ngIf="!isOld">
+  <div class="row" *ngIf="!isOld && isAdmin">
     <div class="col-4">
       <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
     </div>
@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<div *ngIf="!isOld">
+<div *ngIf="!isOld || isAdmin">
   <div class="row">
     <table>
       <tr>
@@ -60,7 +60,7 @@
   </div>
 </div>
 
-<div *ngIf="isOld">
+<div *ngIf="isOld && !isAdmin">
   <div class="row">
     <div class="col-5"></div>
     <div class="col-2">

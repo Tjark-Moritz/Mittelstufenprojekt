@@ -37,9 +37,7 @@ export class DepartmentDetailsComponent implements OnInit {
           });
         }
       }
-      else {
-        this.isOld = true;
-      }
+      this.isOld = true;
     }
   }
   ngOnInit() {

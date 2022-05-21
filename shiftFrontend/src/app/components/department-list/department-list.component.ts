@@ -41,6 +41,7 @@ export class DepartmentListComponent implements OnInit{
         right: "0",
       },
       height: "100vh",
+      width: "100vh",
       direction: "ltr",
       data: department
     });
