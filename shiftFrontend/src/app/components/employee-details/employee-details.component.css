@@ -1,0 +1,95 @@
+
+.cBorder {
+  border: 1px solid black;
+}
+
+.baseBtn {
+  align-self: center;
+  width: 100px;
+}
+
+.baseBtn:hover {
+  opacity: 70%;
+}
+
+.saveBtn {
+  background-color: green;
+  color: white;
+}
+
+.cancelBtn {
+  background-color: #5b5b5b;
+  color: white;
+}
+
+.deleteBtn {
+  background-color: red;
+  color: white;
+}
+
+.baseQualifications {
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 100%;
+}
+
+.baseQualifications table {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.qualiHeaderLabel {
+  width: 80%;
+  text-align: left;
+}
+
+.qualiLabel {
+  width: 80%;
+  text-align: left;
+  vertical-align: center;
+}
+
+.qualiLabel:hover {
+  cursor: pointer;
+}
+
+.circle {
+  height: 100px;
+  width: 100px;
+  line-height: 100px;
+  border-radius: 50%;
+  font-size: 30px;
+  color: #fff;
+  text-align: center;
+  background: #000;
+  margin-top: 10px;
+  outline: none;
+  border: none;
+}
+
+input {
+}
+
+.nameInput {
+  height: 40px;
+  width: 200px;
+  font-size: 20px;
+  border-width: 3px;
+  border-color: black;
+  outline: none;
+  margin-top: 10px;
+}
+
+
+.inputSetName {
+  height: 30px;
+  width: 200px;
+  font-size: 20px;
+  border-width: 3px;
+  border-color: black;
+  outline: none;
+}
+
+.tdLabelName {
+  height: 30px;
+}

@@ -29,6 +29,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
+import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 
 //MatLuxonDateModule
 
@@ -44,7 +45,8 @@ import {MatListModule} from "@angular/material/list";
     LoginComponent,
     DepartmentDetailsComponent,
     LoginComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    EmployeeDetailsComponent
   ],
   imports: [
     BrowserModule,

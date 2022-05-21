@@ -4,6 +4,9 @@ import {GetDepartment} from "../../models/dto/GetDepartment";
 import {SelectionModel} from "@angular/cdk/collections";
 import {GetEmployee} from "../../models/dto/GetEmployee";
 import {EmployeeService} from "../../services/employee.service";
+import {MatDialog} from "@angular/material/dialog";
+import {EmployeeDetailsComponent} from "../employee-details/employee-details.component";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-employee-list',
@@ -18,8 +21,9 @@ export class EmployeeListComponent implements OnInit {
   private selectionLength = 0;
   private depIdAbbrDict: { [id: number]: GetDepartment; }  = {};
   public searchkey = "";
+  public emptyEmp = new GetEmployee();
 
-  constructor(private empService: EmployeeService, private depService: DepartmentService) {
+  constructor(private empService: EmployeeService, private depService: DepartmentService, private dialog: MatDialog) {
     this.selection = new SelectionModel<GetEmployee>(true, []);
   }
 
@@ -62,6 +66,25 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
+  openModal(department: GetDepartment){
+
+    let modal = this.dialog.open(EmployeeDetailsComponent, {
+      position: {
+        top: "0",
+        right: "0",
+      },
+      height: "100vh",
+      width: "100vh",
+      direction: "ltr",
+      data: department
+    });
+
+    let observable: Observable<any>;
+    observable = modal.afterClosed();
+    observable.subscribe(data => {
+
+    });
+  }
 
   async search(){
     // Puffer damit der eingegebene Text lädt
