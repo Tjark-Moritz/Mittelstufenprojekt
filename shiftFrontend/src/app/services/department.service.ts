@@ -43,8 +43,8 @@ export class DepartmentService {
     }).toPromise();
   }
 
-  updateDepartment(departmentMap: Map<string, string>, departmentId: number){
-    this.httpClient.patch(this.urlPre + `/${departmentId}`,departmentMap,{
+  updateDepartment(depChanges: {[key: string]: string}, departmentId: number){
+    this.httpClient.patch(this.urlPre + `/${departmentId}`,depChanges,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)

@@ -48,6 +48,7 @@ export class DepartmentDetailsComponent implements OnInit {
   }
 
   async save() {
+
     let anyError: boolean = false;
     let errorMessage: string = "";
     // gibt es den Abteilungsleiter
@@ -59,26 +60,54 @@ export class DepartmentDetailsComponent implements OnInit {
       errorMessage += "Mitarbeiter nicht gefunden. ";
     }
 
-    let addDepObj: AddDepartment = new AddDepartment();
-    addDepObj.leadEmployeeId = leadEmpId;
-    addDepObj.abbreviatedName = (document.getElementById("abbNameInputNew") as HTMLInputElement).value;
-    addDepObj.name = (document.getElementById("nameInputNew") as HTMLInputElement).value;
-    addDepObj.employeesIds = [leadEmpId];
+    if(!this.isOld){
+      let addDepObj: AddDepartment = new AddDepartment();
+      addDepObj.leadEmployeeId = leadEmpId;
+      addDepObj.abbreviatedName = (document.getElementById("abbNameInputNew") as HTMLInputElement).value;
+      addDepObj.name = (document.getElementById("nameInputNew") as HTMLInputElement).value;
+      addDepObj.employeesIds = [leadEmpId];
 
-    if(addDepObj.name == ""){
-      anyError = true
-      errorMessage += "Abteilungsname nicht eingetragen. ";
+      if(addDepObj.name == ""){
+        anyError = true
+        errorMessage += "Abteilungsname nicht eingetragen. ";
+      }
+      if(addDepObj.abbreviatedName == ""){
+        anyError = true
+        errorMessage += "Abteilungskürzel nicht eingetragen. ";
+      }
+      if(!anyError){
+        this.departmentService.addDepartment(addDepObj);
+      }
     }
-    if(addDepObj.abbreviatedName == ""){
-      anyError = true
-      errorMessage += "Abteilungskürzel nicht eingetragen. ";
+    else {
+      let depChanges: {[key: string]: string} = {}
+      let changes: boolean = false;
+
+      if(this.activeDep.leadEmployee != leadEmpId){
+        changes = true;
+        depChanges["leadEmployee"] = leadEmpId.toString();
+      }
+      let depName: string = (document.getElementById("nameInputNew") as HTMLInputElement).value;
+      if(this.activeDep.name != depName){
+        changes = true;
+        depChanges["name"] = depName;
+      }
+      let depAbbrName: string = (document.getElementById("abbNameInputNew") as HTMLInputElement).value;
+      if(this.activeDep.abbreviatedName != depAbbrName){
+        changes = true;
+        depChanges["abbreviatedName"] = depAbbrName;
+      }
+      if(!anyError && changes){
+        if(this.activeDep.departmentId){
+          this.departmentService.updateDepartment(depChanges, this.activeDep.departmentId);
+        }
+      }
     }
 
     if(anyError){
       alert(errorMessage);
     }
     else {
-      this.departmentService.addDepartment(addDepObj);
       this.dialogRef.close({ event: 'close', data: undefined });
       // deps neuladen
     }
