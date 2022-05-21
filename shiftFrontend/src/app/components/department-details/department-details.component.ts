@@ -65,7 +65,7 @@ export class DepartmentDetailsComponent implements OnInit {
       addDepObj.leadEmployeeId = leadEmpId;
       addDepObj.abbreviatedName = (document.getElementById("abbNameInputNew") as HTMLInputElement).value;
       addDepObj.name = (document.getElementById("nameInputNew") as HTMLInputElement).value;
-      addDepObj.employeesIds = [leadEmpId];
+      addDepObj.employeeIds = [leadEmpId];
 
       if(addDepObj.name == ""){
         anyError = true
