@@ -38,8 +38,7 @@ public class EmployeeController {
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
     @PostMapping
-    public ResponseEntity<GetEmployeeDto> createDepartment(@Valid @RequestBody final AddEmployeeDto employeeDto)
-    {
+    public ResponseEntity<GetEmployeeDto> createDepartment(@Valid @RequestBody final AddEmployeeDto employeeDto) {
         Employee emp = this.mappingService.mapAddEmployeeDtoToEmployee(employeeDto);
         this.employeeService.create(emp);
 
