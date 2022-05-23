@@ -21,6 +21,10 @@ public class ShiftPlanService {
         return this.shiftPlanRepository.save(splan);
     }
 
+    public List<ShiftPlan> getShiftPlansByDeptId(Long deptId){
+        return this.shiftPlanRepository.findShiftPlansByDepartment_DepartmentId(deptId);
+    }
+
     public ShiftPlan getShiftPlanById(Long shiftPlanId) {
         Optional<ShiftPlan> shiftPlan = this.shiftPlanRepository.findById(shiftPlanId);
 
@@ -28,6 +32,10 @@ public class ShiftPlanService {
             throw new ResourceNotFoundException("Shift with id '" + shiftPlanId + "'could not be found");
 
         return shiftPlan.get();
+    }
+
+    public void deleteShiftplanById(Long shiftplanId) {
+        this.shiftPlanRepository.deleteById(shiftplanId);
     }
 
     public ShiftPlan generateShiftPlan(ShiftPlan shiftPlan) {
@@ -123,6 +131,4 @@ public class ShiftPlanService {
 
         return empsByPrefShiftType;
     }
-
-
 }

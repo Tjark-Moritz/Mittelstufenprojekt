@@ -1,7 +1,6 @@
 package de.szut.shift_backend.services;
 
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
-import de.szut.shift_backend.model.Message;
 import de.szut.shift_backend.model.Shift;
 import de.szut.shift_backend.repository.ShiftRepository;
 import org.springframework.stereotype.Service;
