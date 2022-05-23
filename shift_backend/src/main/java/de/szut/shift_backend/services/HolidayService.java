@@ -3,25 +3,25 @@ package de.szut.shift_backend.services;
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Department;
-import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.Holiday;
+import de.szut.shift_backend.model.HolidayType;
 import de.szut.shift_backend.repository.HolidayRepository;
-import lombok.val;
+import de.szut.shift_backend.repository.HolidayTypeRepository;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolationException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
 public class HolidayService {
     private final HolidayRepository holidayRepository;
     private final EmployeeService employeeService;
+    private final HolidayTypeRepository holidayTypeRepository;
 
-    public HolidayService(HolidayRepository holidayRepository, EmployeeService employeeService) {
+    public HolidayService(HolidayRepository holidayRepository, EmployeeService employeeService, HolidayTypeRepository holidayTypeRepository) {
         this.holidayRepository = holidayRepository;
         this.employeeService = employeeService;
+        this.holidayTypeRepository = holidayTypeRepository;
     }
 
     public Holiday create(Holiday newHoliday) {
@@ -72,6 +72,10 @@ public class HolidayService {
             throw new ResourceNotFoundException("Holiday with Id: " + id + " could not be found!");
         }
         return holiday.get();
+    }
+
+    public Optional<HolidayType> getByTypeId(Long id) {
+        return this.holidayTypeRepository.findById(id);
     }
 
     private List<Holiday> getAllByStatus(Holiday.HolidayStatus status) {

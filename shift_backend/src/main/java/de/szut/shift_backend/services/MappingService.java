@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MappingService {
@@ -16,13 +17,15 @@ public class MappingService {
     private final DepartmentService departmentService;
     private final EmployeeService employeeService;
     private final ShiftService shiftService;
+    private final ShiftTypeService shiftTypeService;
 
-    public MappingService(HolidayService holidayService, DepartmentService departmentService, EmployeeService employeeService, ShiftService shiftService)
+    public MappingService(HolidayService holidayService, DepartmentService departmentService, EmployeeService employeeService, ShiftService shiftService, ShiftTypeService shiftTypeService)
     {
         this.holidayService = holidayService;
         this.departmentService = departmentService;
         this.employeeService = employeeService;
         this.shiftService = shiftService;
+        this.shiftTypeService = shiftTypeService;
     }
 
     public GetMessageDto mapMessageToGetMessageDto(Message message) {
@@ -166,7 +169,7 @@ public class MappingService {
     public AddHolidayDto mapHolidayToAddHolidayDto(Holiday holiday) {
         AddHolidayDto addHolidayDto = new AddHolidayDto();
         addHolidayDto.setId(holiday.getHolidayId());
-        addHolidayDto.setTypeId(holiday.getHolidayTypeId());
+        addHolidayDto.setTypeId(holiday.getHolidayTypeId().getId());
         addHolidayDto.setStartDate(holiday.getStartDate());
         addHolidayDto.setEndDate(holiday.getEndDate());
         addHolidayDto.setEmployeeId(holiday.getEmployeeId());
@@ -178,9 +181,11 @@ public class MappingService {
         Holiday holiday = new Holiday();
 
         Employee employee = employeeService.getEmployeeById(addHolidayDto.getEmployeeId());
+        Optional<HolidayType> holidayType = holidayService.getByTypeId(addHolidayDto.getTypeId());
+
+        holidayType.ifPresent(holiday::setHolidayTypeId);
 
         holiday.setHolidayId(addHolidayDto.getId());
-        holiday.setHolidayTypeId(addHolidayDto.getTypeId());
         holiday.setEmployeeId(employee.getId());
         holiday.setStartDate(addHolidayDto.getStartDate());
         holiday.setEndDate(addHolidayDto.getEndDate());
@@ -194,7 +199,7 @@ public class MappingService {
         GetHolidayDto getHolidayDto = new GetHolidayDto();
 
         getHolidayDto.setHolidayId(holiday.getHolidayId());
-        getHolidayDto.setHolidayTypeId(holiday.getHolidayTypeId());
+        getHolidayDto.setHolidayTypeId(holiday.getHolidayTypeId().getId());
         getHolidayDto.setStartDate(holiday.getStartDate());
         getHolidayDto.setEndDate(holiday.getEndDate());
         getHolidayDto.setEmployeeId(holiday.getEmployeeId());
@@ -214,8 +219,18 @@ public class MappingService {
         emp.setPhone(empDto.getPhone());
         emp.setEmail(empDto.getEmail());
         emp.setNumHolidaysLeft(empDto.getNumHolidaysLeft());
-        emp.setBase64ProfilePic(empDto.getBase64ProfilePic());
-        emp.setDepartmentId(empDto.getDepartmentId());
+
+        //optional parameters
+        if (empDto.getBase64ProfilePic() != null)
+            emp.setBase64ProfilePic(empDto.getBase64ProfilePic());
+        else
+            emp.setBase64ProfilePic("");
+
+        if (empDto.getDepartmentId() != null)
+            emp.setDepartmentId(empDto.getDepartmentId());
+
+        if (empDto.getPreferredShiftTypeId() != null)
+            emp.setPreferredShiftType(this.shiftTypeService.getShiftTypeById(empDto.getPreferredShiftTypeId()));
 
         return emp;
     }
@@ -233,6 +248,14 @@ public class MappingService {
         empDto.setPhone(emp.getPhone());
         empDto.setEmail(emp.getEmail());
         empDto.setNumHolidaysLeft(emp.getNumHolidaysLeft());
+
+        List<GetHolidayDto> holidays = new ArrayList<>();
+        if(emp.getHolidays() != null) {
+            for (Holiday hol : emp.getHolidays())
+                holidays.add(this.mapHolidayToGetHolidayDto(hol));
+        }
+
+        empDto.setHolidays(holidays);
         empDto.setBase64ProfilePic(emp.getBase64ProfilePic());
         empDto.setDepartmentId(emp.getDepartmentId());
 
@@ -310,7 +333,7 @@ public class MappingService {
         ShiftType stype = new ShiftType();
 
         return ClassReflectionHelper.FastParamMap(stype, shiftTypeDto);
-    };
+    }
 
     private GetShiftTypeDto mapShiftTypeToGetShiftTypeDto(ShiftType shiftType) {
         GetShiftTypeDto shiftTypeDto = new GetShiftTypeDto();
@@ -341,6 +364,9 @@ public class MappingService {
 
     public GetShiftPlanDto mapShiftPlanToGetShiftPlanDto(ShiftPlan shiftPlan){
         GetShiftPlanDto shiftPlanDto = new GetShiftPlanDto();
+
+        shiftPlanDto.setId(shiftPlan.getId());
+        shiftPlanDto.setValidMonth(shiftPlan.getValidMonth());
 
         shiftPlanDto.setDepartmentId(this.mapDepartmentToGetDepartmentDto(shiftPlan.getDepartment()));
 

@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,12 +22,12 @@ public class ShiftPlan {
     @OneToOne
     private Department department;
 
-    @NotBlank
+    @NotNull
     private LocalDate validMonth;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Shift> shifts;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<ShiftType> shiftTypes;
 }
