@@ -23,11 +23,11 @@ export class EmployeeListComponent implements OnInit {
   public searchkey = "";
   public emptyEmp = new GetEmployee();
 
+  isAdmin: boolean = false; // Muss geändert werden
+
   constructor(private empService: EmployeeService, private depService: DepartmentService, private dialog: MatDialog) {
     this.selection = new SelectionModel<GetEmployee>(true, []);
-  }
 
-  ngOnInit() {
     this.empService.getAllEmployees().subscribe(res => {
       res.forEach(temp => {
         this.employees.push(temp);
@@ -48,8 +48,11 @@ export class EmployeeListComponent implements OnInit {
     })
   }
 
+  ngOnInit() {
+  }
+
   getDepAbbr(depId: number| undefined){
-    if(depId){
+    if(depId && depId != 0){
       return this.depIdAbbrDict[depId].abbreviatedName;
     }
     else {
@@ -58,7 +61,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   getDepName(depId: number| undefined){
-    if(depId){
+    if(depId && depId != 0){
       return this.depIdAbbrDict[depId].name;
     }
     else {
@@ -66,7 +69,12 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
-  openModal(department: GetDepartment){
+  openModal(employee: GetEmployee){
+
+    if(this.isAdmin){
+      // Lennarts part aufrufen
+      return;
+    }
 
     let modal = this.dialog.open(EmployeeDetailsComponent, {
       position: {
@@ -76,7 +84,7 @@ export class EmployeeListComponent implements OnInit {
       height: "100vh",
       width: "100vh",
       direction: "ltr",
-      data: department
+      data: employee
     });
 
     let observable: Observable<any>;

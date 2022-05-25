@@ -1,131 +1,38 @@
 <div xmlns="http://www.w3.org/1999/html">
-  <div class="row" *ngIf="isOld && isAdmin">
-    <div class="col-4">
-      <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
-    </div>
-    <div class="col-4">
-      <a role="button" class="btn baseBtn saveBtn" (click)="save()">Save</a>
-    </div>
-    <div class="col-4">
-      <a role="button" class="btn baseBtn deleteBtn" (click)="delete()">Delete</a>
-    </div>
-  </div>
-  <div class="row" *ngIf="!isOld && isAdmin">
-    <div class="col-4">
-      <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
-    </div>
-    <div class="col-4">
-      <a role="button" class="btn baseBtn saveBtn" (click)="save()">Add</a>
-    </div>
-    <div class="col-4"></div>
+  <div class="col-4">
+    <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Close</a>
   </div>
 </div>
 
-<div *ngIf="!isOld || isAdmin">
-  <div class="row">
-    <table>
-      <tr>
-        <td class="tdLabelName">
-          Vorname:
-        </td>
-        <td>
-          <input class="inputSetName" type="text" id="firstNameInputNew" value="{{activeEmp.firstName}}">
-        </td>
-      </tr>
-      <tr>
-        <td class="tdLabelName">
-          Nachname:
-        </td>
-        <td>
-          <input class="inputSetName" type="text" id="lastNameInputNew" value="{{activeEmp.lastName}}">
-        </td>
-      </tr>
-      <tr>
-        <td class="tdLabelName">
-          Email:
-        </td>
-        <td>
-          <input class="inputSetName" type="text" id="emailInputNew" value="{{activeEmp.email}}">
-        </td>
-      </tr>
-      <tr>
-        <td class="tdLabelName">
-          Telefon:
-        </td>
-        <td>
-          <input class="inputSetName" type="text" id="phoneInputNew" value="{{activeEmp.phone}}">
-        </td>
-      </tr>
-      <tr>
-        <td class="tdLabelName">
-          Abteilung:
-        </td>
-        <td>
-          <input class="inputSetName" type="text" id="depNameInputNew">
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
-
-<div *ngIf="isOld && !isAdmin">
-  <div class="row">
-    <div class="col-5"></div>
-    <div class="col-2">
-      <input class="circle" type="text" id="abbNameInputExists" name="abbNameInput" value="{{activeEmp.base64ProfilePic}}" disabled>
-    </div>
-    <div class="col-5"></div>
-  </div>
-  <div class="row">
-    <div class="col-12">
-      <input class="nameInput" type="text" id="firstNameInputExists" name="nameInput" value="{{activeEmp.firstName}}" disabled>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
-      <input class="nameInput" type="text" id="lastNameInputExists" name="nameInput" value="{{activeEmp.lastName}}" disabled>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
-      <input class="nameInput" type="text" id="emailInputExists" name="nameInput" value="{{activeEmp.email}}" disabled>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
-      <input class="nameInput" type="text" id="phoneInputExists" name="nameInput" value="{{activeEmp.phone}}" disabled>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
-      <input class="nameInput" type="text" id="depNameInputExists" name="nameInput" disabled>
-    </div>
-  </div>
-</div>
-<!--
 <div class="row">
-  <div class="cBorder order-2"></div>
-  <div class="order-3 baseQualifications">
-    <table class="table table-light table-striped table-hover">
-      <thead>
-      <tr>
-        <th class="qualiHeaderLabel">
-          <a>Employees: </a>
-        </th>
-      </tr>
-      </thead>
-
-      <tbody>
-      <ng-container *ngFor="let employee of activeEmp.employees">
-        <tr>
-          <td class="qualiLabel">
-            <p>{{employee.lastName}}, {{employee.firstName}}</p>
-          </td>
-        </tr>
-      </ng-container>
-      </tbody>
-    </table>
-    <h2 *ngIf="!activeEmp.employees">First add the employee to edit the qualifications!</h2>
+  <div class="col-5"></div>
+  <div class="col-2">
+    <input class="circle" type="text" id="abbNameInputExists" name="abbNameInput" value="{{activeEmp.base64ProfilePic}}" disabled>
+  </div>
+  <div class="col-5"></div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <input class="nameInput" type="text" id="firstNameInputExists" name="nameInput" value="{{activeEmp.firstName}}" disabled>
   </div>
 </div>
--->
+<div class="row">
+  <div class="col-12">
+    <input class="nameInput" type="text" id="lastNameInputExists" name="nameInput" value="{{activeEmp.lastName}}" disabled>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <input class="nameInput" type="text" id="emailInputExists" name="nameInput" value="{{activeEmp.email}}" disabled>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <input class="nameInput" type="text" id="phoneInputExists" name="nameInput" value="{{activeEmp.phone}}" disabled>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <input class="nameInput" type="text" id="depNameInputExists" name="nameInput" value="leer" disabled>
+  </div>
+</div>
