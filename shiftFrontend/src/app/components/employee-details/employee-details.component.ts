@@ -15,7 +15,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
   activeEmp: GetEmployee = new GetEmployee();
   isOld: boolean = false;
-  isAdmin: boolean = false; // Muss geändert werden
+  isAdmin: boolean = true; // Muss geändert werden
 
   constructor(private departmentService: DepartmentService,
               private employeeService: EmployeeService,
@@ -122,7 +122,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
   delete() {
     if(this.activeEmp.id){
-      //this.employeeService.deleteEmployee(this.activeEmp.id);
+      this.employeeService.deleteEmployee(this.activeEmp.id);
     }
     this.dialogRef.close({ event: 'close', data: undefined });
   }
