@@ -10,11 +10,25 @@ import {BearerTokenService} from "../../services/bearer-token.service";
 export class NavbarComponent implements OnInit {
   classApplied: boolean = false;
   public notificationAvailable : boolean = false;
-  public safeProfilePicture: SafeResourceUrl;
-  public profilePictureBase64 : string = "";   // Todo: implement database profile getter
+  public static profilePictureBase64 : string = "";   // Todo: implement database profile getter
 
   constructor(private domSanitizer: DomSanitizer) {
-    this.safeProfilePicture = this.domSanitizer.bypassSecurityTrustResourceUrl(this.profilePictureBase64);
+    this.domSanitizer.bypassSecurityTrustResourceUrl(NavbarComponent.profilePictureBase64)
+  }
+
+  public isProfilePictureSet(): boolean{
+    if(NavbarComponent.profilePictureBase64 != "")
+      return true;
+    else
+      return false;
+  }
+
+  public getProfilePicture(): SafeResourceUrl | undefined{
+    if(this.isProfilePictureSet()) {
+      return this.domSanitizer.bypassSecurityTrustResourceUrl(NavbarComponent.profilePictureBase64);
+    }
+
+    return undefined;
   }
 
   ngOnInit(): void {

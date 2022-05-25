@@ -23,8 +23,8 @@
       </a>
 
       <a class="cSymbol">
-        <img *ngIf="profilePictureBase64 == ''" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
-        <img *ngIf="profilePictureBase64 != ''" id="ProfilePicture" class="cSymbolImg" [src]="safeProfilePicture" alt="Profile Picture"/>
+        <img *ngIf="!isProfilePictureSet()" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
+        <img *ngIf="isProfilePictureSet()" id="ProfilePicture" class="cSymbolImg" [src]="getProfilePicture()" alt="Profile Picture"/>
       </a>
     </div>
   </div>
