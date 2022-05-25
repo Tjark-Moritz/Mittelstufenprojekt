@@ -46,11 +46,8 @@ public class Employee {
     @NotNull
     private long numHolidaysLeft;
 
-    /*
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "holiday_id")
-    private List<Holiday> acceptedHolidays;
-    */
+    @OneToMany
+    private List<Holiday> holidays;
 
     //@OneToMany
     //private List<SickDay> sickDays;

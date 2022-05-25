@@ -15,6 +15,11 @@ public class ShiftService {
         this.shiftRepository = shiftRepository;
     }
 
+    public Shift create(Shift shift)
+    {
+       return shiftRepository.save(shift);
+    }
+
     public Shift getShiftById(Long shiftId){
         Optional<Shift> shift = shiftRepository.findById(shiftId);
 
