@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-3"></div>
+  <div class="col-3">
+    <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
+  </div>
+  <div class="col-3" *ngIf="activeDep">
+    <a role="button" class="btn baseBtn saveBtn" (click)="save()">Save</a>
+  </div>
+  <div class="col-3" *ngIf="!activeDep">
+    <a role="button" class="btn baseBtn saveBtn" (click)="save()">Add</a>
+  </div>
+  <div *ngIf="activeDep" class="col-3">
+    <a role="button" class="btn baseBtn deleteBtn" (click)="delete()">Delete</a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-5"></div>
+  <div class="col-2">
+    <a class="cSymbol">
+      <div class="circle">{{activeDep.abbreviatedName}}</div>
+    </a>
+  </div>
+  <div class="col-5"></div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h2>{{activeDep.name}}</h2>
+  </div>
+  <div class="cBorder order-2"></div>
+  <div class="order-3 baseQualifications">
+    <table class="table table-light table-striped table-hover">
+      <thead>
+      <tr>
+        <th class="qualiHeaderLabel">
+          <a>Employees: </a>
+        </th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <ng-container *ngFor="let employee of activeDep.employees">
+        <tr>
+          <td class="qualiLabel">
+            <p>{{employee.lastName}}, {{employee.firstName}}</p>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+    <h2 *ngIf="!activeDep.employees">First add the employee to edit the qualifications!</h2>
+  </div>
+</div>

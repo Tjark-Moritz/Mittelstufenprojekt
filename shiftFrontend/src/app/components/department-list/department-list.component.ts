@@ -2,6 +2,10 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {DepartmentService} from "../../services/department.service";
 import {GetDepartment} from "../../models/dto/GetDepartment";
 import {SelectionModel} from "@angular/cdk/collections";
+import {Observable} from "rxjs";
+import {MatDialog} from "@angular/material/dialog";
+import {DepartmentDetailsComponent} from "../department-details/department-details.component";
+import {AddDepartment} from "../../models/dto/AddDepartment";
 
 @Component({
   selector: 'app-department-list',
@@ -13,21 +17,39 @@ export class DepartmentListComponent implements OnInit{
   private departments: GetDepartment[] = [];
   public selection: SelectionModel<GetDepartment>;
   public searchkey = "";
+  public emptyDep: GetDepartment = new GetDepartment();
 
-  constructor(private depService: DepartmentService) {
+  constructor(private depService: DepartmentService, private dialog: MatDialog) {
     this.selection = new SelectionModel<GetDepartment>(true, []);
   }
 
   ngOnInit() {
     this.depService.getAllDepartments().subscribe(res => {
-        res.departmentDto?.forEach(temp => {
-          this.departments.push(temp);
-        })
-        this.selection = new SelectionModel<GetDepartment>(true, res.departmentDto);
-      }, error => {
-      this.selection = new SelectionModel<GetDepartment>(true, []);
-      console.log("There was an error getting the Departments: ", error);
+        this.departments = res;
+        this.selection = new SelectionModel<GetDepartment>(true, res);
+        }, error => {
+          this.selection = new SelectionModel<GetDepartment>(true, []);
+          console.log("There was an error getting the Departments: ", error);
     })
+  }
+
+  openModal(department: GetDepartment){
+
+    let modal = this.dialog.open(DepartmentDetailsComponent, {
+      position: {
+        top: "0",
+        right: "0",
+      },
+      height: "100vh",
+      direction: "ltr",
+      data: department
+    });
+
+    let observable: Observable<any>;
+    observable = modal.afterClosed();
+    observable.subscribe(data => {
+
+    });
   }
 
   async search(){

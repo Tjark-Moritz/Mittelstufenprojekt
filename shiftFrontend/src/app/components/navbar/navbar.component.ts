@@ -12,7 +12,6 @@ export class NavbarComponent implements OnInit {
   public profilePictureBase64 : string = "";   // Todo: implement database profile getter
 
   constructor(private domSanitizer: DomSanitizer) {
-
     this.safeProfilePicture = this.domSanitizer.bypassSecurityTrustResourceUrl(this.profilePictureBase64);
   }
 

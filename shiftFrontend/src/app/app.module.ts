@@ -21,8 +21,14 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
 
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
 import {MatInputModule} from "@angular/material/input";
+import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
+import { MatDialogModule} from "@angular/material/dialog";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatListModule} from "@angular/material/list";
 
 //MatLuxonDateModule
 
@@ -36,6 +42,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     DepartmentListComponent,
     ShiftPlanComponent,
     LoginComponent,
+    DepartmentDetailsComponent,
+    LoginComponent,
     PageNotFoundComponent
   ],
   imports: [
@@ -44,14 +52,18 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatDialogModule,
     MatTableModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
     MatDateFnsModule,
     MatMomentDateModule,
     MatInputModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [HighliterPipe],
   bootstrap: [AppComponent]
