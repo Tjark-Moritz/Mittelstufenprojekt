@@ -45,6 +45,15 @@ public class EmployeeService {
         return emp.get();
     }
 
+    public Employee getEmployeeByUsername(String username){
+        Employee emp = employeeRepository.findByUsername(username);
+
+        if (emp == null)
+            throw new ResourceNotFoundException("Employee with username: '"+ username + "' could not be found");
+
+        return emp;
+    }
+
     public Department getDepartmentByEmployeeId(Long employeeId) {
         Employee emp = this.getEmployeeById(employeeId);
 
