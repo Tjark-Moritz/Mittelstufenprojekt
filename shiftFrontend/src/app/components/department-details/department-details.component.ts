@@ -4,7 +4,8 @@ import {GetDepartment} from "../../models/dto/GetDepartment";
 import {DepartmentService} from "../../services/department.service";
 import {EmployeeService} from "../../services/employee.service";
 import {AddDepartment} from "../../models/dto/AddDepartment";
-import {GetEmployee} from "../../models/dto/GetEmployee";
+import {UserRoleEnum} from "../../models/UserRoleEnum";
+import {BearerTokenService} from "../../services/bearer-token.service";
 
 @Component({
   selector: 'app-department-details',
@@ -14,14 +15,24 @@ import {GetEmployee} from "../../models/dto/GetEmployee";
 export class DepartmentDetailsComponent implements OnInit {
 
   activeDep: GetDepartment = new GetDepartment();
-  isOld: boolean = false;
-  isAdmin: boolean = true; // Muss geändert werden
+  isOld: boolean;
+  isAdmin: boolean;
 
   constructor(private departmentService: DepartmentService,
               private employeeService: EmployeeService,
               private dialogRef: MatDialogRef<DepartmentDetailsComponent>,
               @Inject(MAT_DIALOG_DATA) private data: GetDepartment) {
+    this.isAdmin = false;
+    this.isOld = false;
 
+    let roleName: UserRoleEnum | undefined;
+    // @ts-ignore
+    roleName = BearerTokenService.getUserRoles;
+    if(roleName){
+      if(roleName == UserRoleEnum.Admin){
+        this.isAdmin = true;
+      }
+    }
     this.activeDep = data;
     if(this.activeDep.departmentId){
       // Abteilung vorhanden

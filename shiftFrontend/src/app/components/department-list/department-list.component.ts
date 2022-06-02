@@ -6,6 +6,8 @@ import {Observable} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {DepartmentDetailsComponent} from "../department-details/department-details.component";
 import {AddDepartment} from "../../models/dto/AddDepartment";
+import {UserRoleEnum} from "../../models/UserRoleEnum";
+import {BearerTokenService} from "../../services/bearer-token.service";
 
 @Component({
   selector: 'app-department-list',
@@ -18,9 +20,19 @@ export class DepartmentListComponent implements OnInit{
   public selection: SelectionModel<GetDepartment>;
   public searchkey = "";
   public emptyDep: GetDepartment = new GetDepartment();
+  public isAdmin;
 
   constructor(private depService: DepartmentService, private dialog: MatDialog) {
     this.selection = new SelectionModel<GetDepartment>(true, []);
+    this.isAdmin = false;
+    let roleName: UserRoleEnum | undefined;
+    // @ts-ignore
+    roleName = BearerTokenService.getUserRoles;
+    if(roleName){
+      if(roleName == UserRoleEnum.Admin){
+        this.isAdmin = true;
+      }
+    }
   }
 
   ngOnInit() {
