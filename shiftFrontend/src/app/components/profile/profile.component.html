@@ -1,0 +1,30 @@
+<div class="cBaseMargin">
+  <h1>Profil</h1>
+
+  <section class="cFirstLayout">
+    <div>
+      <a class="cSymbol">
+        <img *ngIf="!isProfilePictureSet()" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
+        <img *ngIf="isProfilePictureSet()" id="ProfilePicture" class="cSymbolImg" [src]="getProfilePicture()" alt="Profile Picture"/>
+      </a>
+
+      <button class="cPictureChangeBtn">Bild ändern</button>
+    </div>
+
+    <div>
+
+    </div>
+  </section>
+</div>
+
+<div class="cSplitterLine"></div>
+
+<div class="cBaseMargin">
+  <h3>Präferenzen</h3>
+</div>
+
+<div class="cSplitterLine"></div>
+
+<div class="cBaseMargin">
+  <h3>Passwort</h3>
+</div>

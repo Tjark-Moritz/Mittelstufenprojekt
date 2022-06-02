@@ -1,0 +1,31 @@
+.cBaseMargin {
+  margin: 10px;
+}
+
+.cSplitterLine {
+  height: 1px;
+  width: 100%;
+  background-color: black;
+}
+
+.cSymbolImg {
+  background-color: white;
+
+  border-radius: 10%;
+  border: 3px solid black;
+
+  height: 100px;
+  width: 100px;
+}
+
+.cPictureChangeBtn {
+  margin-left: 10px;
+}
+
+.cFirstLayout {
+  width: 100%;
+
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
