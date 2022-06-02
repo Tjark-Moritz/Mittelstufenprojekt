@@ -1,10 +1,12 @@
 package de.szut.shift_backend.services;
 
+import de.szut.shift_backend.exceptionHandling.CreationException;
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Department;
 import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.repository.EmployeeRepository;
+import de.szut.shift_backend.templates.KeycloakInteractionService;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolationException;
@@ -17,14 +19,21 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final DepartmentService departmentService;
+    private final KeycloakInteractionService keyService;
 
-    public EmployeeService(EmployeeRepository employeeRepository, DepartmentService departmentService) {
+    public EmployeeService(EmployeeRepository employeeRepository, DepartmentService departmentService, KeycloakInteractionService keyService) {
         this.employeeRepository = employeeRepository;
         this.departmentService = departmentService;
+        this.keyService = keyService;
     }
 
-    public void create(Employee newEmployee) {
-        employeeRepository.save(newEmployee);
+    public void create(Employee newEmployee){
+        try{
+            this.keyService.addUserToKeycloak(newEmployee);
+            employeeRepository.save(newEmployee);
+        } catch (Exception e){
+            throw new CreationException(e.getMessage());
+        }
     }
 
     public Employee getEmployeeById(Long empID){

@@ -31,6 +31,14 @@ export class EmployeeService {
     });
   }
 
+  getEmployeeByUsername(username: string): Observable<GetEmployee>{
+    return this.httpClient.get<GetEmployee>(this.urlPre + `/username/${username}`,{
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+    });
+  }
+
   addEmployee(employee: AddEmployee){
     this.httpClient.post(this.urlPre, employee,{
       headers: new HttpHeaders()

@@ -6,13 +6,10 @@ import java.lang.module.ResolutionException;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.EnumMap;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Map;
 
 public class ClassReflectionHelper {
@@ -24,15 +21,14 @@ public class ClassReflectionHelper {
 
             if (field == null)
                 throw new ResolutionException("Field with name '" + key + "' does not exist");
+
             if (field.getType() == LocalDate.class) {
                 value = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse((CharSequence) value));
             }
-            if (field.getType() == LocalDateTime.class) {
+            else if (field.getType() == LocalDateTime.class) {
                 value = LocalDateTime.from(DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse((CharSequence) value));
             }
-
-            if (field.getType().isEnum()) {
-                Object[] enumVals = field.getType().getEnumConstants();
+            else if (field.getType().isEnum()) {
                 try {
                     Method valOfMethod = field.getType().getMethod("valueOf", String.class);
                     Object enumVal = valOfMethod.invoke(null, value);
@@ -46,7 +42,7 @@ public class ClassReflectionHelper {
             }
 
             field.setAccessible(true);
-            ReflectionUtils.setField(field, baseObject, field.getType().cast(value)); //TODO: fix here @MessageController->update("status" => "unsend" || "type" => 0 )
+            ReflectionUtils.setField(field, baseObject, field.getType().cast(value));
         });
 
         return baseObject;
@@ -62,10 +58,11 @@ public class ClassReflectionHelper {
                 continue;
 
             try{
+                field.setAccessible(true);
                 f.setAccessible(true);
                 ReflectionUtils.setField(field, objToUpdate, f.get(objToCopyFrom));
             } catch(Exception e){
-                System.out.println(e.getMessage());
+                System.out.println(e.getMessage()); //TODO: throw internal server error
             }
         }
         return objToUpdate;
