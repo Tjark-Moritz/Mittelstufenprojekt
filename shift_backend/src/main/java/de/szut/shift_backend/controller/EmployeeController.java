@@ -38,8 +38,7 @@ public class EmployeeController {
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
     @PostMapping
-    public ResponseEntity<GetEmployeeDto> createDepartment(@Valid @RequestBody final AddEmployeeDto employeeDto)
-    {
+    public ResponseEntity<GetEmployeeDto> createDepartment(@Valid @RequestBody final AddEmployeeDto employeeDto) {
         Employee emp = this.mappingService.mapAddEmployeeDtoToEmployee(employeeDto);
         this.employeeService.create(emp);
 
@@ -77,6 +76,21 @@ public class EmployeeController {
     public ResponseEntity<GetEmployeeDto> getEmployeeById( @Valid @PathVariable("id") final Long employeeId )
     {
         Employee emp = this.employeeService.getEmployeeById(employeeId);
+        GetEmployeeDto empDto = this.mappingService.mapEmployeeToGetEmployeeDto(emp);
+
+        return new ResponseEntity<>(empDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get Employee by username")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "employee was found"),
+            @ApiResponse(responseCode =  "400", description = "username parameter is null", content = @Content),
+            @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
+    })
+    @GetMapping("/username/{username}")
+    public ResponseEntity<GetEmployeeDto> getEmployeeById( @Valid @PathVariable("username") final String username )
+    {
+        Employee emp = this.employeeService.getEmployeeByUsername(username);
         GetEmployeeDto empDto = this.mappingService.mapEmployeeToGetEmployeeDto(emp);
 
         return new ResponseEntity<>(empDto, HttpStatus.OK);

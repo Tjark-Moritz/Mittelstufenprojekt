@@ -1,7 +1,7 @@
 export class GetShiftType {
   constructor(public id?: number,
               public shiftStartTime?: Date,
-              public endShiftTime?: Date,
+              public shiftEndTime?: Date,
               public typeName?: string,
               public shiftTypeColor?: string) {
   }

@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/employeeFrontendStarter'),
+      dir: require('path').join(__dirname, './coverage/shiftplaner'),
       subdir: '.',
       reporters: [
         { type: 'html' },

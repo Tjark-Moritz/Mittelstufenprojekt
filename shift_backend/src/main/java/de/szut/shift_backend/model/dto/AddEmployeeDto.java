@@ -2,6 +2,8 @@ package de.szut.shift_backend.model.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class AddEmployeeDto {
 
@@ -25,7 +27,7 @@ public class AddEmployeeDto {
 
     private String base64ProfilePic;
 
-    private GetShiftTypeDto preferredShiftType;
+    private Long preferredShiftTypeId;
 
     private Long departmentId;
 }

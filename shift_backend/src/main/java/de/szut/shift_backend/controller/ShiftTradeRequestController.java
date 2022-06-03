@@ -55,7 +55,7 @@ public class ShiftTradeRequestController {
                                                                                  @Valid @RequestBody final RequestAnswerDto answerDto)
     {
         ShiftTradeRequest request = this.shiftTradeRequestService.getShiftTradeRequestByRequestId(requestId);
-        //this.shiftTradeRequestService.updateShiftTradeRequests(request, answerDto.isAccepted());
+        this.shiftTradeRequestService.updateShiftTradeRequests(request, answerDto.isAccepted());
 
         List<ShiftTradeRequest> updatedRequestList = this.shiftTradeRequestService.getShiftTradeRequestsForRespondingEmployee(request.getReplyingEmployee().getId());
         List<GetShiftTradeRequestDto> updatedRequestDtoList = new ArrayList<>();

@@ -4,11 +4,11 @@ import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Department;
 import de.szut.shift_backend.model.Employee;
-import de.szut.shift_backend.model.Holiday;
 import de.szut.shift_backend.repository.DepartmentRepository;
 import de.szut.shift_backend.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,6 +29,20 @@ public class DepartmentService {
 
     public Department update(Long deptId, Map<String,Object> fieldsToPatch) {
         Department deptToUpdate = this.getDepartmentById(deptId);
+
+        //Dirty solution but hey it works ¯\_(ツ)_/¯
+        if(fieldsToPatch.containsKey("employees")){
+            List<?> temp = (List<?>) fieldsToPatch.get("employees");
+            List<Employee> emps = new ArrayList<>();
+
+            for(Object item : temp){
+                Optional<Employee> emp = this.employeeRepository.findById(((Integer) item).longValue());
+                emp.ifPresent(emps::add);
+            }
+
+            fieldsToPatch.put("employees", emps);
+        }
+
         Department deptUpdated = ClassReflectionHelper.UpdateFields(deptToUpdate, fieldsToPatch);
 
         deptUpdated = departmentRepository.save(deptUpdated);
