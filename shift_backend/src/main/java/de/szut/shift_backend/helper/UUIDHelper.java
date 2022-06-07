@@ -14,7 +14,6 @@ public class UUIDHelper {
                 return Optional.empty();
             }
 
-            return Optional.of(splittedString[1]);
+            return Optional.of(splittedString[2]);
     }
-
 }

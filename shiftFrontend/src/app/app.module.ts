@@ -26,6 +26,11 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
 
 import { MessageComponent } from './components/message/message.component';
+import {EmployeeListComponent} from "./components/employee-list/employee-list.component";
+import {HighliterPipe} from "./pipes/highliter.pipe";
+import {DepartmentListComponent} from "./components/department-list/department-list.component";
+import {LoginComponent} from "./components/login/login.component";
+import {ReactiveFormsModule} from "@angular/forms";
 //MatLuxonDateModule
 
 @NgModule({
@@ -39,9 +44,7 @@ import { MessageComponent } from './components/message/message.component';
     ShiftPlanComponent,
     LoginComponent,
     DepartmentDetailsComponent,
-    LoginComponent,
-    PageNotFoundComponent
-    HolidayPlanerComponent,
+    PageNotFoundComponent,
     MessageComponent
   ],
   imports: [

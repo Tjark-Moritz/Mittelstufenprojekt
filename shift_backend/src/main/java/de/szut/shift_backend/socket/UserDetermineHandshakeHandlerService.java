@@ -1,4 +1,4 @@
-package de.szut.shift_backend.services;
+package de.szut.shift_backend.socket;
 
 import de.szut.shift_backend.helper.UUIDHelper;
 import org.springframework.http.server.ServerHttpRequest;
@@ -32,6 +32,5 @@ public class UserDetermineHandshakeHandlerService extends DefaultHandshakeHandle
         return uuidHelper.extractUUIDOf(requestURI)
                 .map(uuid -> (Principal) () -> uuid)
                 .orElse(super.determineUser(request, webSocketHandler, attributes));
-
     }
 }

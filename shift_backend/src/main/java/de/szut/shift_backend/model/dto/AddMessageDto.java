@@ -16,12 +16,6 @@ public class AddMessageDto {
     @NotNull(message = "Channel can not be null!")
     private Long channelId;
 
-    @NotNull(message = "Requested-EmployeeId can not be null!")
-    private Long requestedEmployeeId;
-
-    @NotNull(message = "Sending employeeId can not be null!")
-    private Long sendingEmployeeId;
-
     private LocalDateTime dateTime;
 
     @NotNull(message = "Message-Type can not be null!")

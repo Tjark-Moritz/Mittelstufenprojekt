@@ -1,6 +1,5 @@
 package de.szut.shift_backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +24,10 @@ public class MessageChannel {
     @NotNull(message = "Channel description can not be null!")
     private String description;
 
-    @OneToMany
+    @OrderBy("dateTime DESC")
+    @OneToMany(mappedBy = "messageChannel")
     private List<Message> messages;
+
+    @ManyToMany
+    private List<Employee> employees;
 }

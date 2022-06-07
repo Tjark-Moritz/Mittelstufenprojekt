@@ -14,5 +14,7 @@ public class GetMessageChannelDto {
 
     private String description;
 
-    private List<Message> messages;
+    private List<GetMessageDto> messages; //todo: DTOs dürfen nur DTOs haben, right?
+
+    private List<GetEmployeeDto> employees;
 }

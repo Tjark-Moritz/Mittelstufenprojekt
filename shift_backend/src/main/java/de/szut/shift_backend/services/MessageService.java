@@ -4,10 +4,11 @@ import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Message;
 import de.szut.shift_backend.model.MessageChannel;
-import de.szut.shift_backend.repository.MessageChannelRepository;
 import de.szut.shift_backend.repository.MessageRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,9 @@ import java.util.Optional;
 public class MessageService {
 
     private final MessageRepository messageRepository;
-    private final MessageChannelRepository messageChannelRepository;
 
-    public MessageService(MessageRepository messageRepository, MessageChannelRepository messageChannelRepository) {
+    public MessageService(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
-        this.messageChannelRepository = messageChannelRepository;
     }
 
     public void create(Message newMessage) {
@@ -42,7 +41,8 @@ public class MessageService {
         List<Message> messageList = new ArrayList<>();
 
         for (Message message : messages) {
-            if (message.getChannelId().equals(channelId))
+            MessageChannel messageChannel = message.getMessageChannel();
+            if (messageChannel.getId().equals(channelId))
                 messageList.add(message);
         }
 
@@ -52,8 +52,12 @@ public class MessageService {
         return messageList;
     }
 
-    public List<Message> getAllMessages() {
-        return this.messageRepository.findAll();
+    public List<Message> getAllMessagesFromMessageChannel(Long channelId) {
+        return this.messageRepository.findAllByMessageId(channelId);
+    }
+
+    public List<Message> findXMessagesByChannelId(int amount, Long channelId) {
+        return this.messageRepository.findXMessagesByChannelId(PageRequest.of(0,amount), channelId);
     }
 
     public Message updateMessage(Long messageId, Map<String, Object> fieldsToPatch) {

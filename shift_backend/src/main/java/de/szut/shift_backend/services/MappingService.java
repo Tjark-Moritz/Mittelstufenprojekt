@@ -5,6 +5,7 @@ import de.szut.shift_backend.model.*;
 import de.szut.shift_backend.model.dto.*;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,21 +19,23 @@ public class MappingService {
     private final EmployeeService employeeService;
     private final ShiftService shiftService;
     private final ShiftTypeService shiftTypeService;
+    private final MessageChannelService messageChannelService;
 
-    public MappingService(HolidayService holidayService, DepartmentService departmentService, EmployeeService employeeService, ShiftService shiftService, ShiftTypeService shiftTypeService)
+    public MappingService(HolidayService holidayService, DepartmentService departmentService, EmployeeService employeeService, ShiftService shiftService, ShiftTypeService shiftTypeService, MessageChannelService messageChannelService)
     {
         this.holidayService = holidayService;
         this.departmentService = departmentService;
         this.employeeService = employeeService;
         this.shiftService = shiftService;
         this.shiftTypeService = shiftTypeService;
+        this.messageChannelService = messageChannelService;
     }
 
     public GetMessageDto mapMessageToGetMessageDto(Message message) {
         GetMessageDto getMessageDto = new GetMessageDto();
+
         getMessageDto.setId(message.getId());
-        getMessageDto.setChannelId(message.getChannelId());
-        getMessageDto.setRequestedEmployeeId(message.getRequestedEmployeeId());
+        getMessageDto.setChannelId(message.getMessageChannel().getId());
         getMessageDto.setSendingEmployeeId(message.getSendingEmployeeId());
         getMessageDto.setDateTime(message.getDateTime());
         getMessageDto.setStatus(message.getStatus());
@@ -40,13 +43,14 @@ public class MappingService {
         return getMessageDto;
     }
 
-    public Message mapAddMessageDtoToMessage(AddMessageDto addMessageDto) {
+    public Message mapAddMessageDtoToMessage(AddMessageDto addMessageDto, String employeeId) {
         Message message = new Message();
+        MessageChannel messageChannel = this.messageChannelService.getMessageChannelById(addMessageDto.getChannelId());
+
         message.setId(addMessageDto.getId());
         message.setContent(addMessageDto.getContent());
-        message.setChannelId(addMessageDto.getChannelId());
-        message.setRequestedEmployeeId(addMessageDto.getRequestedEmployeeId());
-        message.setSendingEmployeeId(addMessageDto.getSendingEmployeeId());
+        message.setMessageChannel(messageChannel);
+        message.setSendingEmployeeId(Long.valueOf(employeeId));
         message.setDateTime(addMessageDto.getDateTime());
         message.setStatus(addMessageDto.getStatus());
 
@@ -65,10 +69,17 @@ public class MappingService {
 
     public GetMessageChannelDto mapMessageChannelToGetMessageChannelDto(MessageChannel messageChannel) {
         GetMessageChannelDto getMessageChannelDto = new GetMessageChannelDto();
+        List<GetMessageDto> getMessageDtoList = new ArrayList<>();
+
         getMessageChannelDto.setId(messageChannel.getId());
         getMessageChannelDto.setName(messageChannel.getName());
         getMessageChannelDto.setDescription(messageChannel.getDescription());
-        getMessageChannelDto.setMessages(messageChannel.getMessages());
+
+        for (Message message : messageChannel.getMessages()) {
+            getMessageDtoList.add(mapMessageToGetMessageDto(message));
+        }
+
+        getMessageChannelDto.setMessages(getMessageDtoList);
 
         return getMessageChannelDto;
     }

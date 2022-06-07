@@ -1,6 +1,7 @@
 package de.szut.shift_backend.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.Message;
 import lombok.Data;
 
@@ -20,5 +21,8 @@ public class AddMessageChannelDto {
     private String description;
 
     private List<Message> messages;
+
+    @NotNull
+    private List<Employee> employees;
 }
 
