@@ -5,6 +5,8 @@ import {ShiftPlan} from "../../models/dto/ShiftPlan";
 import {GetShift} from "../../models/dto/GetShift";
 import {GetShiftType} from "../../models/dto/GetShiftType";
 import {GetEmployee} from "../../models/dto/GetEmployee";
+import {DayDetailsComponent} from "../day-details/day-details.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-shift-plan',
@@ -16,6 +18,7 @@ export class ShiftPlanComponent implements OnInit {
   display: string = "month";
 
   weekdays: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
+  months: string[] = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
 
   monthStructure: Date[][] = [[],[],[],[],[],[]];
   weekStructure: Date[] = [];
@@ -26,7 +29,7 @@ export class ShiftPlanComponent implements OnInit {
 
   currentUser: GetEmployee = new GetEmployee();
 
-  constructor(private employeeService: EmployeeService) {
+  constructor(private employeeService: EmployeeService, private dialog: MatDialog) {
     let shift1Start = new Date();
     shift1Start.setHours(6, 0, 0);
     let shift1End = new Date();
@@ -38,7 +41,25 @@ export class ShiftPlanComponent implements OnInit {
     let shiftType2: GetShiftType = new GetShiftType(2, shift1End, shift2End, "Spätschicht", "#E5FFB5");
 
     let empList: GetEmployee[] = [];
-    this.employeeService.getAllEmployees().subscribe(val => empList = val)
+
+    let emp1: GetEmployee = new GetEmployee();
+    emp1.id = 1;
+    emp1.firstName = "Jarno";
+    emp1.lastName = "Nitsch";
+    emp1.city = "OHZ";
+    emp1.email = "Jarno@123.de";
+
+    let emp2: GetEmployee = new GetEmployee();
+    emp2.id = 2;
+    emp2.firstName = "Michael";
+    emp2.lastName = "Jackson";
+    emp2.city = "NYCITY";
+    emp2.email = "michael@jackson.de";
+
+    empList.push(emp1);
+    empList.push(emp2);
+
+    //this.employeeService.getAllEmployees().subscribe(val => empList = val)
 
     let shift1List: GetEmployee[] = [];
     let shift2List: GetEmployee[] = [];
@@ -56,10 +77,12 @@ export class ShiftPlanComponent implements OnInit {
 
     let shift1: GetShift = new GetShift(1, shift1Date, shiftType1, shift1List);
     let shift2: GetShift = new GetShift(2, shift2Date, shiftType2, shift2List);
+    let shift3: GetShift = new GetShift(2, shift2Date, shiftType1, shift1List);
 
     let shifts: GetShift[] = [];
     shifts.push(shift1)
     shifts.push(shift2)
+    shifts.push(shift3)
 
     let validMonthYear = new Date()
     validMonthYear.setFullYear(2022, 3)
@@ -78,7 +101,6 @@ export class ShiftPlanComponent implements OnInit {
   ngOnInit(): void {
     this.calculateMonthStructure();
     this.calculateWeekStructure();
-    console.log(this.chosenShiftPlan)
   }
 
 
@@ -87,7 +109,7 @@ export class ShiftPlanComponent implements OnInit {
   }
 
   getFirstWeekdayOfMonth(date: Date): number {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay()-1;
+    return new Date(date.getFullYear(), date.getMonth(), 0).getDay();
   }
 
   getMonthTitle(month: number): string {
@@ -200,27 +222,10 @@ export class ShiftPlanComponent implements OnInit {
     datepicker.close();
   }
 
-
-  getEmployeesFromShift(shiftPlan: ShiftPlan, date: Date): GetEmployee[] {
-    let employees: GetEmployee[] = [];
-
-    if(date.getMonth() != this.chosenDate.getMonth()) {
-      return employees;
-    }
-
-    if(!shiftPlan.shifts || !shiftPlan.shifts[date.getDate() - 1] || !shiftPlan.shifts[date.getDate() - 1].activeEmployees) {
-      return employees;
-    }
-
-    // @ts-ignore
-    for(let i = 0; i < shiftPlan.shifts[date.getDate() - 1].activeEmployee.length; i++) {
-      // @ts-ignore
-      if(shiftPlan.shifts[date.getDate() - 1].activeEmployee[i] != undefined) {
-        // @ts-ignore
-        employees.push(shiftPlan.shifts[date.getDate() - 1].activeEmployee[i])
-      }
-    }
-    return employees
+  backToCurrentDate(datepicker?: any): void {
+    this.chosenDate = new Date()
+    this.updateMonthStructure()
+    datepicker.close()
   }
 
   colorizeShifts(shiftPlan: ShiftPlan, date: Date): string {
@@ -257,5 +262,58 @@ export class ShiftPlanComponent implements OnInit {
       opacity = "0.5";
     }
     return opacity;
+  }
+
+
+  openDialog(shiftPlan: ShiftPlan, date: Date) {
+    if(shiftPlan.shifts){
+      let formattedDate: string = this.getFormattedDate(date);
+      let shifts: GetShift[] = this.getShifts(shiftPlan, date)
+
+      this.dialog.open(DayDetailsComponent, {
+        position: {
+          top: "0",
+          right: "0",
+        },
+        height: "100vh",
+        direction: "rtl",
+        data: {
+          date,
+          formattedDate,
+          shifts,
+        }
+      });
+    }
+  }
+
+  getFormattedDate(date: Date): string {
+    return this.weekdays[date.getDay()] + ", " + date.getDate() + "." + this.months[date.getMonth()] + " " + date.getFullYear();
+  }
+
+  getShifts(shiftPlan: ShiftPlan, date?: Date, shiftType?: GetShiftType): GetShift[] {
+    if(shiftPlan.shifts) {
+      if (date) {
+        let chosenDayShifts: GetShift[];
+        chosenDayShifts = shiftPlan.shifts.filter(shift => shift.shiftDate?.toDateString() == date.toDateString())
+
+        if (shiftType) {
+          return chosenDayShifts.filter(shift => shift.shiftType?.id == shiftType.id)
+        }
+        return chosenDayShifts
+      }
+      return shiftPlan.shifts
+    }
+    return []
+  }
+
+  getShiftTypes(shiftPlan: ShiftPlan): GetShiftType[] {
+    let shiftTypes: GetShiftType[] = [];
+
+    if(shiftPlan.shiftType) {
+      for(let type of shiftPlan.shiftType) {
+        shiftTypes.push(type)
+      }
+    }
+    return shiftTypes
   }
 }

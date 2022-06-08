@@ -27,7 +27,7 @@ public class GetEmployeeDto {
 
     private Long numHolidaysLeft;
 
-    private List<GetHolidayDto> acceptedHolidays;
+    private List<GetHolidayDto> holidays;
 
     private List<GetSickDayDto> sickDays;
 

@@ -46,11 +46,8 @@ public class Employee {
     @NotNull
     private long numHolidaysLeft;
 
-    /*
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "holiday_id")
-    private List<Holiday> acceptedHolidays;
-    */
+    @OneToMany
+    private List<Holiday> holidays;
 
     //@OneToMany
     //private List<SickDay> sickDays;
@@ -60,5 +57,7 @@ public class Employee {
     @OneToOne
     private ShiftType preferredShiftType;
 
-    private Long departmentId;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id")
+    private Department department;
 }

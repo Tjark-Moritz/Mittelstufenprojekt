@@ -1,10 +1,12 @@
 <nav class="navbar cNavBar">
   <div class="container-fluid">
     <div>
-      <div class="cMenuLinesDiv" (click)="sidenav.toggle()">
-        <div class="cMenuLine"></div>
-        <div class="cMenuLine"></div>
-        <div class="cMenuLine"></div>
+      <div class="cMenuLinesDiv">
+        <div id="cMenuLinesDiv" (click)="sideNavIsOpen(true); sidenav.toggle()" [class.active]="classApplied">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
 
       <div class="cLogoDiv">
@@ -21,21 +23,22 @@
       </a>
 
       <a class="cSymbol">
-        <img *ngIf="profilePictureBase64 == ''" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
-        <img *ngIf="profilePictureBase64 != ''" id="ProfilePicture" class="cSymbolImg" [src]="safeProfilePicture" alt="Profile Picture"/>
+        <img *ngIf="!isProfilePictureSet()" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
+        <img *ngIf="isProfilePictureSet()" id="ProfilePicture" class="cSymbolImg" [src]="getProfilePicture()" alt="Profile Picture"/>
       </a>
     </div>
   </div>
 </nav>
 
 <mat-sidenav-container>
-  <mat-sidenav #sidenav>
+  <mat-sidenav #sidenav (closed)="sideNavIsOpen(false);">
     <mat-nav-list>
       <a mat-list-item [routerLink]="'/shift'"> Schichten Übersicht </a>
       <a mat-list-item [routerLink]="'/emps'"> Mitarbeiter Liste </a>
       <a mat-list-item [routerLink]="'/deps'"> Abteilungs Liste </a>
       <a mat-list-item [routerLink]="'/holiday'"> Urlaub </a>
-      <a mat-list-item (click)="sidenav.toggle()">Close</a>
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="sideNavIsOpen(true); sidenav.toggle()">Schließen</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
