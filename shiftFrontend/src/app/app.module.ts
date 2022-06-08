@@ -8,7 +8,7 @@ import { HighliterPipe } from './pipes/highliter.pipe';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { HolidayPlanerComponent } from './components/holiday-planer/holiday-planer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -24,8 +24,12 @@ import {MatInputModule} from "@angular/material/input";
 import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { DayDetailsComponent } from './components/day-details/day-details.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatIconModule} from "@angular/material/icon";
+import {MatListModule} from "@angular/material/list";
 
-//MatLuxonDateModule
 
 @NgModule({
   declarations: [
@@ -37,15 +41,14 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     DepartmentListComponent,
     ShiftPlanComponent,
     LoginComponent,
+    DayDetailsComponent,
     DepartmentDetailsComponent,
-    LoginComponent,
     PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
-    HttpClientModule,
     BrowserAnimationsModule,
     MatTableModule,
     MatDatepickerModule,
@@ -54,7 +57,12 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MatDateFnsModule,
     MatMomentDateModule,
     MatInputModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatListModule,
+    FormsModule
   ],
   providers: [HighliterPipe],
   bootstrap: [AppComponent]
