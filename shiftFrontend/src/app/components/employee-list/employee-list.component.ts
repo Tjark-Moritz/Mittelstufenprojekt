@@ -7,6 +7,7 @@ import {EmployeeService} from "../../services/employee.service";
 import {MatDialog} from "@angular/material/dialog";
 import {EmployeeDetailsComponent} from "../employee-details/employee-details.component";
 import {Observable} from "rxjs";
+import {BearerTokenService} from "../../services/bearer-token.service";
 
 @Component({
   selector: 'app-employee-list',
@@ -27,6 +28,15 @@ export class EmployeeListComponent implements OnInit {
 
   constructor(private empService: EmployeeService, private depService: DepartmentService, private dialog: MatDialog) {
     this.selection = new SelectionModel<GetEmployee>(true, []);
+
+    let roleName: UserRoleEnum | undefined;
+    // @ts-ignore
+    roleName = BearerTokenService.getUserRoles;
+    if(roleName){
+      if(roleName == UserRoleEnum.Admin){
+        this.isAdmin = true;
+      }
+    }
 
     this.empService.getAllEmployees().subscribe(res => {
       res.forEach(temp => {
