@@ -43,7 +43,7 @@ public class KeycloakInteractionService {
             MultiValueMap<String, String> urlData= new LinkedMultiValueMap<String, String>();
             urlData.add("grant_type","client_credentials");
             urlData.add("client_id","admin-cli");
-            urlData.add("client_secret","6945a851-35e0-4c5d-9cb7-72eb7312b638");
+            urlData.add("client_secret","8b67e211-b146-42ae-a8ff-c536e93dd933");
 
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(urlData, headers);
 
