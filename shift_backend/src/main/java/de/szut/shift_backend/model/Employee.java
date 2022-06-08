@@ -51,7 +51,7 @@ public class Employee {
 
     //@OneToMany
     //private List<SickDay> sickDays;
-
+    @Column(length=1000000)
     private String base64ProfilePic;
 
     @OneToOne
