@@ -103,7 +103,9 @@ public class MappingService {
         List<Employee> empList = new ArrayList<>();
 
         for (Long empId : deptDto.getEmployeeIds()){
-            empList.add(employeeService.getEmployeeById(empId));
+            Employee tempEmp = employeeService.getEmployeeById(empId);
+            tempEmp.setDepartment(dept);
+            empList.add(tempEmp);
         }
 
         dept.setEmployees(empList);
@@ -150,7 +152,7 @@ public class MappingService {
         employee.setNumHolidaysLeft(getEmployeeDto.getNumHolidaysLeft());
         employee.setBase64ProfilePic(getEmployeeDto.getBase64ProfilePic());
         employee.setPreferredShiftType(shiftType);
-        employee.setDepartmentId(getEmployeeDto.getDepartmentId());
+        employee.setDepartment(this.departmentService.getDepartmentById(getEmployeeDto.getDepartmentId()));
 
         return employee;
     }
@@ -227,7 +229,7 @@ public class MappingService {
             emp.setBase64ProfilePic("");
 
         if (empDto.getDepartmentId() != null)
-            emp.setDepartmentId(empDto.getDepartmentId());
+            emp.setDepartment(this.departmentService.getDepartmentById(empDto.getDepartmentId()));
 
         if (empDto.getPreferredShiftTypeId() != null)
             emp.setPreferredShiftType(this.shiftTypeService.getShiftTypeById(empDto.getPreferredShiftTypeId()));
@@ -257,7 +259,9 @@ public class MappingService {
 
         empDto.setHolidays(holidays);
         empDto.setBase64ProfilePic(emp.getBase64ProfilePic());
-        empDto.setDepartmentId(emp.getDepartmentId());
+
+        if(emp.getDepartment() != null)
+            empDto.setDepartmentId(emp.getDepartment().getDepartmentId());
 
         return empDto;
     }

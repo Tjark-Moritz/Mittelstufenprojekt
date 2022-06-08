@@ -81,7 +81,9 @@ export class LoginComponent implements OnInit {
 
     // @ts-ignore
     let username: string = jwtDecode(token.access_token).preferred_username;
-    this.employeeService.getEmployeeByUsername(username).subscribe(x => LoginComponent.loggedInUser = x);
+    this.employeeService.getEmployeeByUsername(username).subscribe(x => {
+      LoginComponent.loggedInUser = x;
+    });
 
     if(LoginComponent.loggedInUser) {
       if (LoginComponent.loggedInUser.base64ProfilePic != null) {

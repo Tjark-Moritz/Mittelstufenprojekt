@@ -29,5 +29,6 @@ public class Department {
     private Employee leadEmployee;
 
     @OneToMany
+    @JoinColumn(name = "department_id")
     private List<Employee> employees;
 }
