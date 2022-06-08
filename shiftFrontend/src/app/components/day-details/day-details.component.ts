@@ -57,11 +57,11 @@ export class DayDetailsComponent implements OnInit {
         while (newFound) {
           newFound = false;
           let notFitting = this.selection.selected.find(value => {
-            if (value.firstname && value.lastname) {
-              if (value.firstname.includes(this.searchKey)) {
+            if (value.firstName && value.lastName) {
+              if (value.firstName.includes(this.searchKey)) {
                 return;
               }
-              if (value.lastname.includes(this.searchKey)) {
+              if (value.lastName.includes(this.searchKey)) {
                 return;
               }
             }

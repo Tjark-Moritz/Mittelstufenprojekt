@@ -44,15 +44,15 @@ export class ShiftPlanComponent implements OnInit {
 
     let emp1: GetEmployee = new GetEmployee();
     emp1.id = 1;
-    emp1.firstname = "Jarno";
-    emp1.lastname = "Nitsch";
+    emp1.firstName = "Jarno";
+    emp1.lastName = "Nitsch";
     emp1.city = "OHZ";
     emp1.email = "Jarno@123.de";
 
     let emp2: GetEmployee = new GetEmployee();
     emp2.id = 2;
-    emp2.firstname = "Michael";
-    emp2.lastname = "Jackson";
+    emp2.firstName = "Michael";
+    emp2.lastName = "Jackson";
     emp2.city = "NYCITY";
     emp2.email = "michael@jackson.de";
 

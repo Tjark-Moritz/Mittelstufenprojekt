@@ -16,7 +16,7 @@
         <table class="legend-table">
           <tr class="legend-row" *ngFor="let type of getShiftTypes(this.chosenShiftPlan)">
             <td class="colored-square" [style.background-color]="type.shiftTypeColor"></td>
-            <p class="color-description" *ngIf="type.shiftStartTime && type.endShiftTime">&nbsp;&nbsp;{{type.typeName}} ({{type.shiftStartTime.getHours()}} - {{type.endShiftTime.getHours()}} Uhr)</p>
+            <p class="color-description" *ngIf="type.shiftStartTime && type.shiftEndTime">&nbsp;&nbsp;{{type.typeName}} ({{type.shiftStartTime.getHours()}} - {{type.shiftEndTime.getHours()}} Uhr)</p>
           </tr>
         </table>
       </div>
