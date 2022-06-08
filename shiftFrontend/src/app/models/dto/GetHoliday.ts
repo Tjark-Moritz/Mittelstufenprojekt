@@ -3,6 +3,7 @@ export class GetHoliday {
               public holidayTypeId?: number,
               public startDate?: Date,
               public endDate?: Date,
-              public employeeId?: number) {
+              public employeeId?: number,
+              public holidayStatus?: string) {
   }
 }

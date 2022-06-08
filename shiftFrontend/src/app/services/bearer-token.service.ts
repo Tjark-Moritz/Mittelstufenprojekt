@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BearerToken} from "../models/bearerToken";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {UserCookieService} from "./user-cookie.service";
+import {UserRoleEnum} from "../models/UserRoleEnum";
+import jwtDecode from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +42,25 @@ export class BearerTokenService {
 
   public static get isLoggedIn(): boolean {
     return !!BearerTokenService.bearerToken;
+  }
+
+  // returns undefined if the user isn't logged in
+  public static get getUserRoles(): UserRoleEnum | undefined {
+    if(BearerTokenService.bearerToken == null || BearerTokenService.bearerToken.access_token == null){
+      return undefined;
+    }
+
+    let decodedToken = jwtDecode(BearerTokenService.bearerToken.access_token);
+    // @ts-ignore
+    let roleNames : string[] = decodedToken.realm_access.roles;
+    if(roleNames.includes(UserRoleEnum.Admin.toString())){
+      return UserRoleEnum.Admin;
+    }
+    else if (roleNames.includes(UserRoleEnum.User.toString())){
+      return UserRoleEnum.User;
+    }
+
+    return undefined;
+
   }
 }

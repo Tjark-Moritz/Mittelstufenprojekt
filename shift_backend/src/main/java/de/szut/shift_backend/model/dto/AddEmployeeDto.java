@@ -2,6 +2,8 @@ package de.szut.shift_backend.model.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class AddEmployeeDto {
 

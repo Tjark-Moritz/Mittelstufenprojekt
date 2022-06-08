@@ -8,7 +8,7 @@ import { HighliterPipe } from './pipes/highliter.pipe';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import { HolidayPlanerComponent } from './components/holiday-planer/holiday-planer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -22,8 +22,13 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
 import {MatInputModule} from "@angular/material/input";
 import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
+import { MatDialogModule} from "@angular/material/dialog";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatListModule} from "@angular/material/list";
 import { DayDetailsComponent } from './components/day-details/day-details.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatExpansionModule} from "@angular/material/expansion";
@@ -50,7 +55,9 @@ import {MatListModule} from "@angular/material/list";
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatDialogModule,
     MatTableModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
@@ -63,6 +70,9 @@ import {MatListModule} from "@angular/material/list";
     MatIconModule,
     MatListModule,
     FormsModule
+    AppRoutingModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [HighliterPipe],
   bootstrap: [AppComponent]

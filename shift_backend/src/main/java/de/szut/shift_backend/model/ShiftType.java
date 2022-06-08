@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -20,11 +22,11 @@ public class ShiftType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    private LocalDate shiftStartTime;
+    @NotNull
+    private LocalTime shiftStartTime;
 
-    @NotBlank
-    private LocalDate shiftEndTime;
+    @NotNull
+    private LocalTime shiftEndTime;
 
     @NotBlank
     private String typeName;
