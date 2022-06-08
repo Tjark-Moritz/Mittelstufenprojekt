@@ -75,41 +75,4 @@ export class DayDetailsComponent implements OnInit {
       }
     }
   }
-
-  /*async search(){
-    // Puffer damit der eingegebene Text lädt
-    await new Promise(f => setTimeout(f, 100));
-    this.selection.clear();
-
-    for(let shift of this.shifts) {
-      if (shift.activeEmployees) {
-        this.selection = new SelectionModel<GetEmployee>(true, shift.activeEmployees);
-      }
-
-      shift.activeEmployees?.forEach(employee => this.selection.select(employee))
-
-      this.searchKey = (document.getElementById("searchInput") as HTMLInputElement).value;
-      if (this.searchKey != "") {
-        let newFound = true;
-        while (newFound) {
-          newFound = false;
-          let notFitting = this.selection.selected.find(value => {
-            if (value.firstname && value.lastname) {
-              if (value.firstname.includes(this.searchKey)) {
-                return;
-              }
-              if (value.lastname.includes(this.searchKey)) {
-                return;
-              }
-            }
-            return value;
-          })
-          if (notFitting) {
-            this.selection.deselect(notFitting);
-            newFound = true;
-          }
-        }
-      }
-    }
-  }*/
 }
