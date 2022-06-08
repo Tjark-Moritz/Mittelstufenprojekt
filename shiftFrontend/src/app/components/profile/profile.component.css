@@ -68,3 +68,21 @@
 input:read-only {
   background-color: #d1d1d1;
 }
+
+
+
+.cPasswordFields {
+  width: 400px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cPasswordSingle {
+  display: flex;
+}
+
+.cPasswordInput {
+  margin-left: auto;
+}

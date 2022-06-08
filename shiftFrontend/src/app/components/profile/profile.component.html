@@ -59,5 +59,28 @@
 
 <div class="cBaseMargin" [hidden]="!(adminView || loggedInUserView)">
   <h3>Passwort</h3>
+  <div class="cPasswordFields" [hidden]="!loggedInUserView">
+    <div class="cPasswordSingle">
+      <label>Derzeitiges Passwort: </label>
+      <input type="password" placeholder="Derzeitiges Passwort" class="cPasswordInput"/>
+    </div>
+    <div class="cPasswordSingle">
+      <label>Neues Passwort: </label>
+      <input type="password" placeholder="Neues Passwort" class="cPasswordInput" [(ngModel)]="newPassword"/>
+    </div>
+    <div class="cPasswordSingle">
+      <label>Neues Passwort wiederholen: </label>
+      <input type="password" placeholder="Neues Passwort wiederholen" class="cPasswordInput"/>
+    </div>
 
+    <button (click)="onClick_SavePassword()">Änderung speichern</button>
+  </div>
+
+  <div class="cPasswordFields" [hidden]="!(adminView && !loggedInUserView)">
+    <div class="cPasswordSingle">
+      <label>Neues Passwort: </label>
+      <input type="text" class="cPasswordInput" [(ngModel)]="newPassword" readonly/>
+    </div>
+    <button (click)="onClick_ResetPassword()">Passwort zurücksetzen</button>
+  </div>
 </div>

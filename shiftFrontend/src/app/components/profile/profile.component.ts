@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {GetEmployee} from "../../models/dto/GetEmployee";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
-import {Observable, switchAll, switchMap} from "rxjs";
 import {EmployeeService} from "../../services/employee.service";
+import * as swal from "sweetalert2";
 
 @Component({
   selector: 'app-profile',
@@ -15,7 +15,9 @@ export class ProfileComponent implements OnInit {
   private selectedEmployee: GetEmployee | undefined;
   private profilePictureBase64 : string = "";
 
-  public loggedInUserView = true;
+  public newPassword: string = "";
+
+  public loggedInUserView = false;
   public adminView = true;
 
   constructor(private domSanitizer: DomSanitizer, private route: ActivatedRoute, private empService: EmployeeService) {
@@ -56,5 +58,69 @@ export class ProfileComponent implements OnInit {
 
   public onClick_RemoveProfilePicture(){
 
+  }
+
+  public onClick_SavePassword(){
+    swal.default.fire({
+      title: 'Änderungen wirklich speichern?',
+      showDenyButton: true,
+      confirmButtonText: 'Ja',
+      denyButtonText: 'Nein',
+      customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-1',
+        denyButton: 'order-2',
+      }
+    }).then((boxResult) => {
+      if (boxResult.isConfirmed) {
+        this.savePasswordInDb();
+      } else if (boxResult.isDenied) {
+      }
+    });
+  }
+
+  public onClick_ResetPassword(){
+    swal.default.fire({
+      title: 'Passwort wirklich zurücksetzen?',
+      showDenyButton: true,
+      confirmButtonText: 'Ja',
+      denyButtonText: 'Nein',
+      customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-1',
+        denyButton: 'order-2',
+      }
+    }).then((boxResult) => {
+      if (boxResult.isConfirmed) {
+        let rdmText: string = "";
+        let rdmLength: number = 8;
+        let possible: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (let i: number = 0; i < rdmLength; i++) {
+          rdmText += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+
+        this.newPassword = rdmText;
+        this.savePasswordInDb(true);
+      } else if (boxResult.isDenied) {
+      }
+    });
+  }
+
+  private openSavedMessageBox(){
+    swal.default.fire({
+      position: 'top',
+      icon: 'success',
+      title: 'Änderungen gespeichert!',
+      showCloseButton: true,
+      timer: 2500
+    });
+  }
+
+  private savePasswordInDb(skipSuccessBox: boolean = false){
+    console.info("Neues Passwort wurde gespeichert: '" + this.newPassword + "'");
+    if(!skipSuccessBox){
+      this.openSavedMessageBox();
+    }
   }
 }
