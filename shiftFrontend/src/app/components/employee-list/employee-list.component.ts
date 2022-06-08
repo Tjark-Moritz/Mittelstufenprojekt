@@ -8,6 +8,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {EmployeeDetailsComponent} from "../employee-details/employee-details.component";
 import {Observable} from "rxjs";
 import {BearerTokenService} from "../../services/bearer-token.service";
+import {UserRoleEnum} from "../../models/UserRoleEnum";
 
 @Component({
   selector: 'app-employee-list',

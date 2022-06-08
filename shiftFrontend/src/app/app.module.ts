@@ -31,8 +31,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatListModule} from "@angular/material/list";
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 
 //MatLuxonDateModule
@@ -49,7 +47,7 @@ import { EmployeeDetailsComponent } from './components/employee-details/employee
     LoginComponent,
     DayDetailsComponent,
     DepartmentDetailsComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
     LoginComponent,
     PageNotFoundComponent,
     EmployeeDetailsComponent
