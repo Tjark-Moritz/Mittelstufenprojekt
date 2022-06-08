@@ -1,5 +1,5 @@
 .cBaseMargin {
-  margin: 10px;
+  margin: 1vw;
 }
 
 .cSplitterLine {
@@ -14,12 +14,8 @@
   border-radius: 10%;
   border: 3px solid black;
 
-  height: 100px;
-  width: 100px;
-}
-
-.cPictureChangeBtn {
-  margin-left: 10px;
+  height: 150px;
+  width: 150px;
 }
 
 .cFirstLayout {
@@ -28,4 +24,47 @@
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
+}
+
+.cProfilePictureDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: auto 0px;
+}
+
+.cProfilePictureButtonsDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+
+
+
+.cDetailsDiv {
+  margin-left: auto;
+  width: 400px;
+  border: 1px solid black;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cDetailsSingle {
+  display: flex;
+}
+
+.cDetailsLabel {
+
+}
+
+.cDetailsInput {
+  margin-left: auto;
+}
+
+input:read-only {
+  background-color: #d1d1d1;
 }

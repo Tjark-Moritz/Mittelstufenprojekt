@@ -2,29 +2,62 @@
   <h1>Profil</h1>
 
   <section class="cFirstLayout">
-    <div>
+    <div class="cProfilePictureDiv">
       <a class="cSymbol">
         <img *ngIf="!isProfilePictureSet()" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
         <img *ngIf="isProfilePictureSet()" id="ProfilePicture" class="cSymbolImg" [src]="getProfilePicture()" alt="Profile Picture"/>
       </a>
 
-      <button class="cPictureChangeBtn">Bild ändern</button>
+      <div class="cProfilePictureButtonsDiv" [hidden]="!(adminView || loggedInUserView)">
+        <button [hidden]="!loggedInUserView" (click)="onClick_ChangeProfilePicture()">Bild ändern</button>
+        <button [hidden]="!(adminView || loggedInUserView)" (click)="onClick_RemoveProfilePicture()">Bild entfernen</button>
+      </div>
     </div>
 
-    <div>
+    <div class="cDetailsDiv">
+      <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
+        <label class="cDetailsLabel">Personalnummer: </label>
+        <input type="text" class="cDetailsInput" value="test" readonly/>
+      </div>
+      <div class="cDetailsSingle">
+        <label class="cDetailsLabel">Nachname: </label>
+        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
+      </div>
+      <div class="cDetailsSingle">
+        <label class="cDetailsLabel">Vorname: </label>
+        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
+      </div>
+      <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
+        <label class="cDetailsLabel">Straße / Hausnummer: </label>
+        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
+      </div>
+      <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
+        <label class="cDetailsLabel">Postleitzahl / Ort: </label>
+        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
+      </div>
+      <div class="cDetailsSingle">
+        <label class="cDetailsLabel">E-Mail: </label>
+        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
+      </div>
+      <div class="cDetailsSingle">
+        <label class="cDetailsLabel">Telefon: </label>
+        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
+      </div>
 
+      <button [hidden]="!adminView" (click)="onClick_SaveDetails()">Änderungen speichern</button>
     </div>
   </section>
 </div>
 
-<div class="cSplitterLine"></div>
+<div class="cSplitterLine" [hidden]="!loggedInUserView"></div>
 
-<div class="cBaseMargin">
+<div class="cBaseMargin" [hidden]="!loggedInUserView">
   <h3>Präferenzen</h3>
 </div>
 
-<div class="cSplitterLine"></div>
+<div class="cSplitterLine" [hidden]="!(adminView || loggedInUserView)"></div>
 
-<div class="cBaseMargin">
+<div class="cBaseMargin" [hidden]="!(adminView || loggedInUserView)">
   <h3>Passwort</h3>
+
 </div>

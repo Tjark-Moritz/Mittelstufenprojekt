@@ -15,6 +15,9 @@ export class ProfileComponent implements OnInit {
   private selectedEmployee: GetEmployee | undefined;
   private profilePictureBase64 : string = "";
 
+  public loggedInUserView = true;
+  public adminView = true;
+
   constructor(private domSanitizer: DomSanitizer, private route: ActivatedRoute, private empService: EmployeeService) {
     this.domSanitizer.bypassSecurityTrustResourceUrl(this.profilePictureBase64);
   }
@@ -42,4 +45,16 @@ export class ProfileComponent implements OnInit {
     return undefined;
   }
 
+
+  public onClick_SaveDetails(){
+
+  }
+
+  public onClick_ChangeProfilePicture(){
+
+  }
+
+  public onClick_RemoveProfilePicture(){
+
+  }
 }
