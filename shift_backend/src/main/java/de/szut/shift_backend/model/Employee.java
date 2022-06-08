@@ -57,5 +57,7 @@ public class Employee {
     @OneToOne
     private ShiftType preferredShiftType;
 
-    private Long departmentId;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id")
+    private Department department;
 }
