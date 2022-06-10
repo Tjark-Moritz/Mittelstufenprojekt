@@ -20,9 +20,7 @@ public class AddMessageChannelDto {
     @NotNull(message = "Channel description can not be null!")
     private String description;
 
-    private List<Message> messages;
-
     @NotNull
-    private List<Employee> employees;
+    private List<Long> employees;
 }
 

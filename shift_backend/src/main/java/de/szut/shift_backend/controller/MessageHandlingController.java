@@ -3,12 +3,9 @@ package de.szut.shift_backend.controller;
 import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.Message;
 import de.szut.shift_backend.model.dto.AddMessageDto;
-import de.szut.shift_backend.model.dto.GetMessageDto;
 import de.szut.shift_backend.services.MappingService;
 import de.szut.shift_backend.services.MessageService;
 import de.szut.shift_backend.socket.WebsocketEventEmitterService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 

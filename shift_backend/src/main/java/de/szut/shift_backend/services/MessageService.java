@@ -8,7 +8,6 @@ import de.szut.shift_backend.repository.MessageRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -72,5 +71,9 @@ public class MessageService {
 
     public void delete(long messageId) {
         this.messageRepository.deleteById(messageId);
+    }
+
+    public List<Message> getAllById(List<Long> messageIdList) {
+        return this.messageRepository.findAllById(messageIdList);
     }
 }

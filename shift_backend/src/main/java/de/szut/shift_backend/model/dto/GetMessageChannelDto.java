@@ -1,6 +1,5 @@
 package de.szut.shift_backend.model.dto;
 
-import de.szut.shift_backend.model.Message;
 import lombok.Data;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public class GetMessageChannelDto {
 
     private String description;
 
-    private List<GetMessageDto> messages; //todo: DTOs dürfen nur DTOs haben, right?
+    private List<GetMessageDto> messages;
 
-    private List<GetEmployeeDto> employees;
+    private List<Long> employees;
 }

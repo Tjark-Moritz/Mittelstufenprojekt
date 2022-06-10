@@ -1,6 +1,8 @@
 package de.szut.shift_backend.services;
 
 import de.szut.shift_backend.model.*;
+import de.szut.shift_backend.repository.*;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,17 +10,48 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class InitialDataService {
+    private EmployeeRepository employeeRepository;
+    private HolidayRepository holidayRepository;
+    private HolidayTypeRepository holidayTypeRepository;
+    private DepartmentRepository departmentRepository;
+    private MessageRepository messageRepository;
+    private MessageChannelRepository messageChannelRepository;
+    private ShiftRepository shiftRepository;
+    private ShiftPlanRepository shiftPlanRepository;
+    private ShiftTypeRepository shiftTypeRepository;
+
+    public InitialDataService(
+            EmployeeRepository employeeRepository,
+            HolidayRepository holidayRepository,
+            HolidayTypeRepository holidayTypeRepository,
+            DepartmentRepository departmentRepository,
+            MessageRepository messageRepository,
+            MessageChannelRepository messageChannelRepository,
+            ShiftRepository shiftRepository,
+            ShiftPlanRepository shiftPlanRepository,
+            ShiftTypeRepository shiftTypeRepository
+    ) {
+        this.employeeRepository = employeeRepository;
+        this.holidayRepository = holidayRepository;
+        this.holidayTypeRepository = holidayTypeRepository;
+        this.departmentRepository = departmentRepository;
+        this.messageRepository = messageRepository;
+        this.messageChannelRepository = messageChannelRepository;
+        this.shiftRepository = shiftRepository;
+        this.shiftPlanRepository = shiftPlanRepository;
+        this.shiftTypeRepository = shiftTypeRepository;
+    }
+
+
     public void createAll() {
         createEmp();
         createHoliday();
         createHolidayType();
         createDepartment();
         createMessage();
-        createMessageChannel();
         createShift();
-        createShiftPlan();
-        createShiftType();
     }
 
     public Employee createEmp() {
@@ -37,6 +70,8 @@ public class InitialDataService {
         employee.setNumHolidaysLeft(25);
         employee.setHolidays(holidayList);
 
+        employeeRepository.save(employee);
+
         return employee;
     }
 
@@ -44,10 +79,12 @@ public class InitialDataService {
         Holiday holiday = new Holiday();
         holiday.setHolidayTypeId(createHolidayType());
         holiday.setEmployeeId(0L);
-        holiday.setStartDate(LocalDate.of(2022,6,10));
-        holiday.setEndDate(LocalDate.of(2022,6,11));
+        holiday.setStartDate(LocalDate.of(2022, 6, 10));
+        holiday.setEndDate(LocalDate.of(2022, 6, 11));
         holiday.setStatus(Holiday.HolidayStatus.UNANSWERED);
         holiday.setRequestDate(LocalDateTime.now());
+
+        holidayRepository.save(holiday);
 
         return holiday;
     }
@@ -56,6 +93,8 @@ public class InitialDataService {
         HolidayType holidayType = new HolidayType();
         holidayType.setName("TestType");
         holidayType.setDescription("TestDescription");
+
+        holidayTypeRepository.save(holidayType);
 
         return holidayType;
     }
@@ -70,11 +109,14 @@ public class InitialDataService {
         department.setLeadEmployee(createEmp());
         department.setEmployees(employees);
 
+        departmentRepository.save(department);
+
         return department;
     }
 
-    public Message createMessage() {
+    public void createMessage() {
         Message message = new Message();
+
         message.setMessageChannel(createMessageChannel());
         message.setContent("TestContent");
         message.setSendingEmployeeId(0L);
@@ -82,13 +124,11 @@ public class InitialDataService {
         message.setDateTime(LocalDateTime.now());
         message.setStatus(Message.MessageStatus.unsend);
 
-        return message;
+        messageRepository.save(message);
     }
 
     public MessageChannel createMessageChannel() {
         List<Message> messages = new ArrayList<>();
-        messages.add(createMessage());
-
         List<Employee> employees = new ArrayList<>();
         employees.add(createEmp());
 
@@ -98,10 +138,24 @@ public class InitialDataService {
         messageChannel.setMessages(messages);
         messageChannel.setEmployees(employees);
 
+        messageChannelRepository.save(messageChannel);
+
         return messageChannel;
     }
 
-    public Shift createShift(){
+    public ShiftType createShiftType() {
+        ShiftType shiftType = new ShiftType();
+        shiftType.setShiftStartTime(LocalTime.now());
+        shiftType.setShiftEndTime(LocalTime.of(10, 2, 0));
+        shiftType.setTypeName("TestTypeName");
+        shiftType.setShiftTypeColor("red");
+
+        shiftTypeRepository.save(shiftType);
+
+        return shiftType;
+    }
+
+    public void createShift() {
         List<Employee> employees = new ArrayList<>();
         employees.add(createEmp());
 
@@ -110,32 +164,6 @@ public class InitialDataService {
         shift.setShiftType(createShiftType());
         shift.setActiveEmployees(employees);
 
-        return shift;
-    }
-
-    public ShiftPlan createShiftPlan() {
-        List<Shift> shifts = new ArrayList<>();
-        shifts.add(createShift());
-
-        List<ShiftType> shiftTypes = new ArrayList<>();
-        shiftTypes.add(createShiftType());
-
-        ShiftPlan shiftPlan = new ShiftPlan();
-        shiftPlan.setDepartment(createDepartment());
-        shiftPlan.setValidMonth(LocalDate.now());
-        shiftPlan.setShifts(shifts);
-        shiftPlan.setShiftTypes(shiftTypes);
-
-        return shiftPlan;
-    }
-
-    public ShiftType createShiftType() {
-        ShiftType shiftType = new ShiftType();
-        shiftType.setShiftStartTime(LocalTime.now());
-        shiftType.setShiftEndTime(LocalTime.of(10,2, 0));
-        shiftType.setTypeName("TestTypeName");
-        shiftType.setShiftTypeColor("red");
-
-        return shiftType;
+        shiftRepository.save(shift);
     }
 }
