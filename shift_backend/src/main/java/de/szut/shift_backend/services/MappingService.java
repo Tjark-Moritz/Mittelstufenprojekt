@@ -100,7 +100,9 @@ public class MappingService {
         dept.setAbbreviatedName(deptDto.getAbbreviatedName());
 
         dept.setLeadEmployee(employeeService.getEmployeeById(deptDto.getLeadEmployeeId()));
+
         List<Employee> empList = new ArrayList<>();
+        List<ShiftType> stypeList = new ArrayList<>();
 
         for (Long empId : deptDto.getEmployeeIds()){
             Employee tempEmp = employeeService.getEmployeeById(empId);
@@ -108,7 +110,13 @@ public class MappingService {
             empList.add(tempEmp);
         }
 
+        for (AddShiftTypeDto stDto : deptDto.getShiftTypes()){
+            ShiftType st = this.mapAddShiftTypeDtoToShiftType(stDto);
+            stypeList.add(st);
+        }
+
         dept.setEmployees(empList);
+        dept.setShiftTypes(stypeList);
 
         return dept;
     }
@@ -298,19 +306,26 @@ public class MappingService {
     public GetDepartmentDto mapDepartmentToGetDepartmentDto(Department department) {
         GetDepartmentDto getDepartmentDto = new GetDepartmentDto();
         List<GetEmployeeDto> getEmployeeDtoList = new ArrayList<>();
+        List<GetShiftTypeDto> getShiftTypeDtoList = new ArrayList<>();
 
         List<Employee> employeeList = department.getEmployees();
+        List<ShiftType> sTypeList = department.getShiftTypes();
 
         for (Employee employee : employeeList) {
             GetEmployeeDto getEmployeeDto = mapEmployeeToGetEmployeeDto(employee);
             getEmployeeDtoList.add(getEmployeeDto);
         }
 
+        for(ShiftType s : sTypeList){
+            GetShiftTypeDto sDto = mapShiftTypeToGetShiftTypeDto(s);
+            getShiftTypeDtoList.add(sDto);
+        }
         getDepartmentDto.setDepartmentId(department.getDepartmentId());
         getDepartmentDto.setName(department.getName());
         getDepartmentDto.setAbbreviatedName(department.getAbbreviatedName());
         getDepartmentDto.setLeadEmployee(department.getLeadEmployee().getId());
         getDepartmentDto.setEmployees(getEmployeeDtoList);
+        getDepartmentDto.setShiftTypes(getShiftTypeDtoList);
 
         return getDepartmentDto;
     }

@@ -31,4 +31,8 @@ public class Department {
     @OneToMany
     @JoinColumn(name = "department_id")
     private List<Employee> employees;
+
+    @OneToMany
+    private List<ShiftType> shiftTypes;
 }
+
