@@ -112,7 +112,7 @@ public class MappingService {
 
         for (AddShiftTypeDto stDto : deptDto.getShiftTypes()){
             ShiftType st = this.mapAddShiftTypeDtoToShiftType(stDto);
-            stypeList.add(st);
+            stypeList.add(this.shiftTypeService.create(st));
         }
 
         dept.setEmployees(empList);
@@ -371,12 +371,7 @@ public class MappingService {
 
         splan.setDepartment(this.departmentService.getDepartmentById(shiftPlanDto.getDepartmentId()));
         splan.setValidMonth(shiftPlanDto.getValidMonth());
-
-        List<ShiftType> stypes = new ArrayList<>();
-        for(AddShiftTypeDto stypeDto : shiftPlanDto.getShiftTypes())
-            stypes.add(this.mapAddShiftTypeDtoToShiftType(stypeDto));
-
-        splan.setShiftTypes(stypes);
+        splan.setExcludedWeekdays(shiftPlanDto.getExcludedWeekdays());
 
         return splan;
     }
@@ -393,12 +388,7 @@ public class MappingService {
         for(Shift s : shiftPlan.getShifts())
             shiftDto.add(this.mapShiftToGetShiftDto(s));
 
-        List<GetShiftTypeDto> shiftTypeDtos = new ArrayList<>();
-        for(ShiftType stype : shiftPlan.getShiftTypes())
-            shiftTypeDtos.add(this.mapShiftTypeToGetShiftTypeDto(stype));
-
         shiftPlanDto.setShifts(shiftDto);
-        shiftPlanDto.setShiftTypes(shiftTypeDtos);
 
         return shiftPlanDto;
     }

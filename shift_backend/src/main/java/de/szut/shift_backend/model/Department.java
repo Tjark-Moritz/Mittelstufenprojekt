@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Department {
+public class    Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

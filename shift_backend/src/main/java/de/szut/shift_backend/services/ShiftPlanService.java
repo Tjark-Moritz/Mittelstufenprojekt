@@ -43,7 +43,7 @@ public class ShiftPlanService {
         LocalDate activeMonth = shiftPlan.getValidMonth();
 
         List<Employee> emps = dept.getEmployees();
-        List<ShiftType> sTypes = shiftPlan.getShiftTypes();
+        List<ShiftType> sTypes = dept.getShiftTypes();
         List<Shift> shiftsTemp = new ArrayList<>();
 
         HashMap<Long,List<Employee>> empsByPrefShiftType = getEmployeesForShiftType(emps);
@@ -51,8 +51,7 @@ public class ShiftPlanService {
 
         for(int i = 0; i < numDaysPerMonth; i++){
             LocalDate currentDay = activeMonth.plusDays(i);
-            if(currentDay.getDayOfWeek() != DayOfWeek.SATURDAY
-                    && currentDay.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            if(!shiftPlan.getExcludedWeekdays().contains(currentDay.getDayOfWeek())) {
                 for(ShiftType sType : sTypes){
                     Shift shift = new Shift();
 
