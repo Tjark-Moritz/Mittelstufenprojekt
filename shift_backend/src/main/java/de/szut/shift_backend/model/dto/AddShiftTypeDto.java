@@ -8,6 +8,7 @@ import java.time.LocalTime;
 public class AddShiftTypeDto {
     private LocalTime shiftStartTime;
     private LocalTime shiftEndTime;
+    private Integer targetNumOfEmps;
     private String typeName;
     private String shiftTypeColor;
 }

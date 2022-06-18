@@ -28,6 +28,9 @@ public class ShiftType {
     @NotNull
     private LocalTime shiftEndTime;
 
+    @NotNull
+    private Integer targetNumOfEmps;
+
     @NotBlank
     private String typeName;
 

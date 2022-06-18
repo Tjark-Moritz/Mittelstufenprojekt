@@ -15,6 +15,10 @@ public class ShiftTypeService {
         this.shiftTypeRepository = shiftTypeRepository;
     }
 
+    public ShiftType create(ShiftType s){
+        return this.shiftTypeRepository.save(s);
+    }
+
     public ShiftType getShiftTypeById(Long shiftTypeId){
         Optional<ShiftType> shiftType = shiftTypeRepository.findById(shiftTypeId);
 

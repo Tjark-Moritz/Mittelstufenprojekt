@@ -1,26 +1,29 @@
 package de.szut.shift_backend.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Department;
 import de.szut.shift_backend.model.Employee;
+import de.szut.shift_backend.model.ShiftType;
 import de.szut.shift_backend.repository.DepartmentRepository;
 import de.szut.shift_backend.repository.EmployeeRepository;
+import de.szut.shift_backend.repository.ShiftTypeRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalTime;
+import java.util.*;
 
 @Service
 public class DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final EmployeeRepository employeeRepository;
+    private final ShiftTypeRepository shiftTypeRepository;
 
-    public DepartmentService(DepartmentRepository departmentRepository, EmployeeRepository employeeRepository) {
+    public DepartmentService(DepartmentRepository departmentRepository, EmployeeRepository employeeRepository, ShiftTypeRepository shiftTypeRepository) {
         this.departmentRepository = departmentRepository;
         this.employeeRepository = employeeRepository;
+        this.shiftTypeRepository = shiftTypeRepository;
     }
 
     public Department create(Department newDepartment) {
@@ -41,6 +44,34 @@ public class DepartmentService {
             }
 
             fieldsToPatch.put("employees", emps);
+        }
+
+        if(fieldsToPatch.containsKey("shiftTypes")){
+            ObjectMapper om = new ObjectMapper();
+            List<?> temp = (List<?>) fieldsToPatch.get("shiftTypes");
+            List<ShiftType> stypes = new ArrayList<>();
+
+            for(Object item : temp){
+                LinkedHashMap<String,String> itemMap = (LinkedHashMap<String, String>) item;
+                ShiftType s = new ShiftType();
+
+                s.setShiftStartTime(LocalTime.parse(itemMap.get("shiftStartTime")));
+                s.setShiftEndTime(LocalTime.parse(itemMap.get("shiftStartTime")));
+                s.setTypeName(itemMap.get("typeName"));
+                s.setShiftTypeColor(itemMap.get("shiftTypeColor"));
+
+                Optional<ShiftType> oS = this.shiftTypeRepository.findByShiftStartTimeAndShiftEndTime(s.getShiftStartTime()
+                        , s.getShiftEndTime());
+
+                if (oS.isEmpty()) {
+                    stypes.add(this.shiftTypeRepository.save(s));
+                } else {
+                    stypes.add(oS.get());
+                }
+
+            }
+
+            fieldsToPatch.put("shiftTypes", stypes);
         }
 
         Department deptUpdated = ClassReflectionHelper.UpdateFields(deptToUpdate, fieldsToPatch);
