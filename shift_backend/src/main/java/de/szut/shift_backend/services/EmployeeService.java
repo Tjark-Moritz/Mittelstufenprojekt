@@ -27,10 +27,10 @@ public class EmployeeService {
         this.keyService = keyService;
     }
 
-    public void create(Employee newEmployee){
+    public Employee create(Employee newEmployee){
         try{
             this.keyService.addUserToKeycloak(newEmployee);
-            employeeRepository.save(newEmployee);
+            return employeeRepository.save(newEmployee);
         } catch (Exception e){
             throw new CreationException(e.getMessage());
         }

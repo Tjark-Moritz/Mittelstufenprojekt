@@ -100,7 +100,9 @@ public class MappingService {
         dept.setAbbreviatedName(deptDto.getAbbreviatedName());
 
         dept.setLeadEmployee(employeeService.getEmployeeById(deptDto.getLeadEmployeeId()));
+
         List<Employee> empList = new ArrayList<>();
+        List<ShiftType> stypeList = new ArrayList<>();
 
         for (Long empId : deptDto.getEmployeeIds()){
             Employee tempEmp = employeeService.getEmployeeById(empId);
@@ -108,7 +110,13 @@ public class MappingService {
             empList.add(tempEmp);
         }
 
+        for (AddShiftTypeDto stDto : deptDto.getShiftTypes()){
+            ShiftType st = this.mapAddShiftTypeDtoToShiftType(stDto);
+            stypeList.add(this.shiftTypeService.create(st));
+        }
+
         dept.setEmployees(empList);
+        dept.setShiftTypes(stypeList);
 
         return dept;
     }
@@ -163,6 +171,7 @@ public class MappingService {
         shiftType.setTypeName(getShiftTypeDto.getTypeName());
         shiftType.setShiftStartTime(getShiftTypeDto.getShiftStartTime());
         shiftType.setShiftEndTime(getShiftTypeDto.getShiftEndTime());
+        shiftType.setTargetNumOfEmps(getShiftTypeDto.getTargetNumOfEmps());
         shiftType.setShiftTypeColor(getShiftTypeDto.getShiftTypeColor());
 
         return shiftType;
@@ -260,6 +269,9 @@ public class MappingService {
         empDto.setHolidays(holidays);
         empDto.setBase64ProfilePic(emp.getBase64ProfilePic());
 
+        if(emp.getPreferredShiftType() != null)
+            empDto.setPreferredShiftType(this.mapShiftTypeToGetShiftTypeDto(emp.getPreferredShiftType()));
+
         if(emp.getDepartment() != null)
             empDto.setDepartmentId(emp.getDepartment().getDepartmentId());
 
@@ -298,19 +310,26 @@ public class MappingService {
     public GetDepartmentDto mapDepartmentToGetDepartmentDto(Department department) {
         GetDepartmentDto getDepartmentDto = new GetDepartmentDto();
         List<GetEmployeeDto> getEmployeeDtoList = new ArrayList<>();
+        List<GetShiftTypeDto> getShiftTypeDtoList = new ArrayList<>();
 
         List<Employee> employeeList = department.getEmployees();
+        List<ShiftType> sTypeList = department.getShiftTypes();
 
         for (Employee employee : employeeList) {
             GetEmployeeDto getEmployeeDto = mapEmployeeToGetEmployeeDto(employee);
             getEmployeeDtoList.add(getEmployeeDto);
         }
 
+        for(ShiftType s : sTypeList){
+            GetShiftTypeDto sDto = mapShiftTypeToGetShiftTypeDto(s);
+            getShiftTypeDtoList.add(sDto);
+        }
         getDepartmentDto.setDepartmentId(department.getDepartmentId());
         getDepartmentDto.setName(department.getName());
         getDepartmentDto.setAbbreviatedName(department.getAbbreviatedName());
         getDepartmentDto.setLeadEmployee(department.getLeadEmployee().getId());
         getDepartmentDto.setEmployees(getEmployeeDtoList);
+        getDepartmentDto.setShiftTypes(getShiftTypeDtoList);
 
         return getDepartmentDto;
     }
@@ -346,6 +365,7 @@ public class MappingService {
         shiftTypeDto.setShiftStartTime(shiftType.getShiftStartTime());
         shiftTypeDto.setShiftEndTime(shiftType.getShiftEndTime());
         shiftTypeDto.setTypeName(shiftType.getTypeName());
+        shiftTypeDto.setTargetNumOfEmps(shiftType.getTargetNumOfEmps());
         shiftTypeDto.setShiftTypeColor(shiftType.getShiftTypeColor());
 
         return shiftTypeDto;
@@ -356,12 +376,7 @@ public class MappingService {
 
         splan.setDepartment(this.departmentService.getDepartmentById(shiftPlanDto.getDepartmentId()));
         splan.setValidMonth(shiftPlanDto.getValidMonth());
-
-        List<ShiftType> stypes = new ArrayList<>();
-        for(AddShiftTypeDto stypeDto : shiftPlanDto.getShiftTypes())
-            stypes.add(this.mapAddShiftTypeDtoToShiftType(stypeDto));
-
-        splan.setShiftTypes(stypes);
+        splan.setExcludedWeekdays(shiftPlanDto.getExcludedWeekdays());
 
         return splan;
     }
@@ -378,12 +393,7 @@ public class MappingService {
         for(Shift s : shiftPlan.getShifts())
             shiftDto.add(this.mapShiftToGetShiftDto(s));
 
-        List<GetShiftTypeDto> shiftTypeDtos = new ArrayList<>();
-        for(ShiftType stype : shiftPlan.getShiftTypes())
-            shiftTypeDtos.add(this.mapShiftTypeToGetShiftTypeDto(stype));
-
         shiftPlanDto.setShifts(shiftDto);
-        shiftPlanDto.setShiftTypes(shiftTypeDtos);
 
         return shiftPlanDto;
     }

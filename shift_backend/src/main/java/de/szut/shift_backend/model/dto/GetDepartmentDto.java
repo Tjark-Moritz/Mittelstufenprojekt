@@ -27,6 +27,8 @@ public class GetDepartmentDto {
     @NotNull(message = "LeadEmployee can not be null!")
     private Long leadEmployee;
 
-    @OneToMany
-    private List<GetEmployeeDto> employees; //getEmployeeDto in List<>
+    private List<GetEmployeeDto> employees;
+
+    private List<GetShiftTypeDto> shiftTypes;
+
 }

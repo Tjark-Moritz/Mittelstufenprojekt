@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.time.DayOfWeek;
 
 @Data
 public class GetShiftPlanDto {
@@ -16,6 +17,5 @@ public class GetShiftPlanDto {
 
     private List<GetShiftDto> shifts;
 
-    private List<GetShiftTypeDto> shiftTypes;
-
+    private List<DayOfWeek> excludedWeekdays;
 }
