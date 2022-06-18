@@ -171,6 +171,7 @@ public class MappingService {
         shiftType.setTypeName(getShiftTypeDto.getTypeName());
         shiftType.setShiftStartTime(getShiftTypeDto.getShiftStartTime());
         shiftType.setShiftEndTime(getShiftTypeDto.getShiftEndTime());
+        shiftType.setTargetNumOfEmps(getShiftTypeDto.getTargetNumOfEmps());
         shiftType.setShiftTypeColor(getShiftTypeDto.getShiftTypeColor());
 
         return shiftType;
@@ -268,6 +269,9 @@ public class MappingService {
         empDto.setHolidays(holidays);
         empDto.setBase64ProfilePic(emp.getBase64ProfilePic());
 
+        if(emp.getPreferredShiftType() != null)
+            empDto.setPreferredShiftType(this.mapShiftTypeToGetShiftTypeDto(emp.getPreferredShiftType()));
+
         if(emp.getDepartment() != null)
             empDto.setDepartmentId(emp.getDepartment().getDepartmentId());
 
@@ -361,6 +365,7 @@ public class MappingService {
         shiftTypeDto.setShiftStartTime(shiftType.getShiftStartTime());
         shiftTypeDto.setShiftEndTime(shiftType.getShiftEndTime());
         shiftTypeDto.setTypeName(shiftType.getTypeName());
+        shiftTypeDto.setTargetNumOfEmps(shiftType.getTargetNumOfEmps());
         shiftTypeDto.setShiftTypeColor(shiftType.getShiftTypeColor());
 
         return shiftTypeDto;
