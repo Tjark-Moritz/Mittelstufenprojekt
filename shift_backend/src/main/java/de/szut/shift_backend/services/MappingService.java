@@ -93,7 +93,7 @@ public class MappingService {
         return getDepartmentDto;
     }
 
-    public Department mapAddDepartmentDtoToDepartment(AddDepartmentDto deptDto){
+    public Department mapAddDepartmentDtoToDepartment(AddDepartmentDto deptDto) {
         Department dept = new Department();
 
         dept.setName(deptDto.getName());
@@ -240,8 +240,8 @@ public class MappingService {
         if (empDto.getDepartmentId() != null)
             emp.setDepartment(this.departmentService.getDepartmentById(empDto.getDepartmentId()));
 
-        if (empDto.getPreferredShiftTypeId() != null)
-            emp.setPreferredShiftType(this.shiftTypeService.getShiftTypeById(empDto.getPreferredShiftTypeId()));
+        if (empDto.getPreferredShiftType() != null)
+            emp.setPreferredShiftType(this.shiftTypeService.getShiftTypeById(empDto.getPreferredShiftType()));
 
         return emp;
     }
@@ -352,13 +352,13 @@ public class MappingService {
         return shiftDto;
     }
 
-    private ShiftType mapAddShiftTypeDtoToShiftType(AddShiftTypeDto shiftTypeDto){
+    public ShiftType mapAddShiftTypeDtoToShiftType(AddShiftTypeDto shiftTypeDto) {
         ShiftType stype = new ShiftType();
 
         return ClassReflectionHelper.FastParamMap(stype, shiftTypeDto);
     }
 
-    private GetShiftTypeDto mapShiftTypeToGetShiftTypeDto(ShiftType shiftType) {
+    public GetShiftTypeDto mapShiftTypeToGetShiftTypeDto(ShiftType shiftType) {
         GetShiftTypeDto shiftTypeDto = new GetShiftTypeDto();
 
         shiftTypeDto.setId(shiftType.getId());

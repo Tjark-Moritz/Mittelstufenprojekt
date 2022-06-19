@@ -87,7 +87,7 @@ public class EmployeeController {
             @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
     })
     @GetMapping("/username/{username}")
-    public ResponseEntity<GetEmployeeDto> getEmployeeById( @Valid @PathVariable("username") final String username )
+    public ResponseEntity<GetEmployeeDto> getEmployeeByUsername( @Valid @PathVariable("username") final String username )
     {
         Employee emp = this.employeeService.getEmployeeByUsername(username);
         GetEmployeeDto empDto = this.mappingService.mapEmployeeToGetEmployeeDto(emp);
