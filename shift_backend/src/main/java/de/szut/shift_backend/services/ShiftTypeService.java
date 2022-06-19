@@ -1,10 +1,13 @@
 package de.szut.shift_backend.services;
 
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
+import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.ShiftType;
 import de.szut.shift_backend.repository.ShiftTypeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -19,6 +22,14 @@ public class ShiftTypeService {
         return this.shiftTypeRepository.save(s);
     }
 
+    public void delete(Long id) {
+        this.shiftTypeRepository.deleteById(id);
+    }
+
+    public List<ShiftType> getAllShiftTypes(){
+        return this.shiftTypeRepository.findAll();
+    }
+
     public ShiftType getShiftTypeById(Long shiftTypeId){
         Optional<ShiftType> shiftType = shiftTypeRepository.findById(shiftTypeId);
 
@@ -28,4 +39,17 @@ public class ShiftTypeService {
         return shiftType.get();
     }
 
+    public ShiftType updateShiftTypeWithObj(Long targetId, ShiftType updateObj){
+        ShiftType st = this.getShiftTypeById(targetId);
+
+        return ClassReflectionHelper.UpdateFieldsByObj(st, updateObj);
+    }
+
+    public ShiftType updateShiftType(Long shiftTypeId, Map<String, Object> shiftTypeUpdate){
+        ShiftType st = this.getShiftTypeById(shiftTypeId);
+
+        ShiftType stUpdated = ClassReflectionHelper.UpdateFields(st, shiftTypeUpdate);
+
+        return this.shiftTypeRepository.save(stUpdated);
+    }
 }
