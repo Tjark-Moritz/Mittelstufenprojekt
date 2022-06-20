@@ -3,6 +3,8 @@ package de.szut.shift_backend.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Department {
+public class    Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +33,10 @@ public class Department {
     @OneToMany
     @JoinColumn(name = "department_id")
     private List<Employee> employees;
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "shiftType_id")
+    @OneToMany
+    private List<ShiftType> shiftTypes;
 }
+
