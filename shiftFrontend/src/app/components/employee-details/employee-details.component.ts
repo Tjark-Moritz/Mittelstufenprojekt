@@ -17,7 +17,7 @@ export class EmployeeDetailsComponent implements OnInit {
   constructor(private departmentService: DepartmentService,
               private employeeService: EmployeeService,
               private dialogRef: MatDialogRef<EmployeeDetailsComponent>,
-              @Inject(MAT_DIALOG_DATA) private data: GetDepartment) {
+              @Inject(MAT_DIALOG_DATA) private data: GetEmployee) {
 
     this.activeEmp = data;
     if(this.activeEmp.departmentId){
