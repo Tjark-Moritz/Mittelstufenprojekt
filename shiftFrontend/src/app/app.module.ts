@@ -47,7 +47,6 @@ import { EmployeeDetailsComponent } from './components/employee-details/employee
     LoginComponent,
     DayDetailsComponent,
     DepartmentDetailsComponent,
-    PageNotFoundComponent,
     LoginComponent,
     PageNotFoundComponent,
     EmployeeDetailsComponent
