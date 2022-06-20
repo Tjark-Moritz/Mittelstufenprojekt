@@ -61,5 +61,35 @@
   font-size: 30px;
   color: #fff;
   text-align: center;
-  background: #000
+  background: #000;
+  margin-top: 10px;
+  outline: none;
+  border: none;
+}
+
+input {
+}
+
+.nameInput {
+  height: 40px;
+  width: 200px;
+  font-size: 20px;
+  border-width: 3px;
+  border-color: black;
+  outline: none;
+  margin-top: 10px;
+}
+
+
+.inputSetName {
+  height: 30px;
+  width: 200px;
+  font-size: 20px;
+  border-width: 3px;
+  border-color: black;
+  outline: none;
+}
+
+.tdLabelName {
+  height: 30px;
 }
