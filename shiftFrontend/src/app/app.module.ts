@@ -31,6 +31,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
+import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
+
+//MatLuxonDateModule
 
 @NgModule({
   declarations: [
@@ -44,7 +47,9 @@ import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component
     LoginComponent,
     DayDetailsComponent,
     DepartmentDetailsComponent,
-    PageNotFoundComponent
+    LoginComponent,
+    PageNotFoundComponent,
+    EmployeeDetailsComponent
   ],
   imports: [
     BrowserModule,

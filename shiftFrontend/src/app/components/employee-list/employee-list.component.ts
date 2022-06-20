@@ -4,6 +4,11 @@ import {GetDepartment} from "../../models/dto/GetDepartment";
 import {SelectionModel} from "@angular/cdk/collections";
 import {GetEmployee} from "../../models/dto/GetEmployee";
 import {EmployeeService} from "../../services/employee.service";
+import {MatDialog} from "@angular/material/dialog";
+import {EmployeeDetailsComponent} from "../employee-details/employee-details.component";
+import {Observable} from "rxjs";
+import {BearerTokenService} from "../../services/bearer-token.service";
+import {UserRoleEnum} from "../../models/UserRoleEnum";
 
 @Component({
   selector: 'app-employee-list',
@@ -18,12 +23,22 @@ export class EmployeeListComponent implements OnInit {
   private selectionLength = 0;
   private depIdAbbrDict: { [id: number]: GetDepartment; }  = {};
   public searchkey = "";
+  public emptyEmp = new GetEmployee();
 
-  constructor(private empService: EmployeeService, private depService: DepartmentService) {
+  isAdmin: boolean = false; // Muss geändert werden
+
+  constructor(private empService: EmployeeService, private depService: DepartmentService, private dialog: MatDialog) {
     this.selection = new SelectionModel<GetEmployee>(true, []);
-  }
 
-  ngOnInit() {
+    let roleName: UserRoleEnum | undefined;
+    // @ts-ignore
+    roleName = BearerTokenService.getUserRoles;
+    if(roleName){
+      if(roleName == UserRoleEnum.Admin){
+        this.isAdmin = true;
+      }
+    }
+
     this.empService.getAllEmployees().subscribe(res => {
       res.forEach(temp => {
         this.employees.push(temp);
@@ -44,8 +59,11 @@ export class EmployeeListComponent implements OnInit {
     })
   }
 
+  ngOnInit() {
+  }
+
   getDepAbbr(depId: number| undefined){
-    if(depId){
+    if(depId && depId != 0){
       return this.depIdAbbrDict[depId].abbreviatedName;
     }
     else {
@@ -54,7 +72,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   getDepName(depId: number| undefined){
-    if(depId){
+    if(depId && depId != 0){
       return this.depIdAbbrDict[depId].name;
     }
     else {
@@ -62,6 +80,30 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
+  openModal(employee: GetEmployee){
+
+    if(this.isAdmin){
+      // Lennarts part aufrufen
+      return;
+    }
+
+    let modal = this.dialog.open(EmployeeDetailsComponent, {
+      position: {
+        top: "0",
+        right: "0",
+      },
+      height: "100vh",
+      width: "100vh",
+      direction: "ltr",
+      data: employee
+    });
+
+    let observable: Observable<any>;
+    observable = modal.afterClosed();
+    observable.subscribe(data => {
+
+    });
+  }
 
   async search(){
     // Puffer damit der eingegebene Text lädt
