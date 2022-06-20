@@ -68,4 +68,19 @@ export class EmployeeService {
 
     console.log("updated Employee");
   }
+
+  async getEmployeeIdByFirstAndLastName(firstName: string, lastName: string): Promise<number>{
+    let emp: GetEmployee | undefined;
+    let empArray = await this.getAllEmployees().toPromise();
+    emp = empArray?.find(res => {
+      if(res.firstName == firstName && res.lastName == lastName){
+        return res;
+      }
+      return;
+    });
+    if(emp && emp.id){
+      return emp?.id;
+    }
+    return -1;
+  }
 }

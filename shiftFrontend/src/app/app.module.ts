@@ -30,10 +30,10 @@ import { DayDetailsComponent } from './components/day-details/day-details.compon
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ProfileComponent } from './components/profile/profile.component';
-
-//MatLuxonDateModule
 import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
+import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
+
 
 @NgModule({
   declarations: [
@@ -47,8 +47,8 @@ import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component
     LoginComponent,
     DayDetailsComponent,
     DepartmentDetailsComponent,
-    LoginComponent,
     PageNotFoundComponent,
+    EmployeeDetailsComponent,
     ProfileComponent
   ],
   imports: [
