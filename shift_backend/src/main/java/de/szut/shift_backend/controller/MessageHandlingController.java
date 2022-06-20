@@ -31,8 +31,6 @@ public class MessageHandlingController {
 
     @MessageMapping("/create")
     public void createMessage(AddMessageDto addMessageDto, Principal principal) {
-        System.out.println("create");
-
         Message message = this.mappingService.mapAddMessageDtoToMessage(addMessageDto, principal.getName());
         this.messageService.create(message);
 
