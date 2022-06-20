@@ -2,6 +2,7 @@ package de.szut.shift_backend.model.dto;
 
 import lombok.Data;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,5 +13,5 @@ public class AddShiftPlanDto {
 
     private LocalDate validMonth;
 
-    private List<AddShiftTypeDto> shiftTypes;
+    private List<DayOfWeek> excludedWeekdays;
 }
