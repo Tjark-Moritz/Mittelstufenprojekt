@@ -10,6 +10,7 @@ public class GetShiftTypeDto {
     private Long id;
     private LocalTime shiftStartTime;
     private LocalTime shiftEndTime;
+    private Integer targetNumOfEmps;
     private String typeName;
     private String shiftTypeColor;
 }
