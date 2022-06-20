@@ -6,8 +6,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import java.time.DayOfWeek;
 
 @Getter
 @Setter
@@ -24,6 +26,9 @@ public class ShiftPlan {
 
     @NotNull
     private LocalDate validMonth;
+
+    @ElementCollection
+    private List<DayOfWeek> excludedWeekdays;
 
     @OneToMany(cascade=CascadeType.ALL)
     private List<Shift> shifts;
