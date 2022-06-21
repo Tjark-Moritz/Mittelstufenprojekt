@@ -8,10 +8,10 @@ import * as swal from 'sweetalert2';
 })
 export class AuthenticationGuardService implements CanActivate{
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private bearerTokenService: BearerTokenService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-    if(BearerTokenService.bearerToken) {
+    if(this.bearerTokenService.isBearerTokenSet()) {
       return true;
     }
 

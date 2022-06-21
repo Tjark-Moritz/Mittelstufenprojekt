@@ -11,14 +11,14 @@ import {AddDepartment} from "../models/dto/AddDepartment";
 export class DepartmentService {
   private urlPre = "/department";
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private bearerTokenService: BearerTokenService) {
   }
 
   getAllDepartments(): Observable<GetDepartment[]>{
     return this.httpClient.get<GetDepartment[]>(this.urlPre, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     });
   }
 
@@ -26,7 +26,7 @@ export class DepartmentService {
     return this.httpClient.get<GetDepartment>(this.urlPre + `/${departmentId}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     });
   }
 
@@ -34,7 +34,7 @@ export class DepartmentService {
     this.httpClient.post(this.urlPre, department,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
   }
 
@@ -42,7 +42,7 @@ export class DepartmentService {
     this.httpClient.patch(this.urlPre + `/${departmentId}`,depChanges,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
   }
 
@@ -50,7 +50,7 @@ export class DepartmentService {
     this.httpClient.delete(this.urlPre + `/${departmentId}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
   }
 }
