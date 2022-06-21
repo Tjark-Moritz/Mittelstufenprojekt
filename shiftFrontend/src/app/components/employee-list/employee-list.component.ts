@@ -32,7 +32,7 @@ export class EmployeeListComponent implements OnInit {
 
     let roleName: UserRoleEnum | undefined;
     // @ts-ignore
-    roleName = BearerTokenService.getUserRoles;
+    roleName = BearerTokenService.getUserRole;
     if(roleName){
       if(roleName == UserRoleEnum.Admin){
         this.isAdmin = true;
