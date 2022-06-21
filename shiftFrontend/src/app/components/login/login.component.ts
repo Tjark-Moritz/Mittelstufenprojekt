@@ -11,7 +11,6 @@ import {LoginService} from "../../services/login.service";
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  wrongLogin: boolean = false;
   private autoLoginChecked: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private loginService: LoginService, private bearerTokenService: BearerTokenService) {
