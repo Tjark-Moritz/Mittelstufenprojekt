@@ -27,7 +27,7 @@ export class DepartmentListComponent implements OnInit{
     this.isAdmin = false;
     let roleName: UserRoleEnum | undefined;
     // @ts-ignore
-    roleName = BearerTokenService.getUserRoles;
+    roleName = BearerTokenService.getUserRole;
     if(roleName){
       if(roleName == UserRoleEnum.Admin){
         this.isAdmin = true;

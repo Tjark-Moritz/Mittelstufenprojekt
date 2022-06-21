@@ -11,7 +11,7 @@ import {BearerTokenService} from "./bearer-token.service";
 export class EmployeeService {
   private urlPre = "/employee"
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private bearerTokenService: BearerTokenService) {
 
   }
 
@@ -19,7 +19,7 @@ export class EmployeeService {
     return this.httpClient.get<GetEmployee[]>(this.urlPre, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     });
   }
 
@@ -27,7 +27,7 @@ export class EmployeeService {
     return this.httpClient.get<GetEmployee>(this.urlPre + `/${employeeId}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     });
   }
 
@@ -35,7 +35,7 @@ export class EmployeeService {
     return this.httpClient.get<GetEmployee>(this.urlPre + `/username/${username}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     });
   }
 
@@ -43,7 +43,7 @@ export class EmployeeService {
     this.httpClient.post(this.urlPre, employee,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
 
     console.log("added Employee");
@@ -53,7 +53,7 @@ export class EmployeeService {
     this.httpClient.delete(this.urlPre + `/${employeeId}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
 
     console.log("deleted Employee");
@@ -63,7 +63,7 @@ export class EmployeeService {
     this.httpClient.patch(this.urlPre + `/${employeeId}`, employeeMap,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
 
     console.log("updated Employee");
