@@ -1,86 +1,94 @@
-<div class="cBaseMargin">
-  <h1>Profil</h1>
+<div *ngIf="selectedEmployee">
+  <div class="cBaseMargin">
+    <h1>Profil</h1>
+    <section class="cFirstLayout">
+      <div class="cProfilePictureDiv">
+        <a class="cSymbol">
+          <img *ngIf="!isProfilePictureSet()" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
+          <img *ngIf="isProfilePictureSet()" id="ProfilePicture" class="cSymbolImg" [src]="getProfilePicture()" alt="Profile Picture"/>
+        </a>
 
-  <section class="cFirstLayout">
-    <div class="cProfilePictureDiv">
-      <a class="cSymbol">
-        <img *ngIf="!isProfilePictureSet()" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
-        <img *ngIf="isProfilePictureSet()" id="ProfilePicture" class="cSymbolImg" [src]="getProfilePicture()" alt="Profile Picture"/>
-      </a>
-
-      <div class="cProfilePictureButtonsDiv" [hidden]="!(adminView || loggedInUserView)">
-        <button [hidden]="!loggedInUserView" (click)="onClick_ChangeProfilePicture()">Bild ändern</button>
-        <button [hidden]="!(adminView || loggedInUserView)" (click)="onClick_RemoveProfilePicture()">Bild entfernen</button>
-      </div>
-    </div>
-
-    <div class="cDetailsDiv">
-      <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
-        <label class="cDetailsLabel">Personalnummer: </label>
-        <input type="text" class="cDetailsInput" value="test" readonly/>
-      </div>
-      <div class="cDetailsSingle">
-        <label class="cDetailsLabel">Nachname: </label>
-        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
-      </div>
-      <div class="cDetailsSingle">
-        <label class="cDetailsLabel">Vorname: </label>
-        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
-      </div>
-      <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
-        <label class="cDetailsLabel">Straße / Hausnummer: </label>
-        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
-      </div>
-      <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
-        <label class="cDetailsLabel">Postleitzahl / Ort: </label>
-        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
-      </div>
-      <div class="cDetailsSingle">
-        <label class="cDetailsLabel">E-Mail: </label>
-        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
-      </div>
-      <div class="cDetailsSingle">
-        <label class="cDetailsLabel">Telefon: </label>
-        <input type="text" class="cDetailsInput" value="test" [readonly]="!adminView"/>
+        <div class="cProfilePictureButtonsDiv" [hidden]="!(adminView || loggedInUserView)">
+          <input [hidden]="!loggedInUserView" type="file" (change)="onChange_OpenProfilePicture($event)" accept="image/*"/>
+          <button [hidden]="!(adminView || loggedInUserView)" (click)="onClick_RemoveProfilePicture()">Bild entfernen</button>
+          <button [hidden]="!loggedInUserView" (click)="onClick_ChangeProfilePicture()" [disabled]="!pictureChanged">Bild speichern</button>
+        </div>
       </div>
 
-      <button [hidden]="!adminView" (click)="onClick_SaveDetails()">Änderungen speichern</button>
-    </div>
-  </section>
-</div>
+      <div class="cDetailsDiv">
+        <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
+          <label class="cDetailsLabel">Personalnummer: </label>
+          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.id!" readonly/>
+        </div>
+        <div class="cDetailsSingle">
+          <label class="cDetailsLabel">Nachname: </label>
+          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.lastName" [readonly]="!adminView" required/>
+        </div>
+        <div class="cDetailsSingle">
+          <label class="cDetailsLabel">Vorname: </label>
+          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.firstName" [readonly]="!adminView" required/>
+        </div>
+        <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
+          <label class="cDetailsLabel">Straße / Hausnummer: </label>
+          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.street" [readonly]="!adminView" required/>
+        </div>
+        <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
+          <label class="cDetailsLabel">Postleitzahl / Ort: </label>
+          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.zipcode" [readonly]="!adminView" required/>
+        </div>
+        <div class="cDetailsSingle">
+          <label class="cDetailsLabel">E-Mail: </label>
+          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.email" [readonly]="!adminView" required/>
+        </div>
+        <div class="cDetailsSingle">
+          <label class="cDetailsLabel">Telefon: </label>
+          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.phone" [readonly]="!adminView" required/>
+        </div>
 
-<div class="cSplitterLine" [hidden]="!loggedInUserView"></div>
-
-<div class="cBaseMargin" [hidden]="!loggedInUserView">
-  <h3>Präferenzen</h3>
-</div>
-
-<div class="cSplitterLine" [hidden]="!(adminView || loggedInUserView)"></div>
-
-<div class="cBaseMargin" [hidden]="!(adminView || loggedInUserView)">
-  <h3>Passwort</h3>
-  <div class="cPasswordFields" [hidden]="!loggedInUserView">
-    <div class="cPasswordSingle">
-      <label>Derzeitiges Passwort: </label>
-      <input type="password" placeholder="Derzeitiges Passwort" class="cPasswordInput"/>
-    </div>
-    <div class="cPasswordSingle">
-      <label>Neues Passwort: </label>
-      <input type="password" placeholder="Neues Passwort" class="cPasswordInput" [(ngModel)]="newPassword"/>
-    </div>
-    <div class="cPasswordSingle">
-      <label>Neues Passwort wiederholen: </label>
-      <input type="password" placeholder="Neues Passwort wiederholen" class="cPasswordInput"/>
-    </div>
-
-    <button (click)="onClick_SavePassword()">Änderung speichern</button>
+        <button [hidden]="!adminView" (click)="onClick_SaveDetails()">Änderungen speichern</button>
+      </div>
+    </section>
   </div>
 
-  <div class="cPasswordFields" [hidden]="!(adminView && !loggedInUserView)">
-    <div class="cPasswordSingle">
-      <label>Neues Passwort: </label>
-      <input type="text" class="cPasswordInput" [(ngModel)]="newPassword" readonly/>
-    </div>
-    <button (click)="onClick_ResetPassword()">Passwort zurücksetzen</button>
+  <div class="cSplitterLine" [hidden]="!loggedInUserView"></div>
+
+  <div class="cBaseMargin" [hidden]="!loggedInUserView">
+    <h3>Präferenzen</h3>
   </div>
+
+  <div class="cSplitterLine" [hidden]="!(adminView || loggedInUserView)"></div>
+
+  <div class="cBaseMargin" [hidden]="!(adminView || loggedInUserView)">
+    <h3>Passwort</h3>
+    <form id="passowrdForm">
+      <div class="cPasswordFields" [hidden]="!loggedInUserView">
+        <div class="cPasswordSingle">
+          <label>Derzeitiges Passwort: </label>
+          <input type="password" placeholder="Derzeitiges Passwort" class="cPasswordInput" name="CurrentPasswordInput" [(ngModel)]="currentPassword" [required]="checkRequired"/>
+        </div>
+        <div class="cPasswordSingle">
+          <label>Neues Passwort: </label>
+          <input type="password" placeholder="Neues Passwort" name="NewPasswordInput" class="cPasswordInput" [(ngModel)]="newPassword" [required]="checkRequired"/>
+        </div>
+        <div class="cPasswordSingle">
+          <label>Neues Passwort wiederholen: </label>
+          <input type="password" placeholder="Neues Passwort wiederholen" name="NewPasswordAgainInput" class="cPasswordInput" [(ngModel)]="newPasswordAgain" [required]="checkRequired"/>
+        </div>
+
+        <button (click)="onClick_SavePassword()">Änderung speichern</button>
+      </div>
+
+      <div class="cPasswordFields" [hidden]="!(adminView && !loggedInUserView)">
+        <div class="cPasswordSingle">
+          <label>Neues Passwort: </label>
+          <input type="text" class="cPasswordInput" name="NewRadnomPasswordInput" [(ngModel)]="newPassword" readonly/>
+        </div>
+        <button (click)="onClick_ResetPassword()">Passwort zurücksetzen</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="!selectedEmployee">
+  <h1>Profilseite von dem Benutzer konnte nicht gefunden werden!</h1>
 </div>

@@ -8,7 +8,7 @@
   background-color: black;
 }
 
-.cSymbolImg {
+.cSymbol {
   background-color: white;
 
   border-radius: 10%;
@@ -16,6 +16,14 @@
 
   height: 150px;
   width: 150px;
+}
+
+.cSymbolImg {
+  display: block;
+  margin: auto;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .cFirstLayout {
@@ -44,7 +52,8 @@
 
 .cDetailsDiv {
   margin-left: auto;
-  width: 400px;
+  min-width: 300px;
+  width: 40vw;
   border: 1px solid black;
   padding: 10px;
 
@@ -63,16 +72,20 @@
 
 .cDetailsInput {
   margin-left: auto;
+  width: 400px;
 }
 
 input:read-only {
   background-color: #d1d1d1;
 }
 
-
+input:invalid {
+  color: red;
+  border-color: red;
+}
 
 .cPasswordFields {
-  width: 400px;
+  width: 500px;
 
   display: flex;
   flex-direction: column;
@@ -85,4 +98,5 @@ input:read-only {
 
 .cPasswordInput {
   margin-left: auto;
+  width: 300px;
 }

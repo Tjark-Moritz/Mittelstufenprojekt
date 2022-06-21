@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GetEmployee} from "../../models/dto/GetEmployee";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {EmployeeService} from "../../services/employee.service";
 import * as swal from "sweetalert2";
+import {LoginComponent} from "../login/login.component";
+import {Location} from "@angular/common";
+import {BearerTokenService} from "../../services/bearer-token.service";
+import {UserRoleEnum} from "../../models/UserRoleEnum";
+import {LoginService} from "../../services/login.service";
 
 @Component({
   selector: 'app-profile',
@@ -12,36 +17,89 @@ import * as swal from "sweetalert2";
 })
 export class ProfileComponent implements OnInit {
   private para: any;
-  private selectedEmployee: GetEmployee | undefined;
-  private profilePictureBase64 : string = "";
+  public _SelectedEmployee: GetEmployee | undefined;
+
+  public set selectedEmployee(val: GetEmployee | undefined) {
+    this._SelectedEmployee = val;
+    this.setViewRights();
+    console.log("test");
+  }
+
+  public get selectedEmployee(): GetEmployee | undefined {
+    return this._SelectedEmployee;
+  }
+
+  public originalSelectedEmployee: GetEmployee = new GetEmployee();
+
+  public checkRequired: boolean = false;
+
+  private _CurrentPassword: string = "";
+  public set currentPassword(val: string) {
+    this.checkRequired = (val != "");
+    this._CurrentPassword = val;
+  }
+  public get currentPassword() : string {
+    return this._CurrentPassword
+  }
+
+  public pictureChanged: boolean = false;
+  public set newProfilePicture(val : string) {
+    if(this.selectedEmployee)
+      this.selectedEmployee.base64ProfilePic = val;
+
+    this.pictureChanged = true;
+  }
 
   public newPassword: string = "";
+  public newPasswordAgain: string = "";
 
-  public loggedInUserView = false;
-  public adminView = true;
+  public loggedInUserView = true;
+  public adminView = false;
 
-  constructor(private domSanitizer: DomSanitizer, private route: ActivatedRoute, private empService: EmployeeService) {
-    this.domSanitizer.bypassSecurityTrustResourceUrl(this.profilePictureBase64);
+  constructor(private domSanitizer: DomSanitizer, private route: ActivatedRoute, private location : Location, private empService: EmployeeService, private router: Router, private loginService: LoginService, private bearerTokenService: BearerTokenService) {
   }
 
   ngOnInit(): void {
     this.para = this.route.params.subscribe(params => {
-      this.empService.getEmployeeById(params['id']).subscribe(emp => {
-         this.selectedEmployee = emp;
-      });
+      console.info(this.loginService.LoggedInUser);
+      if(Object.keys(params).length == 0) {
+        if (this.loginService.LoggedInUser) {
+          this.selectedEmployee = JSON.parse(JSON.stringify(this.loginService.LoggedInUser)); // Json used to create a copy
+          this.originalSelectedEmployee = this.loginService.LoggedInUser;
+        }
+      }
+      else {
+        this.empService.getEmployeeById(params['id']).subscribe(emp => {
+           this.selectedEmployee = JSON.parse(JSON.stringify(emp)); // Json used to create a copy
+           this.originalSelectedEmployee = emp;
+        });
+      }
+
+      if(!this.selectedEmployee) {
+        this.openFailedMessageBox("Profilseite von dem Benutzer konnte nicht gefunden werden!");
+        this.location.back();
+      }
     });
   }
 
+  private setViewRights() {
+    if(this.selectedEmployee) {
+      this.loggedInUserView = (this.selectedEmployee?.username == this.loginService.LoggedInUser.username);
+    }
+
+    this.adminView = (this.bearerTokenService.getUserRole == UserRoleEnum.Admin);
+  }
+
   public isProfilePictureSet(): boolean{
-    if(this.profilePictureBase64 != "")
-      return true;
-    else
-      return false;
+    if(this.selectedEmployee)
+      return (this.selectedEmployee.base64ProfilePic != "");
+
+    return false;
   }
 
   public getProfilePicture(): SafeResourceUrl | undefined{
-    if(this.isProfilePictureSet()) {
-      return this.domSanitizer.bypassSecurityTrustResourceUrl(this.profilePictureBase64);
+    if(this.isProfilePictureSet() && this.selectedEmployee) {
+      return this.domSanitizer.bypassSecurityTrustResourceUrl(this.selectedEmployee.base64ProfilePic);
     }
 
     return undefined;
@@ -49,18 +107,6 @@ export class ProfileComponent implements OnInit {
 
 
   public onClick_SaveDetails(){
-
-  }
-
-  public onClick_ChangeProfilePicture(){
-
-  }
-
-  public onClick_RemoveProfilePicture(){
-
-  }
-
-  public onClick_SavePassword(){
     swal.default.fire({
       title: 'Änderungen wirklich speichern?',
       showDenyButton: true,
@@ -73,10 +119,85 @@ export class ProfileComponent implements OnInit {
       }
     }).then((boxResult) => {
       if (boxResult.isConfirmed) {
-        this.savePasswordInDb();
+        this.saveDetailsInDb();
       } else if (boxResult.isDenied) {
       }
     });
+  }
+
+  public onChange_OpenProfilePicture(event : any){
+    if(event.target.files.length != 1)
+      return;
+
+    const selectedPicture : File = event.target.files[0];
+
+    let reader = new FileReader();
+
+    let here = this;
+    reader.readAsDataURL(selectedPicture);
+    reader.onload = function () {
+      if(reader.result) {
+        here.newProfilePicture = reader.result.toString();
+      }
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  }
+
+  public onClick_ChangeProfilePicture(){
+    swal.default.fire({
+      title: 'Änderungen wirklich speichern?',
+      showDenyButton: true,
+      confirmButtonText: 'Ja',
+      denyButtonText: 'Nein',
+      customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-1',
+        denyButton: 'order-2',
+      }
+    }).then((boxResult) => {
+      if (boxResult.isConfirmed) {
+        this.saveProfilePictureInDb();
+      } else if (boxResult.isDenied) {
+      }
+    });
+  }
+
+  public onClick_RemoveProfilePicture(){
+    this.newProfilePicture = "";
+  }
+
+  public onClick_SavePassword(){
+    if(this.currentPassword != "CP"){ // Todo: check for the current password!
+      this.openFailedMessageBox("Derzeitiges Passwort ist falsch eingegeben! Bitte erneut versuchen!");
+      return;
+    }
+
+    if(this.newPassword.length < 5){
+      this.openFailedMessageBox("Neues Passwort muss mindestens 5 Zeichen haben!");
+    }
+    else if(this.newPassword != this.newPasswordAgain){
+      this.openFailedMessageBox("Wiederholtes Passwort ist nicht identisch!");
+    }
+    else {
+      swal.default.fire({
+        title: 'Änderungen wirklich speichern?',
+        showDenyButton: true,
+        confirmButtonText: 'Ja',
+        denyButtonText: 'Nein',
+        customClass: {
+          actions: 'my-actions',
+          confirmButton: 'order-1',
+          denyButton: 'order-2',
+        }
+      }).then((boxResult) => {
+        if (boxResult.isConfirmed) {
+          this.savePasswordInDb();
+        } else if (boxResult.isDenied) {
+        }
+      });
+    }
   }
 
   public onClick_ResetPassword(){
@@ -107,20 +228,83 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  private openFailedMessageBox(text: string){
+    swal.default.fire({
+      title: text,
+      icon: "error",
+      showCloseButton: true
+    })
+  }
+
   private openSavedMessageBox(){
     swal.default.fire({
       position: 'top',
       icon: 'success',
-      title: 'Änderungen gespeichert!',
+      title: 'Gespeichert!',
       showCloseButton: true,
-      timer: 2500
+      timer: 1500
     });
   }
 
+  private saveProfilePictureInDb(){
+    if(this.selectedEmployee) {
+      let changes: Map<string, string> = new Map<string, string>();
+
+      if (this.originalSelectedEmployee.base64ProfilePic != this.selectedEmployee.base64ProfilePic)
+        changes.set("base64ProfilePic", this.selectedEmployee.base64ProfilePic);
+
+      this.sendEmployeeChangesToDb(changes);
+    }
+  }
+
+  private saveDetailsInDb(){
+    if(this.selectedEmployee) {
+      let changes: Map<string, string> = new Map<string, string>();
+
+      if (this.originalSelectedEmployee.lastName != this.selectedEmployee.lastName)
+        changes.set("lastName", this.selectedEmployee.lastName);
+
+      if (this.originalSelectedEmployee.firstName != this.selectedEmployee.firstName)
+        changes.set("firstName", this.selectedEmployee.firstName);
+
+      if (this.originalSelectedEmployee.street != this.selectedEmployee.street)
+        changes.set("street", this.selectedEmployee.street);
+
+      if (this.originalSelectedEmployee.zipcode != this.selectedEmployee.zipcode)
+        changes.set("zipcode", this.selectedEmployee.zipcode);
+
+      if (this.originalSelectedEmployee.city != this.selectedEmployee.city)
+        changes.set("city", this.selectedEmployee.city);
+
+      if (this.originalSelectedEmployee.phone != this.selectedEmployee.phone)
+        changes.set("phone", this.selectedEmployee.phone);
+
+      if (this.originalSelectedEmployee.email != this.selectedEmployee.email)
+        changes.set("email", this.selectedEmployee.email);
+
+      this.sendEmployeeChangesToDb(changes);
+    }
+  }
+
+  private sendEmployeeChangesToDb(changes: Map<string, string>){
+    if(this.selectedEmployee) {
+      if (changes.size == 0)
+        return;
+
+      if (this.selectedEmployee.id) {
+        this.empService.updateEmployee(changes, this.selectedEmployee.id);
+        this.openSavedMessageBox();
+      } else {
+        this.openFailedMessageBox("Mitarbeiternummer ist nicht definiert!");
+      }
+    }
+  }
+
   private savePasswordInDb(skipSuccessBox: boolean = false){
-    console.info("Neues Passwort wurde gespeichert: '" + this.newPassword + "'");
     if(!skipSuccessBox){
       this.openSavedMessageBox();
     }
+
+    // Todo: Passwort ändern db aufruf
   }
 }
