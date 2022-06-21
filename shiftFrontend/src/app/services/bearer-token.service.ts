@@ -34,8 +34,8 @@ export class BearerTokenService {
   }
 
   public get bearerToken(): BearerToken {
-    if(UserCookieService.isBearerTokenSet() && !this._BearerToken)
-      this._BearerToken = UserCookieService.getBearerToken();
+    if(UserCookieService.isBearerTokenSet() && this._BearerToken == undefined)
+      this.bearerToken = UserCookieService.getBearerToken();
 
     if(this._BearerToken)
       return this._BearerToken;
@@ -44,7 +44,7 @@ export class BearerTokenService {
   }
 
   public isBearerTokenSet(): boolean {
-    return !!this._BearerToken;
+    return (this.bearerToken.access_token != undefined);
   }
 
   // returns undefined if the user isn't logged in
