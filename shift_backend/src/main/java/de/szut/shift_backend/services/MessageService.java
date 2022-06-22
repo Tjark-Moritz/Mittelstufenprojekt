@@ -22,7 +22,7 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public void creatße(Message newMessage) {
+    public void create(Message newMessage) {
         messageRepository.save(newMessage);
     }
 
@@ -36,7 +36,7 @@ public class MessageService {
     }
 
     public List<Message> getMessagesByChannelId(Long channelId) {
-        List<Message> messages = this.messageRepository.findAll(); //todo: refactor here with findAllById
+        List<Message> messages = this.messageRepository.findAll();
         List<Message> messageList = new ArrayList<>();
 
         for (Message message : messages) {

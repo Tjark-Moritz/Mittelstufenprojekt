@@ -47,7 +47,4 @@ public class MessageHandlingController {
                 addMessageDto
                 );
     }
-
-    // TODO: semdToALL
-    // TODOS entfernen, wie auch souts!
 }

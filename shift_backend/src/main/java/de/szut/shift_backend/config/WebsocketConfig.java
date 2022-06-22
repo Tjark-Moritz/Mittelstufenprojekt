@@ -23,8 +23,7 @@ class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
                 "/message",
                 "message/create",
                 "message/update/{id}",
-                "message/delete/{id}"
-        ); //TODO: Alle Endpunkte rein
+                "message/delete/{id}");
     }
 
     //Info: Für den Verbindungsaufbau
