@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 import {BearerTokenService} from "./bearer-token.service";
 import * as swal from 'sweetalert2';
+import {LoginService} from "./login.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationGuardService implements CanActivate{
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private loginService: LoginService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-    if(BearerTokenService.bearerToken) {
+    if(this.loginService.isUserLoggedIn()) {
       return true;
     }
 

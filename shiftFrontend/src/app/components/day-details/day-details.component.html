@@ -1,0 +1,26 @@
+<mat-dialog-content>
+  <h2 mat-dialog-title>{{formattedDate}}</h2>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Suche nach einenm Mitarbeiter</mat-label>
+    <input matInput id="searchInput" type="text" placeholder="Search.." (input)="search()">
+  </mat-form-field>
+
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let shift of this.shifts">
+      <mat-expansion-panel-header>
+        <mat-panel-title *ngIf="shift != undefined && shift.shiftType != undefined && shift.shiftType.typeName != undefined">
+          {{shift.shiftType.typeName}}
+        </mat-panel-title>
+
+        <mat-panel-description>
+          Nachname, Vorname
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-list>
+        <mat-list-item *ngFor="let employee of selection.selected">{{employee.lastName}}, {{employee.firstName}}</mat-list-item> <!--  *ngfor="let employee in earlyEmployees">{{employee}} -->
+      </mat-list>
+    </mat-expansion-panel>
+  </mat-accordion>
+</mat-dialog-content>

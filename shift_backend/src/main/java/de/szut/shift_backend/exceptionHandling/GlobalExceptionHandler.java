@@ -1,5 +1,6 @@
 package de.szut.shift_backend.exceptionHandling;
 
+import org.keycloak.common.VerificationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,6 +23,24 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CreationException.class)
     public ResponseEntity<?> handleCreationException(CreationException ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(MappingException.class)
+    public ResponseEntity<?> handleCreationException(MappingException ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(VerificationException.class)
+    public ResponseEntity<?> handleCreationException(VerificationException ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(PasswordMissmatch.class)
+    public ResponseEntity<?> handleCreationException(PasswordMissmatch ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
     }

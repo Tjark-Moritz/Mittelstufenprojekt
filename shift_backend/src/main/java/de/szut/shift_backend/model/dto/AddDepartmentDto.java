@@ -19,4 +19,5 @@ public class AddDepartmentDto {
 
     private List<Long> employeeIds;
 
+    private List<AddShiftTypeDto> shiftTypes;
 }
