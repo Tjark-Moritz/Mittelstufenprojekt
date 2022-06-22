@@ -41,5 +41,6 @@ export class NavbarComponent implements OnInit {
 
   public userlogout(){
     this.loginService.Logout();
+    this.sideNavIsOpen(false);
   }
 }

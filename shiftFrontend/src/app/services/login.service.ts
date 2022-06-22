@@ -52,7 +52,6 @@ export class LoginService {
     this.setLoggedInUser();
 
     this.router.navigate(['/login']);
-    console.log("dsa")
   }
 
   public isUserLoggedIn(): boolean{
