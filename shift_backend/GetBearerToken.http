@@ -2,5 +2,5 @@
 POST http://localhost:8089/auth/realms/Shiftplanner/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
-grant_type=password&client_id=shiftplanner&username=user&password=user
+grant_type=password&client_id=shiftplanner&username=admin&password=admin
 

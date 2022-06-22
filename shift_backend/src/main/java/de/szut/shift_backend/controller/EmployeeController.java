@@ -143,4 +143,20 @@ public class EmployeeController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Operation(summary = "change Employee password")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "password was updated"),
+            @ApiResponse(responseCode =  "400", description = "password parameter is invalid", content = @Content),
+            @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
+    })
+    @PostMapping("/{id}/password")
+    public ResponseEntity<Object> changeEmployeePasswordAsAdmin(@Valid @PathVariable("id") final Long employeeId,
+                                                                @Valid @RequestBody final UpdatePasswordDto pwUpdate,
+                                                                @RequestHeader("Authorization") String token) throws VerificationException {
+
+        this.employeeService.updateEmployeePasswordAsAdmin(token, employeeId, pwUpdate);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

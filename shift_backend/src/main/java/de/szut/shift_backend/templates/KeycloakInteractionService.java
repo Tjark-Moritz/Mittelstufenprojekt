@@ -10,6 +10,7 @@ import org.keycloak.TokenVerifier;
 import org.keycloak.common.VerificationException;
 import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.JsonWebToken;
+import org.keycloak.representations.account.UserRepresentation;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
+@SuppressWarnings("rawtypes")
 @Service
 public class KeycloakInteractionService {
 
@@ -44,18 +46,18 @@ public class KeycloakInteractionService {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_FORM_URLENCODED));
 
-            MultiValueMap<String, String> urlData= new LinkedMultiValueMap<String, String>();
+            MultiValueMap<String, String> urlData= new LinkedMultiValueMap<>();
             urlData.add("grant_type","client_credentials");
             urlData.add("client_id","admin-cli");
             urlData.add("client_secret","e933cafc-ecd1-4786-bd77-c30bd781ace1");
 
-            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(urlData, headers);
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(urlData, headers);
 
             ResponseEntity<Map<String,Object>> response = this.restTemplate.exchange(
                     tokenUrl,
                     HttpMethod.POST,
                     request,
-                    new ParameterizedTypeReference<Map<String,Object>>() {},
+                    new ParameterizedTypeReference<>() {},
                     1);
 
             if (response.getStatusCode() == HttpStatus.OK
@@ -69,7 +71,7 @@ public class KeycloakInteractionService {
         throw new NullPointerException("Could not retrieve access_token!");
     }
 
-    public boolean addUserToKeycloak(Employee emp) throws JsonProcessingException {
+    public boolean addUserToKeycloak(Employee emp){
         String url = baseUrl + "/users";
         adminToken = getAdminKey();
 
@@ -88,6 +90,7 @@ public class KeycloakInteractionService {
         body.put("lastName",emp.getLastName());
         body.put("email", emp.getEmail());
         body.put("enabled",true);
+        body.put("realmRoles",  mapper.createArrayNode().add("shiftuser"));
 
         HttpEntity request = new HttpEntity(body.toPrettyString(),header);
 
@@ -95,16 +98,14 @@ public class KeycloakInteractionService {
                 url,
                 HttpMethod.POST,
                 request,
-                new ParameterizedTypeReference<Map<String,Object>>() {},
+                new ParameterizedTypeReference<>() {},
                 1);
 
         return response.getStatusCodeValue() == 201;
     }
 
-    public void updateUserPassword(String token, UpdatePasswordDto pwUpdate) throws VerificationException {
-        String token2 = token.substring(7);
-        JsonWebToken decodedT = TokenVerifier.create(token2, AccessToken.class).getToken();
-        String url =  baseUrl + "/users/" + decodedT.getSubject() + "/reset-password";
+    public void updateUserPassword(String subjectId, UpdatePasswordDto pwUpdate) {
+        String url =  baseUrl + "/users/" + subjectId + "/reset-password";
 
         HttpHeaders header = getHttpBaseHeader(getAdminKey());
 
@@ -119,7 +120,31 @@ public class KeycloakInteractionService {
                 url,
                 HttpMethod.PUT,
                 request,
-                new ParameterizedTypeReference<Map<String,Object>>() {},
+                new ParameterizedTypeReference<>() {},
                 1);
+    }
+
+    public String getSubjectIdByUsername(String username){
+        String url =  baseUrl + "/users";
+
+        HttpHeaders header = getHttpBaseHeader(getAdminKey());
+
+        ObjectNode body = mapper.createObjectNode();
+        body.put("username", username);
+
+        HttpEntity request = new HttpEntity(body.toPrettyString(),header);
+
+        ResponseEntity<List<UserRepresentation>> response = this.restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<>() {},
+                1);
+        Optional<UserRepresentation> keyUser =  Objects.requireNonNull(response.getBody()).stream()
+                                                .filter(user -> user.getUsername().equals(username))
+                                                .findAny();
+
+
+        return keyUser.map(UserRepresentation::getId).orElse(null);
     }
 }
