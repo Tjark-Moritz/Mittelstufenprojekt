@@ -37,4 +37,8 @@ export class NavbarComponent implements OnInit {
   sideNavIsOpen(val: boolean) {
     this.classApplied = val;
   }
+
+  public userlogout(){
+
+  }
 }

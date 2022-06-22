@@ -46,6 +46,10 @@ export class LoginService {
     });
   }
 
+  public Logout() {
+    this.bearerTokenService.logout();
+  }
+
   public isUserLoggedIn(): boolean{
     this.autoLogin();
 
