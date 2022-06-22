@@ -33,8 +33,6 @@ export class LoginService {
         if(autoLogin) {
           UserCookieService.setBearerToken(res);
         }
-
-        //this.wrongLogin = false;
         this.router.navigate(['/index']);
       }, () => {
         swal.default.fire({
@@ -44,8 +42,6 @@ export class LoginService {
           showCloseButton: true,
           timer: 2500
         });
-
-        //this.wrongLogin = true;
     });
   }
 
