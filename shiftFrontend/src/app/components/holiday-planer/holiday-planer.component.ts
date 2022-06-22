@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {delay} from "rxjs";
+import { Component, OnInit , ChangeDetectorRef } from '@angular/core';
 import {GetEmployee} from "../../models/dto/GetEmployee";
 import {GetHoliday} from "../../models/dto/GetHoliday";
+import {AddHoliday} from "../../models/dto/AddHoliday";
+//import {HolidayType} from "../../models/dto/HolidayType";
 import {EmployeeService} from "../../services/employee.service";
+import {BearerTokenService} from "../../services/bearer-token.service";
+import jwtDecode from "jwt-decode";
+import {LoginComponent} from "../login/login.component";
+import {UserRoleEnum} from "../../models/UserRoleEnum";
 
 
 @Component({
@@ -11,21 +16,42 @@ import {EmployeeService} from "../../services/employee.service";
   styleUrls: ['./holiday-planer.component.css']
 })
 
-export class HolidayPlanerComponent implements OnInit {
+export class HolidayPlanerComponent implements OnInit
+{
 
-  display: string = "user";
+  display: string = "shiftuser";
   statusDisplay: string ="normal";
 
   chossenStartDate: Date = new Date();
   chossenEndDate: Date = new Date();
 
   // data:HolidayRequest[] = []; // Siehe unten
+  data:AddHoliday[] = [];
 
   displayedColumns = ['vocationStart', 'vocationEnd', 'days', 'statuss'];
 
-  constructor(private employeeService: EmployeeService) { }
+  constructor(private employeeService: EmployeeService,
+              private changeDetectorRefs: ChangeDetectorRef)
+  {
+    let roleName: UserRoleEnum | undefined;
+    // @ts-ignore
+    roleName = BearerTokenService.getUserRoles;
+    if(roleName)
+    {
+      if(roleName == UserRoleEnum.Admin)
+      {
+        this.switchUserToAdmin()
+      }
+      else
+      {
+        this.switchUser();
+      }
+    }
+  }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
+    this.refresh();
   }
 
   getUserData():GetEmployee[] {
@@ -34,67 +60,117 @@ export class HolidayPlanerComponent implements OnInit {
     return empList;
   }
 
-  switchUserAdmin()
+  switchUserToAdmin()
   {
-    this.display = "admin";
+    this.display = "shiftadmin";
   }
 
   switchUser()
   {
-    this.display = "user"
+    this.display = "shiftuser"
   }
 
   closeStartPicker(eventData:any, datepicker?:any)
   {
-    datepicker.close();
-    this.chossenStartDate = eventData.value._d;
 
+    this.chossenStartDate = eventData.value._d;
+    datepicker.close();
   }
 
   closeEndPicker(eventData:any, datepicker?:any)
   {
-  datepicker.close();
   this.chossenEndDate = eventData.value._d;
+    datepicker.close();
   }
 
   requestcounter:number = 0;
-  // Die null muss noch duch die id des eingelogten Users ersetzt werden.
+
+
+  value: any;
+
+  /*
+  startSeite()
+  {
+    // @ts-ignore
+    let decodedToken = jwtDecode(BearerTokenService.bearerToken.access_token);
+    //@ts-ignore
+    let roleName = decodedToken.realm_access.roles[0];
+
+    roleName.forEach(roleName)
+    {
+      if(roleName=="shiftadmin")
+      {
+        this.display = "shiftadmin";
+      }
+      if(roleName=="shiftuser")
+      {
+        this.display = "shiftuser"
+      }
+    }
+  }
+  */
+  startRequest()
+  {
+      let empList = this.getUserData();
+      LoginComponent.GetLoggedInUser;
+
+      let addHoliday: AddHoliday = new AddHoliday();
+      addHoliday.startDate =  this.chossenStartDate;
+      addHoliday.endDate = this.chossenEndDate;
+      addHoliday.id = this.requestcounter+1;
+      addHoliday.typeId = 1;
+      this.requestcounter = this.requestcounter+1;
+      //LoginComponent.GetLoggedInUser;
+
+      if (empList[0])
+      {
+        addHoliday.employeeId = LoginComponent.GetLoggedInUser.id;
+      }
+
+      this.refresh();
+      this.data.push(addHoliday)
+  }
+/*
+Der part der Funktionirt hatte
 
   startrequest(){
     let empList = this.getUserData();
-
     let date: Date = new Date();
 
-    let holidayType: GetHoliday = new GetHoliday()
-    holidayType.holidayTypeId = 1; // Nur noch Id
+    let holidayType: HolidayType = new HolidayType()
+    holidayType.typeName = "Urlaub";
 
-    let holiday: GetHoliday = new GetHoliday();
-    holiday.holidayTypeId = 1; // Nur noch Id
+    let holiday: Holiday = new Holiday();
+    holiday.holidayType = holidayType;
     holiday.startDate = this.chossenStartDate;
     holiday.endDate = this.chossenEndDate;
 
-    // Muss Überarbeitet werden; Existiert noch?
-    /*
     let holidayRequest: HolidayRequest = new HolidayRequest()
     holidayRequest.requestDate = date;
     holidayRequest.holidayRequestId = this.requestcounter+1;
     holidayRequest.holiday = holiday;
-    if (empList[0]) { holidayRequest.requestingEmployeeId = empList[0].id;}
+    if (empList.employees) { holidayRequest.requestingEmployeeId = empList.employees[0].employeeId;}
     holidayRequest.status = false;
 
-
     this.data.push(holidayRequest);
-    */
   }
+*/
 
   holidayaccepted()
   {
-    this.statusDisplay = "accepted";
+    this.statusDisplay = "ACCEPTED";
   }
 
-  canceledaccepted()
+  holidaycanceled()
   {
-    this.statusDisplay = "canceled";
+    this.statusDisplay = "DENIED";
+  }
+
+  refresh()
+  {
+
+    //this.data = this.data;
+    //this.changeDetectorRefs.detectChanges();
   }
 }
 
