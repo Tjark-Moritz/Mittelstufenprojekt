@@ -5,7 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.szut.shift_backend.model.Employee;
-import org.keycloak.representations.idm.CredentialRepresentation;
+import de.szut.shift_backend.model.dto.UpdatePasswordDto;
+import org.keycloak.TokenVerifier;
+import org.keycloak.common.VerificationException;
+import org.keycloak.representations.AccessToken;
+import org.keycloak.representations.JsonWebToken;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -95,5 +99,27 @@ public class KeycloakInteractionService {
                 1);
 
         return response.getStatusCodeValue() == 201;
+    }
+
+    public void updateUserPassword(String token, UpdatePasswordDto pwUpdate) throws VerificationException {
+        String token2 = token.substring(7);
+        JsonWebToken decodedT = TokenVerifier.create(token2, AccessToken.class).getToken();
+        String url =  baseUrl + "/users/" + decodedT.getSubject() + "/reset-password";
+
+        HttpHeaders header = getHttpBaseHeader(getAdminKey());
+
+        ObjectNode body = mapper.createObjectNode();
+        body.put("type","password");
+        body.put("value", pwUpdate.getNewPassword());
+        body.put("temporary", false);
+
+        HttpEntity request = new HttpEntity(body.toPrettyString(),header);
+
+        ResponseEntity<Map<String,Object>> response = this.restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                request,
+                new ParameterizedTypeReference<Map<String,Object>>() {},
+                1);
     }
 }

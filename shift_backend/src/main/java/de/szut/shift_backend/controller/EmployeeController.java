@@ -4,15 +4,18 @@ import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.dto.AddEmployeeDto;
 import de.szut.shift_backend.model.dto.GetEmployeeDto;
+import de.szut.shift_backend.model.dto.UpdatePasswordDto;
 import de.szut.shift_backend.services.EmployeeService;
 import de.szut.shift_backend.services.MappingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.keycloak.common.VerificationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -124,5 +127,20 @@ public class EmployeeController {
             GetEmployeeDto empUpdatedDto = this.mappingService.mapEmployeeToGetEmployeeDto(empUpdate);
 
             return new ResponseEntity<>(empUpdatedDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "change Employee password")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "password was updated"),
+            @ApiResponse(responseCode =  "400", description = "password parameter is invalid", content = @Content),
+            @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
+    })
+    @PostMapping("/password")
+    public ResponseEntity<Object> changeEmployeePassword(@Valid @RequestBody final UpdatePasswordDto pwUpdate,
+                                                         @RequestHeader("Authorization") String token) throws VerificationException {
+
+        this.employeeService.updateEmployeePassword(token, pwUpdate);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
