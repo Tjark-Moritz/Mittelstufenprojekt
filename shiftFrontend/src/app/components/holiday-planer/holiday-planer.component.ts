@@ -1,9 +1,7 @@
 import { Component, OnInit , ChangeDetectorRef } from '@angular/core';
 import {GetHoliday} from "../../models/dto/GetHoliday";
 import {AddHoliday} from "../../models/dto/AddHoliday";
-//import {HolidayType} from "../../models/dto/HolidayType";
 import {BearerTokenService} from "../../services/bearer-token.service";
-import jwtDecode from "jwt-decode";
 import {UserRoleEnum} from "../../models/UserRoleEnum";
 import {LoginService} from "../../services/login.service";
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,7 +23,6 @@ export class HolidayPlanerComponent implements OnInit
   chossenStartDate: Date = new Date();
   chossenEndDate: Date = new Date();
 
-  //data:AddHoliday[] = [];
   dataSource = new MatTableDataSource<AddHoliday[]>();
   allHolidays: AddHoliday[] = [];
 
@@ -33,8 +30,7 @@ export class HolidayPlanerComponent implements OnInit
 
   constructor(private loginService: LoginService,
               private bearerTokenService: BearerTokenService,
-              private holidayService: HolidayService,
-              private changeDetectorRefs: ChangeDetectorRef)
+              private holidayService: HolidayService)
   {
     let roleName: UserRoleEnum | undefined;
     // @ts-ignore
@@ -50,6 +46,18 @@ export class HolidayPlanerComponent implements OnInit
         this.switchUser();
       }
     }
+
+    //todo delete
+    let hollidayArray: AddHoliday[] = [];
+    let holiday1:AddHoliday = new AddHoliday(1,1,new Date("2022-06-25"),new Date("2022-06-29"),1);
+    let holiday2:AddHoliday = new AddHoliday(2,1,new Date("2022-06-01"),new Date("2022-06-10"),1);
+    let holiday3:AddHoliday = new AddHoliday(3,1,new Date("2022-07-10"),new Date("2022-07-20"),1);
+    hollidayArray.push(holiday1);
+    hollidayArray.push(holiday2);
+    hollidayArray.push(holiday3);
+    this.allHolidays = hollidayArray;
+
+    this.refresh();
   }
 
   ngOnInit(): void
@@ -96,8 +104,6 @@ export class HolidayPlanerComponent implements OnInit
 
     addHoliday.employeeId = this.loginService.LoggedInUser.id;
 
-    console.log(addHoliday);
-    console.log("nassss");
     this.holidayService.addHoliday(addHoliday);
 
     this.refresh();
@@ -117,9 +123,11 @@ export class HolidayPlanerComponent implements OnInit
   {
     this.holidayService.getAllHolidays().subscribe(res =>
     {
-       console.log(res)
-      this.allHolidays= res;
+      if(res.length != 0)
+      {
+        this.allHolidays = res;
+      }
+      console.log(res);
     });
   }
 }
-
