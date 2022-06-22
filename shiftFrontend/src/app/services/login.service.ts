@@ -29,6 +29,7 @@ export class LoginService {
     this.bearerTokenService.generateBearerToken(username, password).subscribe(
       res => {
         this.bearerTokenService.bearerToken = res;
+        this.setLoggedInUser();
 
         if(autoLogin) {
           UserCookieService.setBearerToken(res);
