@@ -285,8 +285,8 @@ export class ProfileComponent implements OnInit {
       if (changes.size == 0)
         return;
 
-      if (this.selectedEmployee.id) {
-        this.empService.updateEmployee(changes, this.selectedEmployee.id);
+      if (this.originalSelectedEmployee.id && this.selectedEmployee.id) {
+        this.empService.updateEmployee(changes, this.originalSelectedEmployee.id);
         this.openSavedMessageBox();
       } else {
         this.openFailedMessageBox("Mitarbeiternummer ist nicht definiert!");
