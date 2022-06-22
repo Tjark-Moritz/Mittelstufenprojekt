@@ -33,16 +33,20 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav (closed)="sideNavIsOpen(false);">
     <mat-nav-list class="sideNavList" *ngIf="loginService.isUserLoggedIn()">
-      <a mat-list-item [routerLink]="'/shift'"> Schichten Übersicht </a>
-      <a mat-list-item [routerLink]="'/emps'"> Mitarbeiter Liste </a>
-      <a mat-list-item [routerLink]="'/deps'"> Abteilungs Liste </a>
-      <a mat-list-item [routerLink]="'/holiday'"> Urlaub </a>
-      <mat-divider></mat-divider>
-      <a mat-list-item (click)="userlogout(); sideNavIsOpen(true); sidenav.toggle()">Ausloggen</a>
+      <a mat-list-item [routerLink]="'/shift'" (click)="sideNavIsOpen(false); sidenav.toggle()"> Schichten Übersicht </a>
+      <a mat-list-item [routerLink]="'/emps'" (click)="sideNavIsOpen(false); sidenav.toggle()"> Mitarbeiter Liste </a>
+      <a mat-list-item [routerLink]="'/deps'" (click)="sideNavIsOpen(false); sidenav.toggle()"> Abteilungs Liste </a>
+      <a mat-list-item [routerLink]="'/holiday'" (click)="sideNavIsOpen(false); sidenav.toggle()"> Urlaub </a>
+
+      <div class="cStickBottom sideNavList">
+        <mat-divider></mat-divider>
+        <a mat-list-item [routerLink]="'/profile'" (click)="sideNavIsOpen(false); sidenav.toggle()">Profil</a>
+        <a mat-list-item (click)="userlogout(); sideNavIsOpen(false); sidenav.toggle()">Ausloggen</a>
+      </div>
     </mat-nav-list>
 
     <mat-nav-list class="sideNavList" *ngIf="!loginService.isUserLoggedIn()">
-      <a mat-list-item [routerLink]="'/login'"> Login </a>
+      <a mat-list-item [routerLink]="'/login'" (click)="sideNavIsOpen(false); sidenav.toggle()"> Login </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
