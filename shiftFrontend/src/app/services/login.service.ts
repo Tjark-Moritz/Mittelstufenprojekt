@@ -45,6 +45,19 @@ export class LoginService {
     });
   }
 
+  public isUserLoggedIn(): boolean{
+    this.autoLogin();
+
+    return (this.bearerTokenService.isBearerTokenSet());
+  }
+
+  private autoLogin(){
+    if(UserCookieService.isBearerTokenSet() && this.bearerTokenService.isBearerTokenSet()) {
+      this.bearerTokenService.bearerToken = UserCookieService.getBearerToken();
+      this.setLoggedInUser();
+    }
+  }
+
   private setLoggedInUser(){
     if (this.bearerTokenService.bearerToken.access_token == null) {
       return;
@@ -54,6 +67,8 @@ export class LoginService {
     let username: string = jwtDecode(this.bearerTokenService.bearerToken.access_token).preferred_username;
     this.employeeService.getEmployeeByUsername(username).subscribe(x => {
       this._LoggedInUser = x;
+    }, () => {
+      console.error("Logged in user could not be found!");
     });
 
     // Todo: Remove dummy data

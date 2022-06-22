@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   private autoLoginChecked: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private loginService: LoginService, private bearerTokenService: BearerTokenService) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private loginService: LoginService) {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.bearerTokenService.isBearerTokenSet())
+    if(this.loginService.isUserLoggedIn())
       this.router.navigate(["index"]);
   }
 
