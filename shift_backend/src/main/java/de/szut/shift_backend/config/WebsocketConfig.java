@@ -26,7 +26,6 @@ class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
                 "message/delete/{id}");
     }
 
-    //Info: Für den Verbindungsaufbau
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/connect/**")
