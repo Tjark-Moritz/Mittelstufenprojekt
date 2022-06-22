@@ -9,6 +9,7 @@ import {Location} from "@angular/common";
 import {BearerTokenService} from "../../services/bearer-token.service";
 import {UserRoleEnum} from "../../models/UserRoleEnum";
 import {LoginService} from "../../services/login.service";
+import {Observable, Subject} from "rxjs";
 
 @Component({
   selector: 'app-profile',
@@ -22,7 +23,6 @@ export class ProfileComponent implements OnInit {
   public set selectedEmployee(val: GetEmployee | undefined) {
     this._SelectedEmployee = val;
     this.setViewRights();
-    console.log("test");
   }
 
   public get selectedEmployee(): GetEmployee | undefined {
@@ -53,15 +53,23 @@ export class ProfileComponent implements OnInit {
   public newPassword: string = "";
   public newPasswordAgain: string = "";
 
-  public loggedInUserView = true;
-  public adminView = false;
+  public _LoggedInUserView = false;
+  public _AdminView = false;
+
+  public get loggedInUserView(): boolean {
+    return this._LoggedInUserView;
+  }
+
+  public get adminView(): boolean {
+    return this._AdminView;
+  }
+
 
   constructor(private domSanitizer: DomSanitizer, private route: ActivatedRoute, private location : Location, private empService: EmployeeService, private router: Router, private loginService: LoginService, private bearerTokenService: BearerTokenService) {
   }
 
   ngOnInit(): void {
     this.para = this.route.params.subscribe(params => {
-      console.info(this.loginService.LoggedInUser);
       if(Object.keys(params).length == 0) {
         if (this.loginService.LoggedInUser) {
           this.selectedEmployee = JSON.parse(JSON.stringify(this.loginService.LoggedInUser)); // Json used to create a copy
@@ -84,10 +92,10 @@ export class ProfileComponent implements OnInit {
 
   private setViewRights() {
     if(this.selectedEmployee) {
-      this.loggedInUserView = (this.selectedEmployee?.username == this.loginService.LoggedInUser.username);
+      this._LoggedInUserView = (this.selectedEmployee?.username == this.loginService.LoggedInUser.username);
     }
-
-    this.adminView = (this.bearerTokenService.getUserRole == UserRoleEnum.Admin);
+    console.info(this.bearerTokenService.getUserRole);
+    this._AdminView = (this.bearerTokenService.getUserRole == UserRoleEnum.Admin);
   }
 
   public isProfilePictureSet(): boolean{
