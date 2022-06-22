@@ -8,6 +8,8 @@ import {BearerTokenService} from "../../services/bearer-token.service";
 import jwtDecode from "jwt-decode";
 import {LoginComponent} from "../login/login.component";
 import {UserRoleEnum} from "../../models/UserRoleEnum";
+import {LoginService} from "../../services/login.service";
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -26,16 +28,19 @@ export class HolidayPlanerComponent implements OnInit
   chossenEndDate: Date = new Date();
 
   // data:HolidayRequest[] = []; // Siehe unten
-  data:AddHoliday[] = [];
+  //data:AddHoliday[] = [];
+  data = new MatTableDataSource<AddHoliday[]>();
 
   displayedColumns = ['vocationStart', 'vocationEnd', 'days', 'statuss'];
 
   constructor(private employeeService: EmployeeService,
+              private loginService: LoginService,
+              private bearerTokenService: BearerTokenService,
               private changeDetectorRefs: ChangeDetectorRef)
   {
     let roleName: UserRoleEnum | undefined;
     // @ts-ignore
-    roleName = BearerTokenService.getUserRoles;
+    roleName = this.bearerTokenService.getUserRole;
     if(roleName)
     {
       if(roleName == UserRoleEnum.Admin)
@@ -88,50 +93,28 @@ export class HolidayPlanerComponent implements OnInit
 
   value: any;
 
-  /*
-  startSeite()
-  {
-    // @ts-ignore
-    let decodedToken = jwtDecode(BearerTokenService.bearerToken.access_token);
-    //@ts-ignore
-    let roleName = decodedToken.realm_access.roles[0];
-
-    roleName.forEach(roleName)
-    {
-      if(roleName=="shiftadmin")
-      {
-        this.display = "shiftadmin";
-      }
-      if(roleName=="shiftuser")
-      {
-        this.display = "shiftuser"
-      }
-    }
-  }
-  */
   startRequest()
   {
-      let empList = this.getUserData();
-      LoginComponent.GetLoggedInUser;
+    let empList = this.getUserData();
 
-      let addHoliday: AddHoliday = new AddHoliday();
-      addHoliday.startDate =  this.chossenStartDate;
-      addHoliday.endDate = this.chossenEndDate;
-      addHoliday.id = this.requestcounter+1;
-      addHoliday.typeId = 1;
-      this.requestcounter = this.requestcounter+1;
-      //LoginComponent.GetLoggedInUser;
 
-      if (empList[0])
-      {
-        addHoliday.employeeId = LoginComponent.GetLoggedInUser.id;
-      }
+    let addHoliday: AddHoliday = new AddHoliday();
+    addHoliday.startDate =  this.chossenStartDate;
+    addHoliday.endDate = this.chossenEndDate;
+    addHoliday.id = this.requestcounter+1;
+    addHoliday.typeId = 1;
+    this.requestcounter = this.requestcounter+1;
+    //LoginComponent.GetLoggedInUser;
 
-      this.refresh();
-      this.data.push(addHoliday)
+    if (empList[0])
+    {
+      addHoliday.employeeId = this.loginService.LoggedInUser.id;
+    }
+
+    //this.data.push(addHoliday)
+    this.refresh();
   }
 /*
-Der part der Funktionirt hatte
 
   startrequest(){
     let empList = this.getUserData();
@@ -168,9 +151,8 @@ Der part der Funktionirt hatte
 
   refresh()
   {
-
-    //this.data = this.data;
-    //this.changeDetectorRefs.detectChanges();
+    this.data = this.data;
+    this.changeDetectorRefs.detectChanges();
   }
 }
 
