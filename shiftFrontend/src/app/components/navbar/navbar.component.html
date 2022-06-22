@@ -32,13 +32,17 @@
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav (closed)="sideNavIsOpen(false);">
-    <mat-nav-list>
+    <mat-nav-list class="sideNavList" *ngIf="loginService.isUserLoggedIn()">
       <a mat-list-item [routerLink]="'/shift'"> Schichten Übersicht </a>
       <a mat-list-item [routerLink]="'/emps'"> Mitarbeiter Liste </a>
       <a mat-list-item [routerLink]="'/deps'"> Abteilungs Liste </a>
       <a mat-list-item [routerLink]="'/holiday'"> Urlaub </a>
       <mat-divider></mat-divider>
       <a mat-list-item (click)="userlogout()">Ausloggen</a>
+    </mat-nav-list>
+
+    <mat-nav-list class="sideNavList" *ngIf="!loginService.isUserLoggedIn()">
+      <a mat-list-item [routerLink]="'/login'"> Login </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

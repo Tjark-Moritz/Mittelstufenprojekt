@@ -30,9 +30,8 @@ export class BearerTokenService {
     })
   }
 
-  public logout(){
+  public resetBearerToken(){
     this._BearerToken = undefined;
-    UserCookieService.removeBearerToken();
   }
 
   public set bearerToken(token: BearerToken) {
