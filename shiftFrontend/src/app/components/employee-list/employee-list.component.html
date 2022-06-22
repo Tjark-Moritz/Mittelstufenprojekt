@@ -1,7 +1,6 @@
 <div class="d-flex justify-content-between topHeader">
   <h1>All Employees</h1>
-  <a role="button" class="btn addBtn">Add</a>
-  <!--  <a routerLink="/employees/add" role="button" class="btn addBtn">Add</a>-->
+  <a role="button" class="btn addBtn" (click)="openModal(emptyEmp)" *ngIf="isAdmin">Add</a>
   <input id="inputSearch" type="text" placeholder="Search.." (input)="search()">
 </div>
 
@@ -15,15 +14,11 @@
 
   <tbody>
   <ng-container *ngFor="let emp of selection.selected">
-    <!--    <tr class="tableRow" routerLink="/departments/edit/{{ dep.departmentId }}">-->
-    <tr class="tableRow">
+    <tr class="tableRow" (click)="openModal(emp)">
       <td><span [innerHtml]="emp.lastName | highlighter:searchkey:'partial'"  ></span>, <span [innerHtml]="emp.firstName | highlighter:searchkey:'partial'"  ></span></td>
       <td><span [innerHtml]="getDepAbbr(emp.departmentId) | highlighter:searchkey:'partial'"  ></span><span class="departmentName"><div [innerHtml]="getDepName(emp.departmentId) | highlighter:searchkey:'partial'"  ></div></span></td>
     </tr>
-<!--    <tr class="tableRow">-->
-<!--      <td>{{ emp.lastname }}, {{ emp.firstname }}</td>-->
-<!--      <td>{{ getDepAbbr(emp.departmentId) }}<div class="departmentName">{{ getDepName(emp.departmentId)}}</div></td>-->
-<!--    </tr>-->
   </ng-container>
   </tbody>
 </table>
+

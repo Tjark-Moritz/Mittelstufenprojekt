@@ -2,10 +2,6 @@
 
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <div class="cCenterDiv">
-    <span class="cWrongInput" *ngIf="wrongLogin">Bitte Benutzernamen und Passwort überprüfen! </span>
-  </div>
-
-  <div class="cCenterDiv">
     <input id="usernameInput" type="text" class="cInput" placeholder="Benutzername" required formControlName="username"/>
     <label for="usernameInput" class="cAccessibilityHiddenLabel">Benutzername: </label>
   </div>

@@ -22,7 +22,7 @@
         <img *ngIf="notificationAvailable" class="cSymbolImg" src="../../../assets/NotificationBell/Notification_Bell_Ring.svg" alt="Notification Bell"/>
       </a>
 
-      <a class="cSymbol">
+      <a class="cSymbol" [routerLink]="'/profile'">
         <img *ngIf="!isProfilePictureSet()" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
         <img *ngIf="isProfilePictureSet()" id="ProfilePicture" class="cSymbolImg" [src]="getProfilePicture()" alt="Profile Picture"/>
       </a>

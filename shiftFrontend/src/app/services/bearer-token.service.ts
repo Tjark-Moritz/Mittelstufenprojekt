@@ -5,12 +5,13 @@ import {Observable} from "rxjs";
 import {UserCookieService} from "./user-cookie.service";
 import {UserRoleEnum} from "../models/UserRoleEnum";
 import jwtDecode from "jwt-decode";
+import {LoginService} from "./login.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BearerTokenService {
-  private static staticBearerToken: BearerToken;
+  private _BearerToken: BearerToken | undefined;
   private authUrl = '/auth';
 
   constructor(private httpClient: HttpClient){
@@ -29,30 +30,34 @@ export class BearerTokenService {
     })
   }
 
-  public static set bearerToken(token) {
-    BearerTokenService.staticBearerToken = token;
+  public set bearerToken(token: BearerToken) {
+    this._BearerToken = token;
+
+    //this.loginService.LoggedInUser;
   }
 
-  public static get bearerToken(): BearerToken {
-    if(UserCookieService.isBearerTokenSet() && !BearerTokenService.staticBearerToken)
-      BearerTokenService.staticBearerToken = UserCookieService.getBearerToken();
-
-    return BearerTokenService.staticBearerToken;
+  public get bearerToken(): BearerToken {
+    if(this._BearerToken)
+      return this._BearerToken;
+    else
+      return new BearerToken();
   }
 
-  public static get isLoggedIn(): boolean {
-    return !!BearerTokenService.bearerToken;
+  public isBearerTokenSet(): boolean {
+    return (this.bearerToken.access_token != undefined);
   }
 
   // returns undefined if the user isn't logged in
-  public static get getUserRoles(): UserRoleEnum | undefined {
-    if(BearerTokenService.bearerToken == null || BearerTokenService.bearerToken.access_token == null){
+  public get getUserRole(): UserRoleEnum | undefined {
+    if(!this.isBearerTokenSet() || this.bearerToken.access_token == null){
       return undefined;
     }
 
-    let decodedToken = jwtDecode(BearerTokenService.bearerToken.access_token);
+    let decodedToken = jwtDecode(this.bearerToken.access_token);
     // @ts-ignore
     let roleNames : string[] = decodedToken.realm_access.roles;
+    console.info(roleNames)
+    console.error(this.bearerToken.access_token)
     if(roleNames.includes(UserRoleEnum.Admin.toString())){
       return UserRoleEnum.Admin;
     }
