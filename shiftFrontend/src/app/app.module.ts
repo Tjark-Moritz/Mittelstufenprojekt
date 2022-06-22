@@ -29,11 +29,11 @@ import { HolidayPlanerComponent } from './components/holiday-planer/holiday-plan
 import { DayDetailsComponent } from './components/day-details/day-details.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 
-//MatLuxonDateModule
 
 @NgModule({
   declarations: [
@@ -47,9 +47,9 @@ import { EmployeeDetailsComponent } from './components/employee-details/employee
     LoginComponent,
     DayDetailsComponent,
     DepartmentDetailsComponent,
-    LoginComponent,
     PageNotFoundComponent,
-    EmployeeDetailsComponent
+    EmployeeDetailsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
