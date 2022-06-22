@@ -49,13 +49,15 @@ export class BearerTokenService {
 
   // returns undefined if the user isn't logged in
   public get getUserRole(): UserRoleEnum | undefined {
-    if(this.isBearerTokenSet() || this.bearerToken.access_token == null){
+    if(!this.isBearerTokenSet() || this.bearerToken.access_token == null){
       return undefined;
     }
 
     let decodedToken = jwtDecode(this.bearerToken.access_token);
     // @ts-ignore
     let roleNames : string[] = decodedToken.realm_access.roles;
+    console.info(roleNames)
+    console.error(this.bearerToken.access_token)
     if(roleNames.includes(UserRoleEnum.Admin.toString())){
       return UserRoleEnum.Admin;
     }

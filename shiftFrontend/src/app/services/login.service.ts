@@ -56,7 +56,7 @@ export class LoginService {
   }
 
   private autoLogin(){
-    if(UserCookieService.isBearerTokenSet() && this.bearerTokenService.isBearerTokenSet()) {
+    if(UserCookieService.isBearerTokenSet() && !this.bearerTokenService.isBearerTokenSet()) {
       this.bearerTokenService.bearerToken = UserCookieService.getBearerToken();
       this.setLoggedInUser();
     }
