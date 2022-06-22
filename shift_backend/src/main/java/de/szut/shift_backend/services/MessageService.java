@@ -22,7 +22,7 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public void create(Message newMessage) {
+    public void creatße(Message newMessage) {
         messageRepository.save(newMessage);
     }
 
