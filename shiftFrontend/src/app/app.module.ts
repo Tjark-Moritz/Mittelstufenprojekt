@@ -4,6 +4,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from "@angular/common/http";
 import { HighliterPipe } from './pipes/highliter.pipe';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { HolidayPlanerComponent } from './components/holiday-planer/holiday-planer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatTableModule} from '@angular/material/table';
@@ -23,9 +25,7 @@ import {MatIconModule} from "@angular/material/icon";
 import { AppComponent } from './app.component';
 import { DepartmentListComponent } from './components/department-list/department-list.component';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
-import { HolidayPlanerComponent } from './components/holiday-planer/holiday-planer.component';
 import { DayDetailsComponent } from './components/day-details/day-details.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -34,6 +34,8 @@ import { DepartmentDetailsComponent } from './components/department-details/depa
 import { ShiftPlanComponent } from './components/shift-plan/shift-plan.component';
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 
+import { MessageComponent } from './components/message/message.component';
+//MatLuxonDateModule
 
 @NgModule({
   declarations: [
@@ -49,7 +51,8 @@ import { EmployeeDetailsComponent } from './components/employee-details/employee
     DepartmentDetailsComponent,
     PageNotFoundComponent,
     EmployeeDetailsComponent,
-    ProfileComponent
+    ProfileComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,
