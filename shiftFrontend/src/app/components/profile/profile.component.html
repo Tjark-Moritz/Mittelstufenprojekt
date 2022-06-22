@@ -63,10 +63,6 @@
     <form id="passowrdForm">
       <div class="cPasswordFields" [hidden]="!loggedInUserView">
         <div class="cPasswordSingle">
-          <label>Derzeitiges Passwort: </label>
-          <input type="password" placeholder="Derzeitiges Passwort" class="cPasswordInput" name="CurrentPasswordInput" [(ngModel)]="currentPassword" [required]="checkRequired"/>
-        </div>
-        <div class="cPasswordSingle">
           <label>Neues Passwort: </label>
           <input type="password" placeholder="Neues Passwort" name="NewPasswordInput" class="cPasswordInput" [(ngModel)]="newPassword" [required]="checkRequired"/>
         </div>

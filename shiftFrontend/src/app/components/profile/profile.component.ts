@@ -10,6 +10,7 @@ import {BearerTokenService} from "../../services/bearer-token.service";
 import {UserRoleEnum} from "../../models/UserRoleEnum";
 import {LoginService} from "../../services/login.service";
 import {Observable, Subject} from "rxjs";
+import {UpdatedPassword} from "../../models/dto/UpdatedPassword";
 
 @Component({
   selector: 'app-profile',
@@ -32,15 +33,6 @@ export class ProfileComponent implements OnInit {
   public originalSelectedEmployee: GetEmployee = new GetEmployee();
 
   public checkRequired: boolean = false;
-
-  private _CurrentPassword: string = "";
-  public set currentPassword(val: string) {
-    this.checkRequired = (val != "");
-    this._CurrentPassword = val;
-  }
-  public get currentPassword() : string {
-    return this._CurrentPassword
-  }
 
   public pictureChanged: boolean = false;
   public set newProfilePicture(val : string) {
@@ -94,7 +86,6 @@ export class ProfileComponent implements OnInit {
     if(this.selectedEmployee) {
       this._LoggedInUserView = (this.selectedEmployee?.username == this.loginService.LoggedInUser.username);
     }
-    console.info(this.bearerTokenService.getUserRole);
     this._AdminView = (this.bearerTokenService.getUserRole == UserRoleEnum.Admin);
   }
 
@@ -177,11 +168,6 @@ export class ProfileComponent implements OnInit {
   }
 
   public onClick_SavePassword(){
-    if(this.currentPassword != "CP"){ // Todo: check for the current password!
-      this.openFailedMessageBox("Derzeitiges Passwort ist falsch eingegeben! Bitte erneut versuchen!");
-      return;
-    }
-
     if(this.newPassword.length < 5){
       this.openFailedMessageBox("Neues Passwort muss mindestens 5 Zeichen haben!");
     }
@@ -309,10 +295,18 @@ export class ProfileComponent implements OnInit {
   }
 
   private savePasswordInDb(skipSuccessBox: boolean = false){
+    if(this._LoggedInUserView) {
+      let updatedPassword = new UpdatedPassword(this.newPassword, this.newPasswordAgain);
+      this.empService.updateEmployeePassword(updatedPassword);
+    }
+
+    // Todo: Passwort ändern bei admin view
+    if(this._AdminView && !this._LoggedInUserView){
+
+    }
+
     if(!skipSuccessBox){
       this.openSavedMessageBox();
     }
-
-    // Todo: Passwort ändern db aufruf
   }
 }
