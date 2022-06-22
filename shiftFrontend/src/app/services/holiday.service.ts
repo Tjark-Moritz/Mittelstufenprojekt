@@ -6,13 +6,11 @@ import {GetHoliday} from "../models/dto/GetHoliday";
 import {AddHoliday} from "../models/dto/AddHoliday";
 
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class HolidayService {
   private urlPre = "/requests/holiday"
-
 
   constructor(private httpClient: HttpClient, private bearerTokenService: BearerTokenService)
   {

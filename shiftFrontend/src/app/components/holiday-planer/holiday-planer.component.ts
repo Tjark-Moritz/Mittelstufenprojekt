@@ -1,15 +1,13 @@
 import { Component, OnInit , ChangeDetectorRef } from '@angular/core';
-import {GetEmployee} from "../../models/dto/GetEmployee";
 import {GetHoliday} from "../../models/dto/GetHoliday";
 import {AddHoliday} from "../../models/dto/AddHoliday";
 //import {HolidayType} from "../../models/dto/HolidayType";
-import {EmployeeService} from "../../services/employee.service";
 import {BearerTokenService} from "../../services/bearer-token.service";
 import jwtDecode from "jwt-decode";
-import {LoginComponent} from "../login/login.component";
 import {UserRoleEnum} from "../../models/UserRoleEnum";
 import {LoginService} from "../../services/login.service";
 import { MatTableDataSource } from '@angular/material/table';
+import {HolidayService} from "../../services/holiday.service";
 
 
 @Component({
@@ -27,15 +25,15 @@ export class HolidayPlanerComponent implements OnInit
   chossenStartDate: Date = new Date();
   chossenEndDate: Date = new Date();
 
-  // data:HolidayRequest[] = []; // Siehe unten
   //data:AddHoliday[] = [];
-  data = new MatTableDataSource<AddHoliday[]>();
+  dataSource = new MatTableDataSource<AddHoliday[]>();
+  allHolidays: AddHoliday[] = [];
 
   displayedColumns = ['vocationStart', 'vocationEnd', 'days', 'statuss'];
 
-  constructor(private employeeService: EmployeeService,
-              private loginService: LoginService,
+  constructor(private loginService: LoginService,
               private bearerTokenService: BearerTokenService,
+              private holidayService: HolidayService,
               private changeDetectorRefs: ChangeDetectorRef)
   {
     let roleName: UserRoleEnum | undefined;
@@ -57,12 +55,6 @@ export class HolidayPlanerComponent implements OnInit
   ngOnInit(): void
   {
     this.refresh();
-  }
-
-  getUserData():GetEmployee[] {
-    let empList: GetEmployee[] = [];
-    this.employeeService.getAllEmployees().subscribe(val => empList = val)
-    return empList;
   }
 
   switchUserToAdmin()
@@ -95,49 +87,21 @@ export class HolidayPlanerComponent implements OnInit
 
   startRequest()
   {
-    let empList = this.getUserData();
-
-
     let addHoliday: AddHoliday = new AddHoliday();
     addHoliday.startDate =  this.chossenStartDate;
     addHoliday.endDate = this.chossenEndDate;
     addHoliday.id = this.requestcounter+1;
     addHoliday.typeId = 1;
     this.requestcounter = this.requestcounter+1;
-    //LoginComponent.GetLoggedInUser;
 
-    if (empList[0])
-    {
-      addHoliday.employeeId = this.loginService.LoggedInUser.id;
-    }
+    addHoliday.employeeId = this.loginService.LoggedInUser.id;
 
-    //this.data.push(addHoliday)
+    console.log(addHoliday);
+    console.log("nassss");
+    this.holidayService.addHoliday(addHoliday);
+
     this.refresh();
   }
-/*
-
-  startrequest(){
-    let empList = this.getUserData();
-    let date: Date = new Date();
-
-    let holidayType: HolidayType = new HolidayType()
-    holidayType.typeName = "Urlaub";
-
-    let holiday: Holiday = new Holiday();
-    holiday.holidayType = holidayType;
-    holiday.startDate = this.chossenStartDate;
-    holiday.endDate = this.chossenEndDate;
-
-    let holidayRequest: HolidayRequest = new HolidayRequest()
-    holidayRequest.requestDate = date;
-    holidayRequest.holidayRequestId = this.requestcounter+1;
-    holidayRequest.holiday = holiday;
-    if (empList.employees) { holidayRequest.requestingEmployeeId = empList.employees[0].employeeId;}
-    holidayRequest.status = false;
-
-    this.data.push(holidayRequest);
-  }
-*/
 
   holidayaccepted()
   {
@@ -151,8 +115,11 @@ export class HolidayPlanerComponent implements OnInit
 
   refresh()
   {
-    this.data = this.data;
-    this.changeDetectorRefs.detectChanges();
+    this.holidayService.getAllHolidays().subscribe(res =>
+    {
+       console.log(res)
+      this.allHolidays= res;
+    });
   }
 }
 
