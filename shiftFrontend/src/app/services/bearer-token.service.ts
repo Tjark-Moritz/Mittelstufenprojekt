@@ -30,6 +30,10 @@ export class BearerTokenService {
     })
   }
 
+  public resetBearerToken(){
+    this._BearerToken = undefined;
+  }
+
   public set bearerToken(token: BearerToken) {
     this._BearerToken = token;
   }

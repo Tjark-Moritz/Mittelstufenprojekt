@@ -46,6 +46,15 @@ export class LoginService {
     });
   }
 
+  public Logout() {
+    this.bearerTokenService.resetBearerToken();
+    UserCookieService.removeBearerToken();
+    this.setLoggedInUser();
+
+    this.router.navigate(['/login']);
+    console.log("dsa")
+  }
+
   public isUserLoggedIn(): boolean{
     this.autoLogin();
 
@@ -61,6 +70,8 @@ export class LoginService {
 
   private setLoggedInUser(){
     if (this.bearerTokenService.bearerToken.access_token == null) {
+      this._LoggedInUser = undefined;
+      NavbarComponent.profilePictureBase64 = "";
       return;
     }
 

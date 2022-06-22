@@ -1,7 +1,6 @@
 package de.szut.shift_backend.services;
 
 import de.szut.shift_backend.exceptionHandling.CreationException;
-import de.szut.shift_backend.exceptionHandling.PasswordMissmatch;
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Department;
@@ -115,10 +114,7 @@ public class EmployeeService {
         return empUpdated;
     }
 
-    public void updateEmployeePassword(String token, UpdatePasswordDto passwordDto) throws VerificationException {
-        if (!passwordDto.getNewPassword().equals(passwordDto.getConfirmPassword()))
-            throw new PasswordMissmatch("Provided passwords do not match");
-
-        this.keyService.updateUserPassword(token, passwordDto);
+    public List<Employee> getAllById(List<Long> employeeIdList) {
+       return this.employeeRepository.findAllById(employeeIdList);
     }
 }
