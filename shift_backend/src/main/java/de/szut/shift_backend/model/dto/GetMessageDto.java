@@ -4,6 +4,7 @@ import de.szut.shift_backend.model.Message;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class GetMessageDto {
@@ -12,13 +13,13 @@ public class GetMessageDto {
 
     private Long channelId;
 
-    private Long requestedEmployeeId;
-
     private Long sendingEmployeeId;
 
     private LocalDateTime dateTime;
 
     private Long type;
+
+    private String content;
 
     private Message.MessageStatus status;
 }

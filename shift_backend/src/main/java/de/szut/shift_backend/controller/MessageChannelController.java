@@ -1,10 +1,10 @@
 package de.szut.shift_backend.controller;
 
-import de.szut.shift_backend.model.Message;
+import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.MessageChannel;
 import de.szut.shift_backend.model.dto.AddMessageChannelDto;
 import de.szut.shift_backend.model.dto.GetMessageChannelDto;
-import de.szut.shift_backend.model.dto.GetMessageDto;
+import de.szut.shift_backend.services.EmployeeService;
 import de.szut.shift_backend.services.MappingService;
 import de.szut.shift_backend.services.MessageChannelService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,10 +26,12 @@ public class MessageChannelController {
 
     private MappingService mappingService;
     private MessageChannelService messageChannelService;
+    private EmployeeService employeeService;
 
-    public MessageChannelController(MappingService mappingService, MessageChannelService messageChannelService) {
+    public MessageChannelController(MappingService mappingService, MessageChannelService messageChannelService, EmployeeService employeeService) {
         this.mappingService = mappingService;
         this.messageChannelService = messageChannelService;
+        this.employeeService = employeeService;
     }
 
     @Operation(summary = "create message-channel")
@@ -43,8 +45,8 @@ public class MessageChannelController {
     {
         MessageChannel messageChannel = this.mappingService.mapAddMessageChannelDtoToMessageChannel(addMessageChannelDto);
         this.messageChannelService.create(messageChannel);
-        final GetMessageChannelDto request = this.mappingService.mapMessageChannelToGetMessageChannelDto(messageChannel);
-        return new ResponseEntity<>(request, HttpStatus.OK);
+        final GetMessageChannelDto getMessageChannelDto = this.mappingService.mapMessageChannelToGetMessageChannelDto(messageChannel);
+        return new ResponseEntity<>(getMessageChannelDto, HttpStatus.OK);
     }
 
     @Operation(summary = "get message-channel by Id")
@@ -112,5 +114,62 @@ public class MessageChannelController {
         this.messageChannelService.delete(messageId);
 
         return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    @Operation(summary = "delete message-channel")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "deleted message-channel successfully"),
+            @ApiResponse(responseCode = "400", description = "message-channel parameter is null", content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
+    })
+    @DeleteMapping("/{channelId}/employee/{employeeId}")
+    public ResponseEntity<String> addEmployeeToChannel(@Valid @RequestBody final long channelId, @Valid @RequestBody final long employeeId)
+    {
+        MessageChannel channel = this.messageChannelService.getMessageChannelById(channelId);
+        List<Employee> employeeList = channel.getEmployees();
+        employeeList.add(this.employeeService.getEmployeeById(employeeId));
+
+        channel.setEmployees(employeeList);
+
+        this.messageChannelService.delete(channel.getId());
+        this.messageChannelService.create(channel);
+
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    @Operation(summary = "removes employee from channel")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "removed employee from channel successfully"),
+            @ApiResponse(responseCode = "400", description = "One of the parameters is null", content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
+    })
+    @DeleteMapping("/{channelId}/employee/{id}")
+    public ResponseEntity<String> removeEmployeeFromChannel(@Valid @RequestBody final long channelId, @Valid @RequestBody final long employeeId)
+    {
+        MessageChannel channel = this.messageChannelService.getMessageChannelById(channelId);
+        List<Employee> employeeList = channel.getEmployees();
+        employeeList.remove(this.employeeService.getEmployeeById(employeeId));
+
+        channel.setEmployees(employeeList);
+
+        this.messageChannelService.delete(channel.getId());
+        this.messageChannelService.create(channel);
+
+
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    @Operation(summary = "get employees from channelId")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "removed employee from channel successfully"),
+            @ApiResponse(responseCode = "400", description = "One of the parameters is null", content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
+    })
+    @GetMapping("/{channelId}/employees")
+    public ResponseEntity<List<Employee>> getAllEmployeesFromMessageChannelId(@PathVariable final long channelId) {
+        MessageChannel messageChannel = messageChannelService.getMessageChannelById(channelId);
+        List<Employee> employees = messageChannel.getEmployees();
+
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 }
