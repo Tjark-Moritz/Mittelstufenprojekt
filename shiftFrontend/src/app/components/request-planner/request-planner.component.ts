@@ -21,7 +21,7 @@ import {RequestAnswer} from "../../models/dto/RequestAnswer";
   styleUrls: ['./request-planner.component.css']
 })
 //todo da Jarno noch nicht fertig ist mit seiner ansicht, evtl drop down menue erstellen mit Employees zum auswählen
-
+//todo replying id raufinden, oldShiftid und new shift id übergeben aus tabelle
 export class RequestPlannerComponent implements OnInit {
 
   allRequest: AddShiftTradeRequest[] = [];
@@ -33,24 +33,6 @@ export class RequestPlannerComponent implements OnInit {
               private loginService: LoginService,
               private shiftTradeRequestService: ShiftTradeRequestService)
   {
-    /*
-    let roleName: UserRoleEnum | undefined;
-    // @ts-ignore
-    roleName = this.bearerTokenService.getUserRole;
-    if(roleName)
-    {
-      if(roleName == UserRoleEnum.Admin)
-      {
-        //this.switchUserToAdmin();
-      }
-      else
-      {
-        //this.switchUser();
-      }
-    }
-    */
-
-    //todo replying id raufinden, oldShiftid und new shift id
     //todo delete
     let requestArray: AddShiftTradeRequest[] = [];
     let request1:AddShiftTradeRequest = new AddShiftTradeRequest(this.loginService.LoggedInUser.id,2,3);
@@ -62,6 +44,7 @@ export class RequestPlannerComponent implements OnInit {
     requestArray.push(request3);
     this.allRequest = requestArray;
 
+    this.refresh()
   }
 
 /*
@@ -89,9 +72,9 @@ export class RequestPlannerComponent implements OnInit {
     addRequest.requestingEmployeeId = this.loginService.LoggedInUser.id;
     addRequest.newShiftId = this.requestCounter;
     this.requestCounter = this.requestCounter+1;
-    //todo wie ziehe ich mir die
+    //todo wie ziehe ich mir die // tabelle von Jarno auswahl
     //addRequest.oldShiftId =
-    //todo wie ziehe ich mir die
+    //todo wie ziehe ich mir die  // tabelle von Jarno auswahl
     //addRequest.replyingEmployeeId =
     this.shiftTradeRequestService.AddTradeRequest(addRequest);
     this.refresh();
