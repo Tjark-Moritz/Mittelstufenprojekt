@@ -6,6 +6,7 @@ import {GetShiftTradeRequest} from "../models/dto/GetShiftTradeRequest";
 import {AddShiftTradeRequest} from "../models/dto/AddShiftTradeRequest";
 import {LoginService} from "./login.service";
 import {GetEmployee} from "../models/dto/GetEmployee";
+import {RequestAnswer} from "../models/dto/RequestAnswer";
 
 
 @Injectable({
@@ -47,8 +48,8 @@ export class ShiftTradeRequestService {
   }
 
   //todo einmal bitte wer rüberschauen
-  AddTradeRequestStatus(request: AddShiftTradeRequest, userId: number){
-    this.httpClient.patch(this.urlPre + `/${userId}`,request,{
+  AddTradeRequestStatus(request: RequestAnswer, requestid: number){
+    this.httpClient.patch(this.urlPre + `/${requestid}`,request,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
