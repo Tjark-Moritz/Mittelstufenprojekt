@@ -8,7 +8,7 @@
       <div class="datePickerSpace">
         <!--todo Resturlaub-->
         <!-- <mat-label [value]="someValueExpression">Resturlaub: {{value}}/30</mat-label> -->
-        <mat-label >Resturlaub:  </mat-label>
+        <label> {{"Resturlaub: " + this.restDays + "   "}} </label>
         <mat-label >  </mat-label>
 
         <mat-label ></mat-label> <!-- just a placehodler-->
@@ -78,7 +78,7 @@
     </div>
 
     <div class="outputTable">
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <table mat-table [dataSource]="this.allHolidays" class="mat-elevation-z8">
 
         &lt;!&ndash; Vocation Start Column &ndash;&gt;
         <ng-container matColumnDef="vocationStart">
@@ -131,10 +131,8 @@
             </ng-container>
           </div>
         </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
       </table>
     </div>
   </div>

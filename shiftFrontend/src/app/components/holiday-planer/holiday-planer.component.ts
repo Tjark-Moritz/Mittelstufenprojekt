@@ -17,6 +17,7 @@ import {HolidayService} from "../../services/holiday.service";
 export class HolidayPlanerComponent implements OnInit
 {
 
+
   display: string = "shiftuser";
   statusDisplay: string ="normal";
 
@@ -32,6 +33,7 @@ export class HolidayPlanerComponent implements OnInit
               private bearerTokenService: BearerTokenService,
               private holidayService: HolidayService)
   {
+
     let roleName: UserRoleEnum | undefined;
     // @ts-ignore
     roleName = this.bearerTokenService.getUserRole;
@@ -39,13 +41,14 @@ export class HolidayPlanerComponent implements OnInit
     {
       if(roleName == UserRoleEnum.Admin)
       {
-        this.switchUserToAdmin()
+        this.switchUserToAdmin();
       }
       else
       {
         this.switchUser();
       }
     }
+
 
     //todo delete
     let hollidayArray: AddHoliday[] = [];
@@ -59,6 +62,7 @@ export class HolidayPlanerComponent implements OnInit
 
     this.refresh();
   }
+
 
   ngOnInit(): void
   {
@@ -93,6 +97,16 @@ export class HolidayPlanerComponent implements OnInit
 
   value: any;
 
+
+  restDays:number | undefined = 0;
+  /*
+  setleftVecationDays()
+  {
+    this.restDays = this.loginService.LoggedInUser.numHolidaysLeft;
+    return this.restDays;
+  }
+   */
+
   startRequest()
   {
     let addHoliday: AddHoliday = new AddHoliday();
@@ -105,15 +119,16 @@ export class HolidayPlanerComponent implements OnInit
     addHoliday.employeeId = this.loginService.LoggedInUser.id;
 
     this.holidayService.addHoliday(addHoliday);
-
     this.refresh();
   }
 
+  //todo check senden des Statuses
   holidayaccepted()
   {
     this.statusDisplay = "ACCEPTED";
   }
 
+  //todo check senden des Statuses
   holidaycanceled()
   {
     this.statusDisplay = "DENIED";
@@ -126,6 +141,7 @@ export class HolidayPlanerComponent implements OnInit
       if(res.length != 0)
       {
         this.allHolidays = res;
+        this.restDays = this.loginService.LoggedInUser.numHolidaysLeft;
       }
       console.log(res);
     });
