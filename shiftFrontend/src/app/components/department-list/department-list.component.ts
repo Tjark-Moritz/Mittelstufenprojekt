@@ -22,12 +22,12 @@ export class DepartmentListComponent implements OnInit{
   public emptyDep: GetDepartment = new GetDepartment();
   public isAdmin;
 
-  constructor(private depService: DepartmentService, private dialog: MatDialog) {
+  constructor(private depService: DepartmentService, private dialog: MatDialog, private bearerTokenServive: BearerTokenService) {
     this.selection = new SelectionModel<GetDepartment>(true, []);
     this.isAdmin = false;
     let roleName: UserRoleEnum | undefined;
     // @ts-ignore
-    roleName = BearerTokenService.getUserRole;
+    roleName = this.bearerTokenServive.getUserRole;
     if(roleName){
       if(roleName == UserRoleEnum.Admin){
         this.isAdmin = true;
