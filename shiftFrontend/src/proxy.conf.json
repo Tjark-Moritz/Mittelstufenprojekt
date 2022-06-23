@@ -19,6 +19,16 @@
     "changeOrigin": true
   },
 
+  "/requests/holiday": {
+    "target": "http://localhost:8090/requests/holiday",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/requests/holiday": ""
+    },
+    "changeOrigin": true
+  },
+
   "/department": {
     "target": "http://localhost:8090/department",
     "secure": false,

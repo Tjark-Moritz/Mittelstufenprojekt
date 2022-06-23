@@ -13,7 +13,7 @@ export class GetEmployee {
               public phone: string = "",
               public email: string = "",
               public numHolidaysLeft?: number,
-              public acceptedHolidays?: GetHoliday[],
+              public holidays?: GetHoliday[],
               public sickDays?: GetSickDay[],
               public base64ProfilePic: string = "",
               public preferredShiftType?: GetShiftType,
