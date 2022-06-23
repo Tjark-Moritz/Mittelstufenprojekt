@@ -24,3 +24,18 @@ table {
   margin-left: 30%;
   margin-right: 30%;
 }
+
+.circle {
+  height: 100px;
+  width: 100px;
+  line-height: 100px;
+  border-radius: 50%;
+  font-size: 30px;
+  color: black;
+  text-align: center;
+  margin-top: 10px;
+  outline: none;
+  border: 1px solid black;
+  font-size: 11px;
+
+}

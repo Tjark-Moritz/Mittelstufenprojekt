@@ -6,12 +6,8 @@
 
       <!-- startdate picker -->
       <div class="datePickerSpace">
-        <!--todo Resturlaub-->
-        <!-- <mat-label [value]="someValueExpression">Resturlaub: {{value}}/30</mat-label> -->
-        <label> {{"Resturlaub: " + this.restDays + "   "}} </label>
-        <mat-label >  </mat-label>
+        <input class="circle" type="text" id="abbNameInputExists" name="abbNameInput" value="{{'Resturlaub: ' + this.restDays + '/40'}}" disabled>
 
-        <mat-label ></mat-label> <!-- just a placehodler-->
           <input matInput (dateChange)="closeStartPicker($event, startpicker)" [matDatepicker]="startpicker" placeholder="Start Datum">
           <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
           <mat-datepicker #startpicker ></mat-datepicker>
