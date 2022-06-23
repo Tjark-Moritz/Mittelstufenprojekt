@@ -1,19 +1,44 @@
 import { Component, OnInit } from '@angular/core';
 import {EmployeeService} from "../../services/employee.service";
 import {GetEmployee} from "../../models/dto/GetEmployee";
+import {UserRoleEnum} from "../../models/UserRoleEnum";
 //import {AllEmployees} from "../../models/dto/AllEmployees";
 //import {HolidayType} from "../../models/dto/HolidayType";
 //import {Holiday} from "../../models/dto/Holiday";
 //import {HolidayRequest} from "../../models/dto/HolidayRequest";
 //import {ShiftTradeRequest} from "../../models/dto/ShiftTradeRequest";
 //import {AllShiftTrades} from "../../models/dto/AllShiftTrades";
+import {BearerTokenService} from "../../services/bearer-token.service";
 
 @Component({
   selector: 'app-request-planner',
   templateUrl: './request-planner.component.html',
   styleUrls: ['./request-planner.component.css']
 })
+
+
 export class RequestPlannerComponent implements OnInit {
+
+  constructor(private employeeService: EmployeeService,
+              private bearerTokenService: BearerTokenService)
+  {
+    let roleName: UserRoleEnum | undefined;
+    // @ts-ignore
+    roleName = this.bearerTokenService.getUserRole;
+    if(roleName)
+    {
+      if(roleName == UserRoleEnum.Admin)
+      {
+        //this.switchUserToAdmin();
+      }
+      else
+      {
+        //this.switchUser();
+      }
+    }
+  }
+
+
 
   chossenDate: Date = new Date();
   requestCounter: number = 0;
@@ -67,9 +92,19 @@ export class RequestPlannerComponent implements OnInit {
 
   displayedColumns = ['swapDate', 'currentShift', 'requestedShift', 'requester', 'checkBox'];
 
-  constructor(private employeeService: EmployeeService) { }
+
 
   ngOnInit(): void {
+  }
+
+  okButton()
+  {
+
+  }
+
+  declinedButton()
+  {
+
   }
 
 }

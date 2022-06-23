@@ -43,8 +43,8 @@
     <ng-container matColumnDef="checkBox">
       <mat-header-cell  *matHeaderCellDef > checkBox </mat-header-cell>
       <mat-cell *matCellDef="let row" >
-        <div class="okButton"><button mat-button >✔</button></div>
-        <div class="declinedButton"><button mat-button >❌</button></div>
+        <div class="okButton" ><button mat-raised-button (click)=" this.okButton();">✔</button></div>
+        <div class="declinedButton"><button  mat-raised-button (click)=" this.declinedButton()">❌</button></div>
       </mat-cell>
     </ng-container>
 

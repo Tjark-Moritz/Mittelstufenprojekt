@@ -4,7 +4,7 @@ import {AddHoliday} from "../../models/dto/AddHoliday";
 import {BearerTokenService} from "../../services/bearer-token.service";
 import {UserRoleEnum} from "../../models/UserRoleEnum";
 import {LoginService} from "../../services/login.service";
-import { MatTableDataSource } from '@angular/material/table';
+import {MatTableDataSource } from '@angular/material/table';
 import {HolidayService} from "../../services/holiday.service";
 
 
