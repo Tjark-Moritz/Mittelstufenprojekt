@@ -30,10 +30,12 @@ export class BearerTokenService {
     })
   }
 
+  public resetBearerToken(){
+    this._BearerToken = undefined;
+  }
+
   public set bearerToken(token: BearerToken) {
     this._BearerToken = token;
-
-    //this.loginService.LoggedInUser;
   }
 
   public get bearerToken(): BearerToken {
@@ -56,8 +58,6 @@ export class BearerTokenService {
     let decodedToken = jwtDecode(this.bearerToken.access_token);
     // @ts-ignore
     let roleNames : string[] = decodedToken.realm_access.roles;
-    console.info(roleNames)
-    console.error(this.bearerToken.access_token)
     if(roleNames.includes(UserRoleEnum.Admin.toString())){
       return UserRoleEnum.Admin;
     }

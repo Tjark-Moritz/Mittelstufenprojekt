@@ -16,33 +16,34 @@
       </div>
 
       <div class="cDetailsDiv">
-        <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
-          <label class="cDetailsLabel">Personalnummer: </label>
-          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.id!" readonly/>
+        <div class="cDetailsFlex" [hidden]="!(adminView || loggedInUserView)">
+          <label class="cDetailsFlex-item cDetailsLabel">Personalnummer: </label>
+          <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.id!" readonly/>
         </div>
-        <div class="cDetailsSingle">
-          <label class="cDetailsLabel">Nachname: </label>
-          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.lastName" [readonly]="!adminView" required/>
+        <div class="cDetailsFlex">
+          <label class="cDetailsFlex-item cDetailsLabel">Nachname: </label>
+          <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.lastName" [readonly]="!adminView" required/>
         </div>
-        <div class="cDetailsSingle">
-          <label class="cDetailsLabel">Vorname: </label>
-          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.firstName" [readonly]="!adminView" required/>
+        <div class="cDetailsFlex">
+          <label class="cDetailsFlex-item cDetailsLabel">Vorname: </label>
+          <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.firstName" [readonly]="!adminView" required/>
         </div>
-        <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
-          <label class="cDetailsLabel">Straße / Hausnummer: </label>
-          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.street" [readonly]="!adminView" required/>
+        <div class="cDetailsFlex" [hidden]="!(adminView || loggedInUserView)">
+          <label class="cDetailsFlex-item cDetailsLabel">Straße / Hausnummer: </label>
+          <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.street" [readonly]="!adminView" required/>
         </div>
-        <div class="cDetailsSingle" [hidden]="!(adminView || loggedInUserView)">
-          <label class="cDetailsLabel">Postleitzahl / Ort: </label>
-          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.zipcode" [readonly]="!adminView" required/>
+        <div class="cDetailsFlex" [hidden]="!(adminView || loggedInUserView)">
+          <label class="cDetailsFlex-item cDetailsLabel">Postleitzahl / Ort: </label>
+          <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.zipcode" [readonly]="!adminView" required/>
+          <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.city" [readonly]="!adminView" required/>
         </div>
-        <div class="cDetailsSingle">
-          <label class="cDetailsLabel">E-Mail: </label>
-          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.email" [readonly]="!adminView" required/>
+        <div class="cDetailsFlex">
+          <label class="cDetailsFlex-item cDetailsLabel">E-Mail: </label>
+          <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.email" [readonly]="!adminView" required/>
         </div>
-        <div class="cDetailsSingle">
-          <label class="cDetailsLabel">Telefon: </label>
-          <input type="text" class="cDetailsInput" [(ngModel)]="selectedEmployee.phone" [readonly]="!adminView" required/>
+        <div class="cDetailsFlex">
+          <label class="cDetailsFlex-item cDetailsLabel">Telefon: </label>
+          <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.phone" [readonly]="!adminView" required/>
         </div>
 
         <button [hidden]="!adminView" (click)="onClick_SaveDetails()">Änderungen speichern</button>
@@ -62,10 +63,6 @@
     <h3>Passwort</h3>
     <form id="passowrdForm">
       <div class="cPasswordFields" [hidden]="!loggedInUserView">
-        <div class="cPasswordSingle">
-          <label>Derzeitiges Passwort: </label>
-          <input type="password" placeholder="Derzeitiges Passwort" class="cPasswordInput" name="CurrentPasswordInput" [(ngModel)]="currentPassword" [required]="checkRequired"/>
-        </div>
         <div class="cPasswordSingle">
           <label>Neues Passwort: </label>
           <input type="password" placeholder="Neues Passwort" name="NewPasswordInput" class="cPasswordInput" [(ngModel)]="newPassword" [required]="checkRequired"/>
