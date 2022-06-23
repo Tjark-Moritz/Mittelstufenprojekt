@@ -60,80 +60,46 @@ export class EmployeeDetailsComponent implements OnInit {
     let numHolidaysLeft: number = +(document.getElementById("numHolidaysLeftNew") as HTMLInputElement).value;
     let base64ProfilePic: string = (document.getElementById("base64ProfilePicNew") as HTMLInputElement).value;
 
-    let newEmp: AddEmployee = new AddEmployee(username, lastName, firstName, street, zipcode, city, phone, email, numHolidaysLeft, base64ProfilePic);
-    console.log(newEmp);
-    this.employeeService.addEmployee(newEmp);
-    return;
-
-
-
-
-
-
-
-
-    /*
-    let tempFN: string = (document.getElementById("leadEmpFirstNameInputNew") as HTMLInputElement).value;
-    let tempLN: string = (document.getElementById("leadEmpLastNameInputNew") as HTMLInputElement).value;
-    let leadEmpId = await this.employeeService.getEmployeeIdByFirstAndLastName(tempFN, tempLN);
-    if(leadEmpId == -1){
-      anyError = true
-      errorMessage += "Mitarbeiter nicht gefunden. ";
+    if(username == ""){
+      errorMessage += "Benutzername falsch, "
+    }
+    if(lastName == ""){
+      errorMessage += "Nachname falsch, "
+    }
+    if(firstName == ""){
+      errorMessage += "Vorname falsch, "
+    }
+    if(street == ""){
+      errorMessage += "Straße falsch, "
+    }
+    if(zipcode == ""){
+      errorMessage += "PLZ falsch, "
+    }
+    if(city == ""){
+      errorMessage += "Stadt falsch, "
+    }
+    if(phone == ""){
+      errorMessage += "Telefon falsch, "
+    }
+    if(email == ""){
+      errorMessage += "E-Mail falsch, "
+    }
+    if(numHolidaysLeft == 0){
+      errorMessage += "Urlaubstage übrig falsch, "
+    }
+    if(base64ProfilePic == ""){
+      errorMessage += "Bild falsch, "
     }
 
-    if(!this.isOld){
-      let addDepObj: AddDepartment = new AddDepartment();
-      addDepObj.leadEmployeeId = leadEmpId;
-      addDepObj.abbreviatedName = (document.getElementById("abbNameInputNew") as HTMLInputElement).value;
-      addDepObj.name = (document.getElementById("nameInputNew") as HTMLInputElement).value;
-      addDepObj.employeeIds = [leadEmpId];
-
-      if(addDepObj.name == ""){
-        anyError = true
-        errorMessage += "Abteilungsname nicht eingetragen. ";
-      }
-      if(addDepObj.abbreviatedName == ""){
-        anyError = true
-        errorMessage += "Abteilungskürzel nicht eingetragen. ";
-      }
-      if(!anyError){
-        this.departmentService.addDepartment(addDepObj);
-      }
-    }
-    else {
-      let depChanges: {[key: string]: string} = {}
-      let changes: boolean = false;
-
-      if(this.activeDep.leadEmployee != leadEmpId){
-        changes = true;
-        depChanges["leadEmployee"] = leadEmpId.toString();
-      }
-      let depName: string = (document.getElementById("nameInputNew") as HTMLInputElement).value;
-      if(this.activeDep.name != depName){
-        changes = true;
-        depChanges["name"] = depName;
-      }
-      let depAbbrName: string = (document.getElementById("abbNameInputNew") as HTMLInputElement).value;
-      if(this.activeDep.abbreviatedName != depAbbrName){
-        changes = true;
-        depChanges["abbreviatedName"] = depAbbrName;
-      }
-      if(!anyError && changes){
-        if(this.activeDep.departmentId){
-          this.departmentService.updateDepartment(depChanges, this.activeDep.departmentId);
-        }
-      }
-    }
 
     if(anyError){
       alert(errorMessage);
     }
     else {
+      let newEmp: AddEmployee = new AddEmployee(username, lastName, firstName, street, zipcode, city, phone, email, numHolidaysLeft, base64ProfilePic);
+      this.employeeService.addEmployee(newEmp);
       this.dialogRef.close({ event: 'close', data: undefined });
-      // deps neuladen
     }
-
-     */
   }
 
   delete() {

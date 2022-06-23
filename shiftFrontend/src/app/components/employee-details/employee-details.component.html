@@ -1,9 +1,5 @@
 <div xmlns="http://www.w3.org/1999/html">
 
-<!--  <div class="col-4">-->
-<!--    <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Close</a>-->
-<!--  </div>-->
-
   <div class="row" *ngIf="isOld">
     <div class="col-4">
       <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
@@ -11,9 +7,6 @@
     <div class="col-4">
       <a role="button" class="btn baseBtn saveBtn" (click)="save()">Save</a>
     </div>
-<!--    <div class="col-4">-->
-<!--      <a role="button" class="btn baseBtn deleteBtn" (click)="delete()">Delete</a>-->
-<!--    </div>-->
   </div>
   <div class="row" *ngIf="!isOld">
     <div class="col-4">
