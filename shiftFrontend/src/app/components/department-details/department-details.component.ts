@@ -6,6 +6,7 @@ import {EmployeeService} from "../../services/employee.service";
 import {AddDepartment} from "../../models/dto/AddDepartment";
 import {UserRoleEnum} from "../../models/UserRoleEnum";
 import {BearerTokenService} from "../../services/bearer-token.service";
+import {AddShiftType} from "../../models/dto/AddShiftType";
 
 @Component({
   selector: 'app-department-details',
@@ -21,13 +22,13 @@ export class DepartmentDetailsComponent implements OnInit {
   constructor(private departmentService: DepartmentService,
               private employeeService: EmployeeService,
               private dialogRef: MatDialogRef<DepartmentDetailsComponent>,
-              @Inject(MAT_DIALOG_DATA) private data: GetDepartment) {
+              @Inject(MAT_DIALOG_DATA) private data: GetDepartment, private bearerTokenService: BearerTokenService) {
     this.isAdmin = false;
     this.isOld = false;
 
     let roleName: UserRoleEnum | undefined;
     // @ts-ignore
-    roleName = BearerTokenService.getUserRole;
+    roleName = this.bearerTokenService.getUserRole;
     if(roleName){
       if(roleName == UserRoleEnum.Admin){
         this.isAdmin = true;
@@ -86,6 +87,36 @@ export class DepartmentDetailsComponent implements OnInit {
         anyError = true
         errorMessage += "Abteilungskürzel nicht eingetragen. ";
       }
+
+      let shiftStart: string = (document.getElementById("shiftStartNew") as HTMLInputElement).value;
+      let shiftEnd: string = (document.getElementById("shiftEndNew") as HTMLInputElement).value;
+      let empCount: number = +(document.getElementById("shiftEmpNumNew") as HTMLInputElement).value;
+      let shiftName: string = (document.getElementById("shiftTypeNameNew") as HTMLInputElement).value;
+      let shiftColor: string = (document.getElementById("shiftColorNew") as HTMLInputElement).value;
+
+      let dateStart: Date = new Date();
+      let splittedStart = shiftStart.split(":");
+      let hs: number = +splittedStart[0];
+      let ms: number = +splittedStart[0];
+      let ss: number = +splittedStart[0];
+      dateStart.setHours(hs, ms, ss);
+
+      let dateEnd: Date = new Date();
+      let splittedEnd = shiftEnd.split(":");
+      let he: number = +splittedStart[0];
+      let me: number = +splittedStart[0];
+      let se: number = +splittedStart[0];
+      dateEnd.setHours(he, me, se);
+
+
+      let shift: AddShiftType = new AddShiftType(dateStart, dateEnd, empCount, shiftName, shiftColor);
+      addDepObj.shiftTypes = [];
+      if(addDepObj.shiftTypes){
+        addDepObj.shiftTypes.push(shift);
+      }
+
+      console.log(addDepObj);
+
       if(!anyError){
         this.departmentService.addDepartment(addDepObj);
       }
