@@ -1,0 +1,69 @@
+<ng-container [ngSwitch]="display">
+  <div *ngSwitchCase="'month'">
+    <div class="menu-bar">
+      <h2>Schichtplan für {{getMonthTitle(chosenDate.getMonth())}} (01.{{chosenDate.getMonth()+1}}.{{chosenDate.getFullYear()}} bis {{getTotalDaysInMonth(chosenDate)}}.{{chosenDate.getMonth()+1}}.{{chosenDate.getFullYear()}})</h2>
+      <button type="button" (click)="previousMonth()"><</button>
+      <button type="button" (click)="datepicker.open();">{{getMonthTitle(chosenDate.getMonth())}}</button>
+      <button type="button" (click)="nextMonth()">></button>
+      <button type="button" (click)="updateWeekStructure(); display = 'week'">Zur Wochenansicht</button>
+
+     <!--<div class="legend-div" *ngFor="let type of getShiftTypes(this.chosenShiftPlan)">
+        <div  class="colored-square" [style.background-color]="type.shiftTypeColor"></div>
+        <p *ngIf="type.shiftStartTime && type.endShiftTime">{{type.typeName}} ({{type.shiftStartTime.getHours()}} - {{type.endShiftTime.getHours()}} Uhr)</p>
+      </div>-->
+
+      <div class="legend-div">
+        <table class="legend-table">
+          <tr class="legend-row" *ngFor="let type of getShiftTypes(this.chosenShiftPlan)">
+            <td class="colored-square" [style.background-color]="type.shiftTypeColor"></td>
+            <p class="color-description" *ngIf="type.shiftStartTime && type.shiftEndTime">&nbsp;&nbsp;{{type.typeName}} ({{type.shiftStartTime.getHours()}} - {{type.shiftEndTime.getHours()}} Uhr)</p>
+          </tr>
+        </table>
+      </div>
+
+      <input matInput [matDatepicker]="datepicker" [max]="currentDate" hidden>
+      <mat-datepicker-toggle [for]="datepicker" hidden></mat-datepicker-toggle>
+      <mat-datepicker #datepicker startView="year" [startAt]="chosenDate" touchUi="true" (monthSelected)="closeDatePicker($event, datepicker)">
+        <mat-datepicker-actions>
+          <button (click)="backToCurrentDate(datepicker)">Zum heutigen Datum</button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+    </div>
+
+    <table class="table table-lg shift-plan-table">
+      <thead>
+      <tr>
+        <th *ngFor="let day of weekdays">{{day}}</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let week of monthStructure">
+          <td class="single-day" *ngFor="let date of week" [style.background]="colorizeShifts(this.chosenShiftPlan, date)" [style.opacity]="setOpacity(this.chosenShiftPlan, date)" (click)="openDialog(chosenShiftPlan, date)">
+            {{date.getDate()}}
+          </td>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div *ngSwitchCase="'week'">
+    <h2>Schichtplan für KW {{getMonthTitle(chosenDate.getMonth())}}</h2>
+    <button type="button" (click)="previousWeek()"><</button>
+    <button type="button" (click)="nextWeek()">></button>
+    <button type="button" (click)="updateMonthStructure(); display = 'month'">Zur Monatsansicht</button>
+    <table class="table table-lg shift-plan-table">
+      <thead>
+      <tr>
+        <th *ngFor="let day of weekdays">{{day}}</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="single-day" *ngFor="let date of weekStructure" [style.background]="colorizeShifts(this.chosenShiftPlan, date)" [style.opacity]="setOpacity(this.chosenShiftPlan, date)" (click)="openDialog(this.chosenShiftPlan, date)">
+            {{date.getDate()}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>

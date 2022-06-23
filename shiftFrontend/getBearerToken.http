@@ -1,4 +1,5 @@
-POST http://authproxy.szut.dev
+POST http://localhost:8089/auth/realms/Shiftplanner/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
-grant_type=password&client_id=employee-management-service&username=user&password=test
+grant_type=password&client_id=shiftplanner&username=user&password=user
+

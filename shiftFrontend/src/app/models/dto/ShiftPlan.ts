@@ -1,11 +1,10 @@
-import {ShiftType} from "./ShiftType";
-import {Shift} from "./Shift";
+import {GetShiftType} from "./GetShiftType";
+import {GetShift} from "./GetShift";
 
 export class ShiftPlan {
   constructor(public shiftPlanId?: number,
-              public shifts?: Shift[],
+              public shifts?: GetShift[],
               public validMonthYear?: Date,
-              public shiftDetails?: Date,
-              public shiftType?: ShiftType) {
+              public shiftType?: GetShiftType[]) {
   }
 }

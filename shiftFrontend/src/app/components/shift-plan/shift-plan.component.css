@@ -1,0 +1,39 @@
+.shift-plan-table {
+  width: 100%;
+  min-width: 800px;
+  height: 83vh;
+}
+
+td {
+  border: 1px solid lightgrey;
+}
+
+.single-day {
+  width: 14%;
+}
+
+
+
+.legend-div {
+  float: right;
+}
+
+.legend-table .legend-row {
+  display: table-cell;
+}
+
+.colored-square {
+  float: left;
+  height: 20px;
+  width: 20px;
+}
+
+.color-description {
+  width: 200px;
+}
+
+
+
+::ng-deep button.mat-calendar-period-button {
+  display: none;
+}
