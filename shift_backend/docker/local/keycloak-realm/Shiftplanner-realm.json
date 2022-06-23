@@ -1800,7 +1800,7 @@
       "autheticatorFlow" : true
     } ]
   }, {
-    "id" : "7e6aecc8-63e8-4373-89bf-d908e2e6286a",
+    "id" : "6df68d47-78a3-4c3e-bf63-76fcd5c58212",
     "alias" : "saml ecp",
     "description" : "SAML ECP Profile Authentication Flow",
     "providerId" : "basic-flow",

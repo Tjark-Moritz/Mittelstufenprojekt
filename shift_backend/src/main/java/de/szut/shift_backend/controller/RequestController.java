@@ -84,7 +84,7 @@ public class RequestController {
                                                               @Valid @PathVariable("id") final Long holidayId,
                                                               @Valid @RequestBody final Map<String,Object> fieldsToPatch
     ) {
-        Holiday holUpdate = this.holidayService.update(holidayId, fieldsToPatch); //todo: String to LocalDate
+        Holiday holUpdate = this.holidayService.update(holidayId, fieldsToPatch);
 
         GetHolidayDto holidayGetDto = this.mappingService.mapHolidayToGetHolidayDto(holUpdate);
 

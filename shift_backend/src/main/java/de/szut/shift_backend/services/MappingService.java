@@ -18,21 +18,25 @@ public class MappingService {
     private final EmployeeService employeeService;
     private final ShiftService shiftService;
     private final ShiftTypeService shiftTypeService;
+    private final MessageChannelService messageChannelService;
+    private final MessageService messageService;
 
-    public MappingService(HolidayService holidayService, DepartmentService departmentService, EmployeeService employeeService, ShiftService shiftService, ShiftTypeService shiftTypeService)
+    public MappingService(HolidayService holidayService, DepartmentService departmentService, EmployeeService employeeService, ShiftService shiftService, ShiftTypeService shiftTypeService, MessageChannelService messageChannelService, MessageService messageService)
     {
         this.holidayService = holidayService;
         this.departmentService = departmentService;
         this.employeeService = employeeService;
         this.shiftService = shiftService;
         this.shiftTypeService = shiftTypeService;
+        this.messageChannelService = messageChannelService;
+        this.messageService = messageService;
     }
 
     public GetMessageDto mapMessageToGetMessageDto(Message message) {
         GetMessageDto getMessageDto = new GetMessageDto();
+
         getMessageDto.setId(message.getId());
-        getMessageDto.setChannelId(message.getChannelId());
-        getMessageDto.setRequestedEmployeeId(message.getRequestedEmployeeId());
+        getMessageDto.setChannelId(message.getMessageChannel().getId());
         getMessageDto.setSendingEmployeeId(message.getSendingEmployeeId());
         getMessageDto.setDateTime(message.getDateTime());
         getMessageDto.setStatus(message.getStatus());
@@ -40,12 +44,15 @@ public class MappingService {
         return getMessageDto;
     }
 
-    public Message mapAddMessageDtoToMessage(AddMessageDto addMessageDto) {
+    public Message mapAddMessageDtoToMessage(AddMessageDto addMessageDto, String employeeId) {
         Message message = new Message();
+        MessageChannel messageChannel = this.messageChannelService.getMessageChannelById(addMessageDto.getChannelId());
+
         message.setId(addMessageDto.getId());
-        message.setChannelId(addMessageDto.getChannelId());
-        message.setRequestedEmployeeId(addMessageDto.getRequestedEmployeeId());
-        message.setSendingEmployeeId(addMessageDto.getSendingEmployeeId());
+        message.setContent(addMessageDto.getContent());
+        message.setMessageChannel(messageChannel);
+        message.setType(addMessageDto.getType());
+        message.setSendingEmployeeId(Long.valueOf(employeeId));
         message.setDateTime(addMessageDto.getDateTime());
         message.setStatus(addMessageDto.getStatus());
 
@@ -54,20 +61,36 @@ public class MappingService {
 
     public MessageChannel mapAddMessageChannelDtoToMessageChannel(AddMessageChannelDto addMessageChannelDto) {
         MessageChannel messageChannel = new MessageChannel();
+
+        List<Employee> employeeList = employeeService.getAllById(addMessageChannelDto.getEmployees());
+
         messageChannel.setId(addMessageChannelDto.getId());
         messageChannel.setName(addMessageChannelDto.getName());
         messageChannel.setDescription(addMessageChannelDto.getDescription());
-        messageChannel.setMessages(addMessageChannelDto.getMessages());
+        messageChannel.setEmployees(employeeList);
 
         return messageChannel;
     }
 
     public GetMessageChannelDto mapMessageChannelToGetMessageChannelDto(MessageChannel messageChannel) {
         GetMessageChannelDto getMessageChannelDto = new GetMessageChannelDto();
+        List<GetMessageDto> getMessageDtoList = new ArrayList<>();
+        List<Long> employeeIdList = new ArrayList<>();
+
         getMessageChannelDto.setId(messageChannel.getId());
         getMessageChannelDto.setName(messageChannel.getName());
         getMessageChannelDto.setDescription(messageChannel.getDescription());
-        getMessageChannelDto.setMessages(messageChannel.getMessages());
+
+        for (Message message : messageChannel.getMessages()) {
+            getMessageDtoList.add(mapMessageToGetMessageDto(message));
+        }
+
+        for (Employee employee: messageChannel.getEmployees()) {
+            employeeIdList.add(employee.getId());
+        }
+
+        getMessageChannelDto.setMessages(getMessageDtoList);
+        getMessageChannelDto.setEmployees(employeeIdList);
 
         return getMessageChannelDto;
     }

@@ -118,6 +118,10 @@ public class EmployeeService {
         return empUpdated;
     }
 
+    public List<Employee> getAllById(List<Long> employeeIdList) {
+        return this.employeeRepository.findAllById(employeeIdList);
+    }
+
     public void updateEmployeePassword(String token, UpdatePasswordDto passwordDto) throws VerificationException {
         if (!passwordDto.getNewPassword().equals(passwordDto.getConfirmPassword()))
             throw new PasswordMissmatch("Provided passwords do not match");
