@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,14 +35,17 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Channel can not be null!")
-    private Long channelId;
+    @ManyToOne
+    private MessageChannel messageChannel;
 
-    @NotNull(message = "Requested-EmployeeId can not be null!")
-    private Long requestedEmployeeId;
+    @NotNull(message = "Content can not be null!")
+    private String content;
 
     @NotNull(message = "Sending employeeId can not be null!")
     private Long sendingEmployeeId;
+
+    @NotNull(message = "Message-Type can not be null!")
+    private Long type;
 
     private LocalDateTime dateTime;
 
