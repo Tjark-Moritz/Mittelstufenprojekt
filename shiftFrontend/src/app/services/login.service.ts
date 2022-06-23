@@ -29,12 +29,11 @@ export class LoginService {
     this.bearerTokenService.generateBearerToken(username, password).subscribe(
       res => {
         this.bearerTokenService.bearerToken = res;
+        this.setLoggedInUser();
 
         if(autoLogin) {
           UserCookieService.setBearerToken(res);
         }
-
-        //this.wrongLogin = false;
         this.router.navigate(['/index']);
       }, () => {
         swal.default.fire({
@@ -44,13 +43,34 @@ export class LoginService {
           showCloseButton: true,
           timer: 2500
         });
-
-        //this.wrongLogin = true;
     });
+  }
+
+  public Logout() {
+    this.bearerTokenService.resetBearerToken();
+    UserCookieService.removeBearerToken();
+    this.setLoggedInUser();
+
+    this.router.navigate(['/login']);
+  }
+
+  public isUserLoggedIn(): boolean{
+    this.autoLogin();
+
+    return (this.bearerTokenService.isBearerTokenSet());
+  }
+
+  private autoLogin(){
+    if(UserCookieService.isBearerTokenSet() && !this.bearerTokenService.isBearerTokenSet()) {
+      this.bearerTokenService.bearerToken = UserCookieService.getBearerToken();
+      this.setLoggedInUser();
+    }
   }
 
   private setLoggedInUser(){
     if (this.bearerTokenService.bearerToken.access_token == null) {
+      this._LoggedInUser = undefined;
+      NavbarComponent.profilePictureBase64 = "";
       return;
     }
 
@@ -58,6 +78,8 @@ export class LoginService {
     let username: string = jwtDecode(this.bearerTokenService.bearerToken.access_token).preferred_username;
     this.employeeService.getEmployeeByUsername(username).subscribe(x => {
       this._LoggedInUser = x;
+    }, () => {
+      console.error("Logged in user could not be found!");
     });
 
     // Todo: Remove dummy data

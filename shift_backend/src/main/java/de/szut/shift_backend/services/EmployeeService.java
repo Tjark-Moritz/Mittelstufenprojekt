@@ -1,13 +1,19 @@
 package de.szut.shift_backend.services;
 
 import de.szut.shift_backend.exceptionHandling.CreationException;
+import de.szut.shift_backend.exceptionHandling.PasswordMissmatch;
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Department;
 import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.ShiftType;
+import de.szut.shift_backend.model.dto.UpdatePasswordDto;
 import de.szut.shift_backend.repository.EmployeeRepository;
 import de.szut.shift_backend.templates.KeycloakInteractionService;
+import org.keycloak.TokenVerifier;
+import org.keycloak.common.VerificationException;
+import org.keycloak.representations.AccessToken;
+import org.keycloak.representations.JsonWebToken;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolationException;
@@ -110,5 +116,30 @@ public class EmployeeService {
         this.employeeRepository.save(empUpdated);
 
         return empUpdated;
+    }
+
+    public void updateEmployeePassword(String token, UpdatePasswordDto passwordDto) throws VerificationException {
+        if (!passwordDto.getNewPassword().equals(passwordDto.getConfirmPassword()))
+            throw new PasswordMissmatch("Provided passwords do not match");
+
+        String token2 = token.substring(7);
+        JsonWebToken decodedT = TokenVerifier.create(token2, AccessToken.class).getToken();
+
+        this.keyService.updateUserPassword(decodedT.getSubject(), passwordDto);
+    }
+
+    public void updateEmployeePasswordAsAdmin(String token,Long employeeId, UpdatePasswordDto passwordDto) throws VerificationException {
+        if (!passwordDto.getNewPassword().equals(passwordDto.getConfirmPassword()))
+            throw new PasswordMissmatch("Provided passwords do not match");
+
+        String token2 = token.substring(7);
+        AccessToken decodedT = TokenVerifier.create(token2, AccessToken.class).getToken();
+
+        if(decodedT.getRealmAccess().getRoles().contains("shiftadmin")){
+            Employee emp = this.getEmployeeById(employeeId);
+            String subjectId = this.keyService.getSubjectIdByUsername(emp.getUsername());
+
+            this.keyService.updateUserPassword(subjectId, passwordDto);
+        }
     }
 }
