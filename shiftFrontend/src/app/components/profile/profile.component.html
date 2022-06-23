@@ -10,8 +10,7 @@
 
         <div class="cProfilePictureButtonsDiv" [hidden]="!(adminView || loggedInUserView)">
           <input [hidden]="!loggedInUserView" type="file" (change)="onChange_OpenProfilePicture($event)" accept="image/*"/>
-          <button [hidden]="!(adminView || loggedInUserView)" (click)="onClick_RemoveProfilePicture()">Bild entfernen</button>
-          <button [hidden]="!loggedInUserView" (click)="onClick_ChangeProfilePicture()" [disabled]="!pictureChanged">Bild speichern</button>
+          <button [hidden]="!(adminView || loggedInUserView)" (click)="this.selectedEmployee.base64ProfilePic = ''">Bild entfernen</button>
         </div>
       </div>
 
@@ -45,8 +44,6 @@
           <label class="cDetailsFlex-item cDetailsLabel">Telefon: </label>
           <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.phone" [readonly]="!adminView" required/>
         </div>
-
-        <button [hidden]="!adminView" (click)="onClick_SaveDetails()">Änderungen speichern</button>
       </div>
     </section>
   </div>
@@ -55,6 +52,11 @@
 
   <div class="cBaseMargin" [hidden]="!loggedInUserView">
     <h3>Präferenzen</h3>
+    <select name="preferenceCombobox" class="cPreferenceCombobox" [(ngModel)]="selectedShiftType" [style.background-color]="selectedShiftType?.shiftTypeColor">
+      <option *ngFor="let shiftType of this.allShiftTypes" [ngValue]="shiftType" [style.background-color]="shiftType.shiftTypeColor">
+        {{shiftType.typeName}}
+      </option>
+    </select>
   </div>
 
   <div class="cSplitterLine" [hidden]="!(adminView || loggedInUserView)"></div>
@@ -71,8 +73,6 @@
           <label>Neues Passwort wiederholen: </label>
           <input type="password" placeholder="Neues Passwort wiederholen" name="NewPasswordAgainInput" class="cPasswordInput" [(ngModel)]="newPasswordAgain" [required]="checkRequired"/>
         </div>
-
-        <button (click)="onClick_SavePassword()">Änderung speichern</button>
       </div>
 
       <div class="cPasswordFields" [hidden]="!(adminView && !loggedInUserView)">
@@ -80,9 +80,15 @@
           <label>Neues Passwort: </label>
           <input type="text" class="cPasswordInput" name="NewRadnomPasswordInput" [(ngModel)]="newPassword" readonly/>
         </div>
-        <button (click)="onClick_ResetPassword()">Passwort zurücksetzen</button>
+        <button (click)="onClick_GeneratePassword()"> Passwort Generieren</button>
       </div>
     </form>
+  </div>
+
+  <div class="cSplitterLine" [hidden]="!(adminView || loggedInUserView)"></div>
+
+  <div class="cSaveAllChanges cBaseMargin" [hidden]="!(adminView || loggedInUserView)">
+    <button (click)="onClick_SaveAllChanges()">Änderungen speichern</button>
   </div>
 </div>
 
