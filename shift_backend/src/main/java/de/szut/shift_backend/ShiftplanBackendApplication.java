@@ -14,11 +14,4 @@ public class ShiftplanBackendApplication {
         SpringApplication.run(ShiftplanBackendApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner demoData(InitialDataService initialDataService) {
-        return args -> {
-            initialDataService.createShiftType();
-            initialDataService.createEmp();
-        };
-    }
 }
