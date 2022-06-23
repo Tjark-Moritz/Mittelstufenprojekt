@@ -7,6 +7,6 @@ export class GetShiftPlan {
               public departmentId?: GetDepartment,
               public validMonth?: Date,
               public shifts?: GetShift[],
-              public shiftTypes?: GetShiftType[]) {
+              public excludedWeekdays?: string[]) {
   }
 }
