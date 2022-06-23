@@ -50,8 +50,7 @@ import {RequestPlannerComponent} from "./components/request-planner/request-plan
     DepartmentDetailsComponent,
     LoginComponent,
     PageNotFoundComponent,
-    EmployeeDetailsComponent
-    HolidayPlanerComponent,
+    EmployeeDetailsComponent,
     RequestPlannerComponent
   ],
   imports: [

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {EmployeeService} from "../../services/employee.service";
-import {AllEmployees} from "../../models/dto/AllEmployees";
-import {HolidayType} from "../../models/dto/HolidayType";
-import {Holiday} from "../../models/dto/Holiday";
-import {HolidayRequest} from "../../models/dto/HolidayRequest";
-import {ShiftTradeRequest} from "../../models/dto/ShiftTradeRequest";
-import {AllShiftTrades} from "../../models/dto/AllShiftTrades";
+import {GetEmployee} from "../../models/dto/GetEmployee";
+//import {AllEmployees} from "../../models/dto/AllEmployees";
+//import {HolidayType} from "../../models/dto/HolidayType";
+//import {Holiday} from "../../models/dto/Holiday";
+//import {HolidayRequest} from "../../models/dto/HolidayRequest";
+//import {ShiftTradeRequest} from "../../models/dto/ShiftTradeRequest";
+//import {AllShiftTrades} from "../../models/dto/AllShiftTrades";
 
 @Component({
   selector: 'app-request-planner',
@@ -16,13 +17,13 @@ export class RequestPlannerComponent implements OnInit {
 
   chossenDate: Date = new Date();
   requestCounter: number = 0;
-
+/*
   getUserData():AllEmployees {
     let empList = new AllEmployees();
     this.employeeService.getAllEmployees().subscribe(val => empList = val)
     return empList;
   }
-
+*/
   closePicker(eventData:any, datepicker?:any)
   {
     datepicker.close();
@@ -36,10 +37,10 @@ export class RequestPlannerComponent implements OnInit {
   }
 */
   sendRequest(){
-    let empList = this.getUserData();
+   // let empList = this.getUserData();
 
     let date: Date = new Date();
-
+/*
     let shiftTradeRequest: ShiftTradeRequest = new ShiftTradeRequest();
 
 
@@ -51,10 +52,10 @@ export class RequestPlannerComponent implements OnInit {
 
     this.requestData.push(shiftTradeRequest);
 
-
+*/
   }
 
-  requestData: ShiftTradeRequest [] = [];
+  //requestData: ShiftTradeRequest [] = [];
 
   data = [
     {swapDate: 1, currentShift: 'Rajesh', requestedShift: 'rajesh@gmail.com', requester: 'aa',},
