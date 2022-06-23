@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {UserCookieService} from "./user-cookie.service";
 import {UserRoleEnum} from "../models/UserRoleEnum";
 import jwtDecode from "jwt-decode";
+import {LoginService} from "./login.service";
 
 @Injectable({
   providedIn: 'root'
@@ -29,14 +30,15 @@ export class BearerTokenService {
     })
   }
 
+  public resetBearerToken(){
+    this._BearerToken = undefined;
+  }
+
   public set bearerToken(token: BearerToken) {
     this._BearerToken = token;
   }
 
   public get bearerToken(): BearerToken {
-    if(UserCookieService.isBearerTokenSet() && this._BearerToken == undefined)
-      this.bearerToken = UserCookieService.getBearerToken();
-
     if(this._BearerToken)
       return this._BearerToken;
     else
@@ -49,7 +51,7 @@ export class BearerTokenService {
 
   // returns undefined if the user isn't logged in
   public get getUserRole(): UserRoleEnum | undefined {
-    if(this.isBearerTokenSet() || this.bearerToken.access_token == null){
+    if(!this.isBearerTokenSet() || this.bearerToken.access_token == null){
       return undefined;
     }
 

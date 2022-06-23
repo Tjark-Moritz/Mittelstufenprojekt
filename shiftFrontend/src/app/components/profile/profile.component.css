@@ -1,0 +1,124 @@
+.cBaseMargin {
+  margin: 1vw;
+}
+
+.cSplitterLine {
+  height: 1px;
+  width: 100%;
+  background-color: black;
+}
+
+.cSymbol {
+  background-color: white;
+
+  border-radius: 10%;
+  border: 3px solid black;
+
+  height: 150px;
+  width: 150px;
+}
+
+.cSymbolImg {
+  display: block;
+  margin: auto;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.cFirstLayout {
+  width: 100%;
+
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cProfilePictureDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: auto 0px;
+}
+
+.cProfilePictureButtonsDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+
+input:read-only {
+  background-color: #d1d1d1;
+}
+
+input:invalid {
+  color: red;
+  border-color: red;
+}
+
+.cPasswordFields {
+  width: 500px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cPasswordSingle {
+  display: flex;
+}
+
+.cPasswordInput {
+  margin-left: auto;
+  width: 300px;
+}
+
+.cDetailsDiv {
+  margin-left: auto;
+  min-width: 300px;
+  width: 40vw;
+  border: 1px solid black;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cDetailsLabel {
+  width: 150px;
+}
+
+.cDetailsFlex {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+}
+
+.cDetailsFlex-item {
+  flex: 0 1 auto;
+}
+
+.cDetailsFlex-item:nth-child(1) {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+.cDetailsFlex-item:nth-child(2) {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+.cDetailsFlex-item:nth-child(3) {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+

@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {GetEmployee} from "../models/dto/GetEmployee";
 import {AddEmployee} from "../models/dto/AddEmployee";
 import {BearerTokenService} from "./bearer-token.service";
+import {UpdatedPassword} from "../models/dto/UpdatedPassword";
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,14 @@ export class EmployeeService {
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     });
+  }
+
+  updateEmployeePassword(updatedPassword: UpdatedPassword){
+    this.httpClient.post(this.urlPre + `/password`, updatedPassword,{
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
+    }).toPromise();
   }
 
   addEmployee(employee: AddEmployee){
