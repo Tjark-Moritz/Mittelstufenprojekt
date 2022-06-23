@@ -53,8 +53,7 @@ import {RequestPlannerComponent} from "./components/request-planner/request-plan
     PageNotFoundComponent,
     EmployeeDetailsComponent,
     ProfileComponent,
-    MessageComponent
-    EmployeeDetailsComponent,
+    MessageComponent,
     RequestPlannerComponent
   ],
   imports: [
@@ -72,7 +71,6 @@ import {RequestPlannerComponent} from "./components/request-planner/request-plan
     MatMomentDateModule,
     MatInputModule,
     AppRoutingModule,
-    MatDialogModule,
     MatExpansionModule,
     MatIconModule,
     MatListModule,

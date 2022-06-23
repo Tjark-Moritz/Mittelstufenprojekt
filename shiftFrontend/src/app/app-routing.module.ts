@@ -8,6 +8,7 @@ import {ShiftPlanComponent} from "./components/shift-plan/shift-plan.component";
 import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
 import {AuthenticationGuardService} from "./services/authentication-guard.service";
 import {ProfileComponent} from "./components/profile/profile.component";
+import {RequestPlannerComponent} from "./components/request-planner/request-planner.component";
 
 const routes: Routes = [
   {path:'login', component: LoginComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path:'emps', component: EmployeeListComponent, canActivate:[AuthenticationGuardService]},
   {path:'holiday', component: HolidayPlanerComponent, canActivate:[AuthenticationGuardService]},
   {path:'shift', component: ShiftPlanComponent, canActivate:[AuthenticationGuardService]},
+  {path:'requestPlanner', component: RequestPlannerComponent, canActivate:[AuthenticationGuardService]},
   {path:'profile', component: ProfileComponent, canActivate:[AuthenticationGuardService]},
   {path:'profile/:id', component: ProfileComponent, canActivate:[AuthenticationGuardService]},
   {path:'', redirectTo: '/login', pathMatch: 'full'},
