@@ -7,6 +7,8 @@ import {GetShiftType} from "../../models/dto/GetShiftType";
 import {GetEmployee} from "../../models/dto/GetEmployee";
 import {DayDetailsComponent} from "../day-details/day-details.component";
 import {MatDialog} from "@angular/material/dialog";
+import {ShiftPlanService} from "../../services/shift-plan.service";
+import {GetShiftPlan} from "../../models/dto/GetShiftPlan";
 
 @Component({
   selector: 'app-shift-plan',
@@ -29,7 +31,7 @@ export class ShiftPlanComponent implements OnInit {
 
   currentUser: GetEmployee = new GetEmployee();
 
-  constructor(private employeeService: EmployeeService, private dialog: MatDialog) {
+  constructor(private employeeService: EmployeeService, private shiftplanService: ShiftPlanService, private dialog: MatDialog) {
     let shift1Start = new Date();
     shift1Start.setHours(6, 0, 0);
     let shift1End = new Date();
@@ -41,6 +43,8 @@ export class ShiftPlanComponent implements OnInit {
     let shiftType2: GetShiftType = new GetShiftType(2, shift1End, shift2End, "Spätschicht", "#E5FFB5");
 
     let empList: GetEmployee[] = [];
+    let shiftPlanList: GetShiftPlan[] = [];
+    let deptId: number = 0;
 
     let emp1: GetEmployee = new GetEmployee();
     emp1.id = 1;
@@ -59,7 +63,10 @@ export class ShiftPlanComponent implements OnInit {
     empList.push(emp1);
     empList.push(emp2);
 
-    //this.employeeService.getAllEmployees().subscribe(val => empList = val)
+    this.employeeService.getAllEmployees().subscribe(val => empList = val)
+    this.shiftplanService.getShiftplansByDeptId(deptId).subscribe(val => shiftPlanList = val)
+
+    shiftPlanList.filter(shiftPlan => shiftPlan.validMonth?.toDateString() == this.chosenDate.toDateString())
 
     let shift1List: GetEmployee[] = [];
     let shift2List: GetEmployee[] = [];
