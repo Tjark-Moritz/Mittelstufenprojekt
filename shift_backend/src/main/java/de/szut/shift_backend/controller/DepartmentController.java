@@ -1,10 +1,10 @@
 package de.szut.shift_backend.controller;
 
 import de.szut.shift_backend.model.Department;
-import de.szut.shift_backend.model.Holiday;
+import de.szut.shift_backend.model.ShiftType;
 import de.szut.shift_backend.model.dto.AddDepartmentDto;
 import de.szut.shift_backend.model.dto.GetDepartmentDto;
-import de.szut.shift_backend.model.dto.GetHolidayDto;
+import de.szut.shift_backend.model.dto.GetShiftTypeDto;
 import de.szut.shift_backend.services.DepartmentService;
 import de.szut.shift_backend.services.MappingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/department")
 public class DepartmentController {
-    private final MappingService mappingService; //todo: add logic
+    private final MappingService mappingService;
     private final DepartmentService departmentService;
 
     public DepartmentController(MappingService mappingService, DepartmentService departmentService) {
@@ -64,6 +65,24 @@ public class DepartmentController {
         }
 
         return new ResponseEntity<>(departmentDtoList, HttpStatus.OK);
+    }
+
+    @Operation(summary = "gets all shifttypes for department")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "get all shifttypes successful"),
+            @ApiResponse(responseCode = "400", description = "get all shifttypes failed", content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
+    })
+    @GetMapping("/{id}/shifttypes")
+    public ResponseEntity<List<GetShiftTypeDto>> getAllShiftTypes(@Valid @PathVariable("id") final Long departmentId) {
+        Department dept = this.departmentService.getDepartmentById(departmentId);
+        List<GetShiftTypeDto> stDtoList = new ArrayList<>();
+
+        for (ShiftType st : dept.getShiftTypes()) {
+            stDtoList.add(this.mappingService.mapShiftTypeToGetShiftTypeDto(st));
+        }
+
+        return new ResponseEntity<>(stDtoList, HttpStatus.OK);
     }
 
     @Operation(summary = "update department")

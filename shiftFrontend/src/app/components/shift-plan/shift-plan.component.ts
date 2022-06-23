@@ -39,8 +39,8 @@ export class ShiftPlanComponent implements OnInit {
     let shift2End = new Date();
     shift2End.setHours(22, 0, 0);
 
-    let shiftType1: GetShiftType = new GetShiftType(1, shift1Start, shift1End, "Frühschicht", "#B5FFE1");
-    let shiftType2: GetShiftType = new GetShiftType(2, shift1End, shift2End, "Spätschicht", "#E5FFB5");
+    let shiftType1: GetShiftType = new GetShiftType(1, shift1Start, shift1End, 1, "Frühschicht", "#B5FFE1");
+    let shiftType2: GetShiftType = new GetShiftType(2, shift1End, shift2End, 1, "Spätschicht", "#E5FFB5");
 
     let empList: GetEmployee[] = [];
     let shiftPlanList: GetShiftPlan[] = [];
