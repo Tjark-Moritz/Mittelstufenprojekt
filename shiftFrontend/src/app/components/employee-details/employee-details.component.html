@@ -1,38 +1,143 @@
 <div xmlns="http://www.w3.org/1999/html">
-  <div class="col-4">
-    <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Close</a>
+
+  <div class="row" *ngIf="isOld">
+    <div class="col-4">
+      <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
+    </div>
+    <div class="col-4">
+      <a role="button" class="btn baseBtn saveBtn" (click)="save()">Save</a>
+    </div>
+  </div>
+  <div class="row" *ngIf="!isOld">
+    <div class="col-4">
+      <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
+    </div>
+    <div class="col-4">
+      <a role="button" class="btn baseBtn saveBtn" (click)="save()">Add</a>
+    </div>
+    <div class="col-4"></div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-5"></div>
-  <div class="col-2">
-    <input class="circle" type="text" id="abbNameInputExists" name="abbNameInput" value="{{activeEmp.base64ProfilePic}}" disabled>
+<div *ngIf="!isOld">
+  <div class="row">
+    <table>
+      <tr>
+        <td class="tdLabelName">
+          Benutzername:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="userNameNew">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          Nachname:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="lastNameNew">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          Vorname:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="firstNameNew">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          Straße:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="streetNew">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          Postleitzahl:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="zipcodeNew">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          Stadt:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="cityNew">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          Telefon:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="phoneNew">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          E-Mail:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="eMailNew">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          Urlaubstage übrig:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="numHolidaysLeftNew">
+        </td>
+      </tr>
+      <tr>
+        <td class="tdLabelName">
+          Profilbild:
+        </td>
+        <td>
+          <input class="inputSetName" type="text" id="base64ProfilePicNew">
+        </td>
+      </tr>
+    </table>
   </div>
-  <div class="col-5"></div>
 </div>
-<div class="row">
-  <div class="col-12">
-    <input class="nameInput" type="text" id="firstNameInputExists" name="nameInput" value="{{activeEmp.firstName}}" disabled>
+
+<div *ngIf="isOld">
+  <div class="row">
+    <div class="col-5"></div>
+    <div class="col-2">
+      <input class="circle" type="text" id="abbNameInputExists" name="abbNameInput" value="{{activeEmp.base64ProfilePic}}" disabled>
+    </div>
+    <div class="col-5"></div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <input class="nameInput" type="text" id="firstNameInputExists" name="nameInput" value="{{activeEmp.firstName}}" disabled>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <input class="nameInput" type="text" id="lastNameInputExists" name="nameInput" value="{{activeEmp.lastName}}" disabled>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <input class="nameInput" type="text" id="emailInputExists" name="nameInput" value="{{activeEmp.email}}" disabled>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <input class="nameInput" type="text" id="phoneInputExists" name="nameInput" value="{{activeEmp.phone}}" disabled>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <input class="nameInput" type="text" id="depNameInputExists" name="nameInput" value="leer" disabled>
+    </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-12">
-    <input class="nameInput" type="text" id="lastNameInputExists" name="nameInput" value="{{activeEmp.lastName}}" disabled>
-  </div>
-</div>
-<div class="row">
-  <div class="col-12">
-    <input class="nameInput" type="text" id="emailInputExists" name="nameInput" value="{{activeEmp.email}}" disabled>
-  </div>
-</div>
-<div class="row">
-  <div class="col-12">
-    <input class="nameInput" type="text" id="phoneInputExists" name="nameInput" value="{{activeEmp.phone}}" disabled>
-  </div>
-</div>
-<div class="row">
-  <div class="col-12">
-    <input class="nameInput" type="text" id="depNameInputExists" name="nameInput" value="leer" disabled>
-  </div>
-</div>
+

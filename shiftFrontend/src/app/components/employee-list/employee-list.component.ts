@@ -27,12 +27,12 @@ export class EmployeeListComponent implements OnInit {
 
   isAdmin: boolean = false; // Muss geändert werden
 
-  constructor(private empService: EmployeeService, private depService: DepartmentService, private dialog: MatDialog) {
+  constructor(private empService: EmployeeService, private depService: DepartmentService, private dialog: MatDialog, private bearerTokenService: BearerTokenService) {
     this.selection = new SelectionModel<GetEmployee>(true, []);
 
     let roleName: UserRoleEnum | undefined;
     // @ts-ignore
-    roleName = BearerTokenService.getUserRole;
+    roleName = this.bearerTokenService.getUserRole;
     if(roleName){
       if(roleName == UserRoleEnum.Admin){
         this.isAdmin = true;
@@ -82,7 +82,7 @@ export class EmployeeListComponent implements OnInit {
 
   openModal(employee: GetEmployee){
 
-    if(this.isAdmin){
+    if(this.isAdmin && employee.id != undefined){
       // Lennarts part aufrufen
       return;
     }
