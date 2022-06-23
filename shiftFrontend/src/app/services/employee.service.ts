@@ -54,8 +54,6 @@ export class EmployeeService {
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
-
-    console.log("added Employee");
   }
 
   deleteEmployee(employeeId: number){
@@ -65,7 +63,6 @@ export class EmployeeService {
         .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
 
-    console.log("deleted Employee");
   }
 
   updateEmployee(employeeMap: Map<string, string>, employeeId: number){
@@ -74,8 +71,6 @@ export class EmployeeService {
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
-
-    console.log("updated Employee");
   }
 
   async getEmployeeIdByFirstAndLastName(firstName: string, lastName: string): Promise<number>{
