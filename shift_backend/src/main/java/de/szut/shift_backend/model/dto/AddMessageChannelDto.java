@@ -1,6 +1,7 @@
 package de.szut.shift_backend.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.Message;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class AddMessageChannelDto {
     @NotNull(message = "Channel description can not be null!")
     private String description;
 
-    private List<Message> messages;
+    @NotNull
+    private List<Long> employees;
 }
 
