@@ -26,8 +26,8 @@ export class HolidayPlanerComponent implements OnInit
   chossenStartDate: Date = new Date();
   chossenEndDate: Date = new Date();
 
-  dataSource = new MatTableDataSource<AddHoliday[]>();
-  allHolidays: AddHoliday[] = [];
+  dataSource = new MatTableDataSource<GetHoliday[]>();
+  allHolidays: GetHoliday[] = [];
   activehol: GetHoliday = new GetHoliday();
 
   displayedColumns = ['vocationStart', 'vocationEnd', 'days', 'statuss'];
@@ -51,19 +51,9 @@ export class HolidayPlanerComponent implements OnInit
         this.switchUser();
       }
     }
-
-    //todo delete
-    let hollidayArray: AddHoliday[] = [];
-    let holiday1:AddHoliday = new AddHoliday(1,1,new Date("2022-06-25"),new Date("2022-06-29"),1);
-    let holiday2:AddHoliday = new AddHoliday(2,1,new Date("2022-06-01"),new Date("2022-06-10"),1);
-    let holiday3:AddHoliday = new AddHoliday(3,1,new Date("2022-07-10"),new Date("2022-07-20"),1);
-    hollidayArray.push(holiday1);
-    hollidayArray.push(holiday2);
-    hollidayArray.push(holiday3);
-    this.allHolidays = hollidayArray;
-
     this.refresh();
   }
+
 
 
   ngOnInit(): void
@@ -83,14 +73,22 @@ export class HolidayPlanerComponent implements OnInit
 
   closeStartPicker(eventData:any, datepicker?:any)
   {
+    let xDate: Date = new Date(eventData);
 
-    this.chossenStartDate = eventData.value._d;
+
+    //this.chossenStartDate = xDate.toDateString();
+    this.chossenStartDate = xDate;
     datepicker.close();
   }
 
   closeEndPicker(eventData:any, datepicker?:any)
   {
-  this.chossenEndDate = eventData.value._d;
+    let xDate: Date = new Date(eventData);
+
+
+    //this.chossenStartDate = xDate.toDateString();
+    this.chossenEndDate = xDate;
+    //this.chossenEndDate = eventData.value._d;
     datepicker.close();
   }
 
@@ -109,7 +107,7 @@ export class HolidayPlanerComponent implements OnInit
     addHoliday.startDate =  this.chossenStartDate;
     addHoliday.endDate = this.chossenEndDate;
     addHoliday.id = this.requestcounter+1;
-    addHoliday.typeId = 1;
+    addHoliday.holidayTypeId = 1;
     this.requestcounter = this.requestcounter+1;
 
     addHoliday.employeeId = this.loginService.LoggedInUser.id;
@@ -120,38 +118,13 @@ export class HolidayPlanerComponent implements OnInit
 
   holidayaccepted(holidayElem : AddHoliday)
   {
-
-    let changes: boolean = false;
-    let depChanges: {[key: string]: string} = {}
-
-    let holidaysGet: GetHoliday;
-
-    let depStatus: string = (document.getElementById("StatusNew") as HTMLInputElement).value;
-    if(this.activehol.holidayStatus != depStatus){
-      changes = true;
-      depChanges["true"] = depStatus;
-    }
-
-    this.holidayService.updateHoliday(depChanges,holidayElem.id);
-
+    this.holidayService.answerHoliday(holidayElem.id,"ACCEPTED")
     this.statusDisplay = "ACCEPTED";
   }
 
   holidaycanceled(holidayElem : AddHoliday)
   {
-    let changes: boolean = false;
-    let depChanges: {[key: string]: string} = {}
-
-    let holidaysGet: GetHoliday;
-
-    let depStatus: string = (document.getElementById("StatusNew") as HTMLInputElement).value;
-    if(this.activehol.holidayStatus != depStatus){
-      changes = true;
-      depChanges["false"] = depStatus;
-    }
-
-    this.holidayService.updateHoliday(depChanges,holidayElem.id);
-
+    this.holidayService.answerHoliday(holidayElem.id,"DENIED")
     this.statusDisplay = "DENIED";
   }
 
@@ -165,5 +138,10 @@ export class HolidayPlanerComponent implements OnInit
         this.restDays = this.loginService.LoggedInUser.numHolidaysLeft;
       }
     });
+  }
+
+  calculateDate()
+  {
+
   }
 }

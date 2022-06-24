@@ -42,6 +42,19 @@ export class HolidayService {
     }).toPromise();
     console.log("deleted Holiday");
   }
+/*
+    /requests/holiday/{id}/answer
+*/
+  answerHoliday(holidayId:number | undefined, anwer:string)
+  {
+    this.httpClient.post(this.urlPre + `/${holidayId}` + `/${anwer}`,{
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
+    }).toPromise();
+    console.log("update Holiday");
+  }
+
 
   updateHoliday(depChanges: {[key: string]: string}, holidayId: number | undefined){
     this.httpClient.patch(this.urlPre + `/${holidayId}`,depChanges,{

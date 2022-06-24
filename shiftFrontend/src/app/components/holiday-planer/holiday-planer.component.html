@@ -25,12 +25,12 @@
         &lt;!&ndash; Vocation Start Column &ndash;&gt;
         <ng-container matColumnDef="vocationStart">
           <th mat-header-cell *matHeaderCellDef> Vocation Start </th>
-         <td mat-cell *matCellDef="let element"> {{element.startDate.toDateString()}} </td>
+         <td mat-cell *matCellDef="let element"> {{element.startDate}} </td>
         </ng-container>
 
         &lt;!&ndash; Vocation End Column &ndash;&gt;-->
         <ng-container matColumnDef="vocationEnd"><th mat-header-cell *matHeaderCellDef> Vocation End </th>s
-          <td mat-cell *matCellDef="let element"> {{element.endDate.toDateString()}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.endDate}} </td>
         </ng-container>
 
         &lt;!&ndash; Days Column&ndash;&gt;
@@ -78,19 +78,19 @@
         &lt;!&ndash; Vocation Start Column &ndash;&gt;
         <ng-container matColumnDef="vocationStart">
           <th mat-header-cell *matHeaderCellDef> Vocation Start </th>
-          <td mat-cell *matCellDef="let element"> {{element.startDate.toDateString()}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.startDate}} </td>
         </ng-container>
 
         &lt;!&ndash; Vocation End Column &ndash;&gt;
         <ng-container matColumnDef="vocationEnd"><th mat-header-cell *matHeaderCellDef> Vocation End </th>
-          <td mat-cell *matCellDef="let element"> {{element.endDate.toDateString()}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.endDate}} </td>
         </ng-container>
 
         &lt;!&ndash; Days Column&ndash;&gt;
         <ng-container matColumnDef="days">
           <th mat-header-cell *matHeaderCellDef> Days </th>
-          <td mat-cell *matCellDef="let element"> {{element.endDate.getDate()-element.startDate.getDate()+1}} </td>
-          <!-- <td mat-cell *matCellDef="let element"> {{element.holiday.endDate.getDate()-element.holiday.startDate.getDate()}} </td> -->;
+          <td mat-cell *matCellDef="let element"> {{this.calculateDate()}} </td>
+          <!-- <td mat-cell *matCellDef="let element"> {{element.endDate.getDate().valueOf()-element.startDate.getDate().valueOf()+1}} </td> -->;
         </ng-container>
 
         &lt;!&ndash; status Column &ndash;&gt;
