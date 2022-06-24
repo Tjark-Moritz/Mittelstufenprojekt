@@ -4,7 +4,6 @@ import {Observable} from "rxjs";
 import {BearerTokenService} from "./bearer-token.service";
 import {GetShiftPlan} from "../models/dto/GetShiftPlan";
 import {AddShiftPlan} from "../models/dto/AddShiftPlan";
-import {GetEmployee} from "../models/dto/GetEmployee";
 
 @Injectable({
   providedIn: 'root'

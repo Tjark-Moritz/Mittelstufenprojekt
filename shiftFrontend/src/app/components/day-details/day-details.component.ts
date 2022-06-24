@@ -25,7 +25,6 @@ export class DayDetailsComponent implements OnInit {
 
     this.selection = new SelectionModel<GetEmployee>(true, []);
 
-
     let allEmployees: GetEmployee[] = [];
     for(let shift of this.shifts) {
       if (shift.activeEmployees) {
@@ -74,5 +73,30 @@ export class DayDetailsComponent implements OnInit {
         }
       }
     }
+  }
+
+  checkForAbsence(shifts: GetShift[]): GetEmployee[] {
+    let absentEmployees: GetEmployee[] = [];
+
+    for(let shift of shifts) {
+
+      if(shift.activeEmployees) {
+        for(let employee of shift.activeEmployees) {
+
+          if(employee.holidays) {
+            for(let holiday of employee.holidays) {
+
+              if(holiday.startDate && holiday.endDate) {
+                if(this.date >= holiday.startDate && this.date <= holiday.endDate) {
+
+                  absentEmployees.push(employee);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  return absentEmployees;
   }
 }
