@@ -48,6 +48,14 @@ export class EmployeeService {
     }).toPromise();
   }
 
+  updateEmployeePasswordById(updatedPassword: UpdatedPassword, employeeId: number){
+    this.httpClient.post(this.urlPre + `/${employeeId}/password`, updatedPassword,{
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
+    }).toPromise();
+  }
+
   addEmployee(employee: AddEmployee){
     this.httpClient.post(this.urlPre, employee,{
       headers: new HttpHeaders()
@@ -65,8 +73,8 @@ export class EmployeeService {
 
   }
 
-  updateEmployee(employeeMap: Map<string, string>, employeeId: number){
-    this.httpClient.patch(this.urlPre + `/${employeeId}`, employeeMap,{
+  updateEmployee(employeeChanges: {[key: string]: object}, employeeId: number){
+    this.httpClient.patch(this.urlPre + `/${employeeId}`, employeeChanges,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
