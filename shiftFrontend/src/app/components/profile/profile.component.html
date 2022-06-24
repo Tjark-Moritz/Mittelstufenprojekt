@@ -20,6 +20,10 @@
           <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.id!" readonly/>
         </div>
         <div class="cDetailsFlex">
+          <label class="cDetailsFlex-item cDetailsLabel">Username: </label>
+          <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.username" readonly/>
+        </div>
+        <div class="cDetailsFlex">
           <label class="cDetailsFlex-item cDetailsLabel">Nachname: </label>
           <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.lastName" [readonly]="!adminView" required/>
         </div>
@@ -44,6 +48,8 @@
           <label class="cDetailsFlex-item cDetailsLabel">Telefon: </label>
           <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.phone" [readonly]="!adminView" required/>
         </div>
+
+        <button (click)="this.onClick_DeleteEmployee()" class="cDeleteEmployeeBtn" [hidden]="!(this.adminView)">Mitarbeiter Löschen</button>
       </div>
     </section>
   </div>
