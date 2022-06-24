@@ -7,11 +7,6 @@
       <button type="button" (click)="nextMonth()">></button>
       <button type="button" (click)="updateWeekStructure(); display = 'week'">Zur Wochenansicht</button>
 
-     <!--<div class="legend-div" *ngFor="let type of getShiftTypes(this.chosenShiftPlan)">
-        <div  class="colored-square" [style.background-color]="type.shiftTypeColor"></div>
-        <p *ngIf="type.shiftStartTime && type.endShiftTime">{{type.typeName}} ({{type.shiftStartTime.getHours()}} - {{type.endShiftTime.getHours()}} Uhr)</p>
-      </div>-->
-
       <div class="legend-div">
         <table class="legend-table">
           <tr class="legend-row" *ngFor="let type of getShiftTypes(this.chosenShiftPlan)">
