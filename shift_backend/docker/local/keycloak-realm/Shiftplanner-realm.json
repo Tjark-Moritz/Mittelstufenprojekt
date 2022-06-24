@@ -340,7 +340,7 @@
     }
   },
   "groups" : [ ],
-  "defaultRoles" : [ "offline_access", "uma_authorization" ],
+  "defaultRoles" : [ "offline_access", "uma_authorization", "shiftuser" ],
   "requiredCredentials" : [ "password" ],
   "otpPolicyType" : "totp",
   "otpPolicyAlgorithm" : "HmacSHA1",
@@ -388,7 +388,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "offline_access", "uma_authorization" ],
+    "realmRoles" : [ "offline_access", "uma_authorization", "shiftadmin" ],
     "clientRoles" : {
       "account" : [ "manage-account", "view-profile" ]
     },

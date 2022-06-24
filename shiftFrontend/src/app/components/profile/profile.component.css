@@ -47,6 +47,12 @@
   gap: 5px;
 }
 
+.cDeleteEmployeeBtn {
+  background-color: red;
+  color: white;
+  margin-right: 0;
+}
+
 
 input:read-only {
   background-color: #d1d1d1;
@@ -122,3 +128,13 @@ input:invalid {
   flex-basis: auto;
 }
 
+.cPreferenceCombobox {
+  width: 500px;
+}
+
+.cSaveAllChanges {
+  position: absolute;
+  left: 50%;
+  width: 200px;
+  margin: 10px 0 0 -100px;
+}
