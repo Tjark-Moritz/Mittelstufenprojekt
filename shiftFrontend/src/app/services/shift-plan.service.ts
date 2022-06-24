@@ -20,7 +20,7 @@ export class ShiftPlanService {
     return this.httpClient.get<GetShiftPlan>(this.urlPre + `/${shiftPlanId}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     });
   }
 
@@ -28,7 +28,7 @@ export class ShiftPlanService {
     return this.httpClient.get<GetShiftPlan[]>(this.urlPre + `/department/${deptId}`, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     });
   }
 
@@ -36,7 +36,7 @@ export class ShiftPlanService {
     this.httpClient.post(this.urlPre, shiftPlan,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
 
     console.log("added Shiftplan");
@@ -46,7 +46,7 @@ export class ShiftPlanService {
     this.httpClient.delete(this.urlPre + `/${shiftPlanId}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
 
     console.log("deleted Employee");

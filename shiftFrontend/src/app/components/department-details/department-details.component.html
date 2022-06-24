@@ -10,6 +10,15 @@
       <a role="button" class="btn baseBtn deleteBtn" (click)="delete()">Delete</a>
     </div>
   </div>
+  <div class="row" *ngIf="isOld && isAdmin">
+    <div class="col-2">
+    </div>
+    <div class="col-8">
+      <a role="button" class="btn shiftPlanBtn" (click)="createShiftPlan()">Schichtplan erstellen</a>
+    </div>
+    <div class="col-2">
+    </div>
+  </div>
   <div class="row" *ngIf="!isOld && isAdmin">
     <div class="col-4">
       <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
