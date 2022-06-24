@@ -6,6 +6,7 @@ import {UserRoleEnum} from "../../models/UserRoleEnum";
 import {LoginService} from "../../services/login.service";
 import { MatTableDataSource } from '@angular/material/table';
 import {HolidayService} from "../../services/holiday.service";
+import {GetDepartment} from "../../models/dto/GetDepartment";
 
 
 @Component({
@@ -17,6 +18,7 @@ import {HolidayService} from "../../services/holiday.service";
 export class HolidayPlanerComponent implements OnInit
 {
 
+  tempHiolidayId: number = 0;
 
   display: string = "shiftuser";
   statusDisplay: string ="normal";
@@ -26,6 +28,7 @@ export class HolidayPlanerComponent implements OnInit
 
   dataSource = new MatTableDataSource<AddHoliday[]>();
   allHolidays: AddHoliday[] = [];
+  activehol: GetHoliday = new GetHoliday();
 
   displayedColumns = ['vocationStart', 'vocationEnd', 'days', 'statuss'];
 
@@ -48,7 +51,6 @@ export class HolidayPlanerComponent implements OnInit
         this.switchUser();
       }
     }
-
 
     //todo delete
     let hollidayArray: AddHoliday[] = [];
@@ -116,19 +118,40 @@ export class HolidayPlanerComponent implements OnInit
     this.refresh();
   }
 
-  //todo check senden des Statuses
   holidayaccepted(holidayElem : AddHoliday)
   {
-    let holidaysGet: GetHoliday;
-    console.info(holidayElem.id)
 
+    let changes: boolean = false;
+    let depChanges: {[key: string]: string} = {}
+
+    let holidaysGet: GetHoliday;
+
+    let depStatus: string = (document.getElementById("StatusNew") as HTMLInputElement).value;
+    if(this.activehol.holidayStatus != depStatus){
+      changes = true;
+      depChanges["true"] = depStatus;
+    }
+
+    this.holidayService.updateHoliday(depChanges,holidayElem.id);
 
     this.statusDisplay = "ACCEPTED";
   }
 
-  //todo check senden des Statuses
-  holidaycanceled()
+  holidaycanceled(holidayElem : AddHoliday)
   {
+    let changes: boolean = false;
+    let depChanges: {[key: string]: string} = {}
+
+    let holidaysGet: GetHoliday;
+
+    let depStatus: string = (document.getElementById("StatusNew") as HTMLInputElement).value;
+    if(this.activehol.holidayStatus != depStatus){
+      changes = true;
+      depChanges["false"] = depStatus;
+    }
+
+    this.holidayService.updateHoliday(depChanges,holidayElem.id);
+
     this.statusDisplay = "DENIED";
   }
 
@@ -141,7 +164,6 @@ export class HolidayPlanerComponent implements OnInit
         this.allHolidays = res;
         this.restDays = this.loginService.LoggedInUser.numHolidaysLeft;
       }
-      console.log(res);
     });
   }
 }

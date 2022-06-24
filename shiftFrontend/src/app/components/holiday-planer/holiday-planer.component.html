@@ -6,7 +6,7 @@
 
       <!-- startdate picker -->
       <div class="datePickerSpace">
-        <input class="circle" type="text" id="abbNameInputExists" name="abbNameInput" value="{{'Resturlaub: ' + this.restDays + '/40'}}" disabled>
+        <input class="circle" type="text" name="abbNameInput" value="{{'Resturlaub: ' + this.restDays + '/40'}}" disabled>
 
           <input matInput (dateChange)="closeStartPicker($event, startpicker)" [matDatepicker]="startpicker" placeholder="Start Datum">
           <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
@@ -29,7 +29,7 @@
         </ng-container>
 
         &lt;!&ndash; Vocation End Column &ndash;&gt;-->
-        <ng-container matColumnDef="vocationEnd"><th mat-header-cell *matHeaderCellDef> Vocation End </th>
+        <ng-container matColumnDef="vocationEnd"><th mat-header-cell *matHeaderCellDef> Vocation End </th>s
           <td mat-cell *matCellDef="let element"> {{element.endDate.toDateString()}} </td>
         </ng-container>
 
@@ -57,8 +57,7 @@
     <h1>admin</h1>
     <div class="datePickerSpace">
 
-      <!-- <mat-label [value]="someValueExpression">Resturlaub: {{value}}/30</mat-label> -->
-      <mat-label >Resturlaub:  </mat-label>
+      <input class="circle" type="text" name="abbNameInput" value="{{'Resturlaub: ' + this.restDays + '/40'}}" disabled>
       <mat-label >  </mat-label>
       <!-- startdate picker -->
       <mat-label ></mat-label>
@@ -102,7 +101,7 @@
               <th mat-header-cell *matHeaderCellDef> Status </th>
               <mat-cell *matCellDef="let element" >
                 <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted(element)">✔</button></div>
-                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; holidaycanceled()">❌</button></div>
+                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; holidaycanceled(element)">❌</button></div>
               </mat-cell>
             </ng-container>
           </div>
@@ -112,7 +111,7 @@
               <th mat-header-cell *matHeaderCellDef > Status </th>
               <mat-cell *matCellDef="let element" bgcolor=#00FF00 >
                 <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted(element);">✔</button></div>
-                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; holidaycanceled()">❌</button></div>
+                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; holidaycanceled(element)">❌</button></div>
               </mat-cell>
             </ng-container>
           </div>
@@ -122,7 +121,7 @@
               <th mat-header-cell *matCellDef="let element" Status ></th>
               <mat-cell *matCellDef="let element" >
                 <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted(element)">✔</button></div>
-                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; holidaycanceled()">❌</button></div>
+                <div class="falseButton" ><button mat-raised-button (click)="element.status = false; holidaycanceled(element)">❌</button></div>
               </mat-cell>
             </ng-container>
           </div>

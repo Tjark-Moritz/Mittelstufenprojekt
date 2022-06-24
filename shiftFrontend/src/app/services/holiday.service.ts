@@ -42,4 +42,12 @@ export class HolidayService {
     }).toPromise();
     console.log("deleted Holiday");
   }
+
+  updateHoliday(depChanges: {[key: string]: string}, holidayId: number | undefined){
+    this.httpClient.patch(this.urlPre + `/${holidayId}`,depChanges,{
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
+    }).toPromise();
+  }
 }
