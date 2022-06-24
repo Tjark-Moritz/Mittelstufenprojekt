@@ -1,14 +1,23 @@
-<button mat-raised-button (click)="openDialog">testdialog</button>
-
 
 <div class="datePickerSpace">
-  <!-- startdate picker -->
+    <!-- input Field -->
+  <form (submit)="chosenPorson(person.value)">
+    <input #person placeholder="person name">
+  </form>
+
+  <!-- startdate von dem Tag wo ich meinen (als eingelogten user) tauschen will -->
   <mat-label > </mat-label>
-  <input matInput (dateChange)="closePicker($event, startpicker)" [matDatepicker]="startpicker" placeholder="">
+  <input matInput (dateChange)="loggedinUserDate($event, startpicker)" [matDatepicker]="startpicker" placeholder="Meine Schicht">
   <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
   <mat-datepicker #startpicker></mat-datepicker>
 
-  <button mat-raised-button (click)="sendRequest">Senden</button>
+  <!-- startdate vom dem User wo ich sie von haben wil picker -->
+  <mat-label > </mat-label>
+  <input matInput (dateChange)="closePicker($event, startpicker)" [matDatepicker]="startpicker" placeholder="Tauschen mit">
+  <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
+  <mat-datepicker #startpicker></mat-datepicker>
+
+  <button mat-raised-button (click)="sendRequest()">Senden</button>
 </div>
 
 

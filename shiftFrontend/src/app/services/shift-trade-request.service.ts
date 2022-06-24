@@ -55,6 +55,5 @@ export class ShiftTradeRequestService {
     }).toPromise();
     console.log("added Shift Trade Request Status");
   }
-
 }
 
