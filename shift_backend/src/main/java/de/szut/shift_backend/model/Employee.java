@@ -47,7 +47,7 @@ public class Employee {
     private String email;
 
     @NotNull
-    private long numHolidaysLeft;
+    private Long numHolidaysLeft;
 
     @OneToMany
     @OnDelete(action = OnDeleteAction.CASCADE)
