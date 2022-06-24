@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {GetDepartment} from "../models/dto/GetDepartment";
 import {BearerTokenService} from "./bearer-token.service";
 import {AddDepartment} from "../models/dto/AddDepartment";
+import {GetShiftType} from "../models/dto/GetShiftType";
 
 @Injectable({
   providedIn: 'root'
@@ -127,5 +128,13 @@ export class DepartmentService {
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
     }).toPromise();
+  }
+
+  getShifttypesFromDepartment(departmentId: number){
+    return this.httpClient.get<GetShiftType[]>(this.urlPre + `/${departmentId}/shifttypes`,{
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
+    });
   }
 }

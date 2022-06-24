@@ -122,3 +122,13 @@ input:invalid {
   flex-basis: auto;
 }
 
+.cPreferenceCombobox {
+  width: 500px;
+}
+
+.cSaveAllChanges {
+  position: absolute;
+  left: 50%;
+  width: 200px;
+  margin: 10px 0 0 -100px;
+}

@@ -11,7 +11,7 @@ import {LoginService} from "../../services/login.service";
 export class NavbarComponent implements OnInit {
   classApplied: boolean = false;
   public notificationAvailable : boolean = false;
-  public static profilePictureBase64 : string = "";   // Todo: implement database profile getter
+  public static profilePictureBase64 : string = "";
 
   constructor(private domSanitizer: DomSanitizer, public loginService: LoginService) {
     this.domSanitizer.bypassSecurityTrustResourceUrl(NavbarComponent.profilePictureBase64)
