@@ -1,6 +1,6 @@
 <div *ngIf="selectedEmployee">
   <div class="cBaseMargin">
-    <h1>Profil</h1>
+    <h1>Profil von {{this.originalSelectedEmployee.lastName}}, {{this.originalSelectedEmployee.firstName}}</h1>
     <section class="cFirstLayout">
       <div class="cProfilePictureDiv">
         <a class="cSymbol">
@@ -10,7 +10,7 @@
 
         <div class="cProfilePictureButtonsDiv" [hidden]="!(adminView || loggedInUserView)">
           <input [hidden]="!loggedInUserView" type="file" (change)="onChange_OpenProfilePicture($event)" accept="image/*"/>
-          <button [hidden]="!(adminView || loggedInUserView)" (click)="this.selectedEmployee.base64ProfilePic = ''">Bild entfernen</button>
+          <button [hidden]="!(adminView || loggedInUserView) || (this.selectedEmployee.base64ProfilePic == null || this.selectedEmployee.base64ProfilePic == '')" (click)="this.selectedEmployee.base64ProfilePic = ''">Bild entfernen</button>
         </div>
       </div>
 
