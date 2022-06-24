@@ -1,4 +1,8 @@
 <ng-container [ngSwitch]="display">
+<body>
+<button mat-raised-button (click)="switchUserToAdmin()">switchUserToAdmin</button>
+<button mat-raised-button (click)="switchUser()">switchUser</button>
+
   <div *ngSwitchCase="'shiftuser'">
 
       <!-- startdate picker -->

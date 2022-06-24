@@ -7,6 +7,8 @@ import {AddDepartment} from "../../models/dto/AddDepartment";
 import {UserRoleEnum} from "../../models/UserRoleEnum";
 import {BearerTokenService} from "../../services/bearer-token.service";
 import {AddShiftType} from "../../models/dto/AddShiftType";
+import {ShiftPlanService} from "../../services/shift-plan.service";
+import {AddShiftPlan} from "../../models/dto/AddShiftPlan";
 
 @Component({
   selector: 'app-department-details',
@@ -23,7 +25,9 @@ export class DepartmentDetailsComponent implements OnInit {
   constructor(private departmentService: DepartmentService,
               private employeeService: EmployeeService,
               private dialogRef: MatDialogRef<DepartmentDetailsComponent>,
-              @Inject(MAT_DIALOG_DATA) private data: GetDepartment, private bearerTokenService: BearerTokenService) {
+              @Inject(MAT_DIALOG_DATA) private data: GetDepartment,
+              private bearerTokenService: BearerTokenService,
+              private shiftPlanService: ShiftPlanService) {
     this.isAdmin = false;
     this.isOld = false;
     this.shiftCount = 0;
@@ -59,6 +63,17 @@ export class DepartmentDetailsComponent implements OnInit {
 
   close() {
     this.dialogRef.close({ event: 'close', data: undefined });
+  }
+
+  createShiftPlan(){
+    let addShiftPlan: AddShiftPlan = new AddShiftPlan();
+    addShiftPlan.departmentId = this.activeDep.departmentId;
+    addShiftPlan.excludedWeekdays = [];
+    addShiftPlan.validMonth = new Date(Date.now());
+    let year: number = addShiftPlan.validMonth.getFullYear();
+    let month: number = addShiftPlan.validMonth.getMonth();
+    addShiftPlan.validMonth.setFullYear(year, month, 1);
+    this.shiftPlanService.addShiftplan(addShiftPlan);
   }
 
   async save() {

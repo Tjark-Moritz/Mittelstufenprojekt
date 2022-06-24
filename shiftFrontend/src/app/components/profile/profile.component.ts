@@ -105,10 +105,6 @@ export class ProfileComponent implements OnInit {
       this._LoggedInUserView = (this.selectedEmployee?.username == this.loginService.LoggedInUser.username);
     }
     this._AdminView = (this.bearerTokenService.getUserRole == UserRoleEnum.Admin);
-
-    // Todo: remove console
-    console.info("LoggedInUser: " + this._LoggedInUserView);
-    console.info("Admin: " + this._AdminView);
   }
 
   public isProfilePictureSet(): boolean{
@@ -283,6 +279,34 @@ export class ProfileComponent implements OnInit {
       } else if (boxResult.isDenied) {
       }
     });
+  }
+
+  public onClick_MakeAdmin() {
+    let title: string = "Mitarbeiter '" + this.originalSelectedEmployee.username + "' (ID: " + this.originalSelectedEmployee.id + ") zum Abteilungsleiter ernennen?";
+    swal.default.fire({
+      title: title,
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: 'Ja',
+      denyButtonText: 'Nein',
+      customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-1',
+        denyButton: 'order-2',
+      }
+    }).then((boxResult) => {
+      if (boxResult.isConfirmed) {
+        this.makeAdmin();
+      } else if (boxResult.isDenied) {
+      }
+    });
+  }
+
+  private makeAdmin(){
+    if(this.originalSelectedEmployee && this.originalSelectedEmployee.id){
+      this.empService.changeEmployeeRole("SHIFTADMIN", this.originalSelectedEmployee.id);
+      this.openSavedMessageBox();
+    }
   }
 
   private deleteEmployee(){

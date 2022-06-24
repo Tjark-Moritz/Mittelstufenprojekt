@@ -1,3 +1,4 @@
+<body>
 <div *ngIf="selectedEmployee">
   <div class="cBaseMargin">
     <h1>Profil von {{this.originalSelectedEmployee.lastName}}, {{this.originalSelectedEmployee.firstName}}</h1>
@@ -50,6 +51,7 @@
         </div>
 
         <button (click)="this.onClick_DeleteEmployee()" class="cDeleteEmployeeBtn" [hidden]="!(this.adminView)">Mitarbeiter Löschen</button>
+        <button (click)="this.onClick_MakeAdmin()" class="" [hidden]="!(this.adminView)">Abteilungsleiter ernennen</button>
       </div>
     </section>
   </div>
@@ -101,3 +103,4 @@
 <div *ngIf="!selectedEmployee">
   <h1>Profilseite von dem Benutzer konnte nicht gefunden werden!</h1>
 </div>
+</body>

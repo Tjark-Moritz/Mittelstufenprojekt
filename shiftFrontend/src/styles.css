@@ -21,3 +21,18 @@
 .cPointer {
   cursor: pointer;
 }
+
+button {
+  padding: 0px 10px;
+  border-radius: 39px;
+  background: linear-gradient(145deg, #f0f0f0, #cacaca);
+}
+
+button:hover {
+  background: linear-gradient(145deg, #cacaca, #f0f0f0);
+}
+
+body {
+  background: linear-gradient(-45deg, #85fff9, #ffffff);
+
+}

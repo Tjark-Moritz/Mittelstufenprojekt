@@ -81,6 +81,14 @@ export class EmployeeService {
     }).toPromise();
   }
 
+  changeEmployeeRole(role: string, employeeId: number){
+    this.httpClient.patch(this.urlPre + `/${employeeId}/role`, role,{
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
+    }).toPromise();
+  }
+
   async getEmployeeIdByFirstAndLastName(firstName: string, lastName: string): Promise<number>{
     let emp: GetEmployee | undefined;
     let empArray = await this.getAllEmployees().toPromise();

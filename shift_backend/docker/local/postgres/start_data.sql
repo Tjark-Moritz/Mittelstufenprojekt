@@ -838,7 +838,7 @@ COPY public.shift_trade_request (id, new_shift_id, old_shift_id, replying_employ
 COPY public.shift_type (id, shift_end_time, shift_start_time, shift_type_color, target_num_of_emps, type_name, shift_type_id) FROM stdin;
 1	12:00:00	06:00:00	#03BEFC	2	Frühschicht	1
 2	18:00:00	12:00:00	#07FC03	2	Spätschicht	1
-3	23:00:00	18:00:00	#C03F4	2	Nachtschicht	1
+3	23:00:00	18:00:00	#FFAB00	2	Nachtschicht	1
 \.
 
 
