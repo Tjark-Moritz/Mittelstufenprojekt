@@ -111,7 +111,6 @@ public class KeycloakInteractionService {
         body.put("lastName",emp.getLastName());
         body.put("email", emp.getEmail());
         body.put("enabled",true);
-        body.put("realmRoles",  mapper.createArrayNode().add("shiftuser"));
 
         HttpEntity request = new HttpEntity(body.toPrettyString(),header);
 
