@@ -18,6 +18,11 @@ import java.util.List;
 @Entity
 public class Employee {
 
+    public enum EMPLOYEE_ROLE {
+        SHIFTADMIN,
+        SHIFTUSER
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
