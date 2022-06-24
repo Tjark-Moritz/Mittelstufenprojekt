@@ -69,9 +69,12 @@ export class LoginService {
     }
   }
 
-  public updateLoggedInUser(){
-    this.setLoggedInUser();
-    console.log("Set L User")
+  public updateLoggedInUser(emp: GetEmployee){
+    this._LoggedInUser = emp;
+
+    if (this._LoggedInUser && this._LoggedInUser.base64ProfilePic != null) {
+      NavbarComponent.profilePictureBase64 = this._LoggedInUser.base64ProfilePic;
+    }
   }
 
   private setLoggedInUser(){
@@ -84,11 +87,7 @@ export class LoginService {
     // @ts-ignore
     let username: string = jwtDecode(this.bearerTokenService.bearerToken.access_token).preferred_username;
     this.employeeService.getEmployeeByUsername(username).subscribe(x => {
-      this._LoggedInUser = x;
-
-      if (this._LoggedInUser && this._LoggedInUser.base64ProfilePic != null) {
-        NavbarComponent.profilePictureBase64 = this._LoggedInUser.base64ProfilePic;
-      }
+      this.updateLoggedInUser(x);
     }, () => {
       console.error("Logged in user could not be found!");
     });

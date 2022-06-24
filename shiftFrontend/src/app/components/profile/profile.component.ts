@@ -276,10 +276,9 @@ export class ProfileComponent implements OnInit {
         }
 
 //        this.originalSelectedEmployee = JSON.parse(JSON.stringify(this.selectedEmployee));
-
         if(this.loggedInUserView){
-          this.loginService.updateLoggedInUser();
-          this.originalSelectedEmployee = JSON.parse(JSON.stringify(this.selectedEmployee));
+          this.loginService.updateLoggedInUser(JSON.parse(JSON.stringify(this.selectedEmployee)));
+          this.originalSelectedEmployee = this.loginService.LoggedInUser;
         }
         else {
           this.loadProfile(this.originalSelectedEmployee.id);
