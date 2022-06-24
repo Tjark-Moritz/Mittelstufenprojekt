@@ -93,7 +93,6 @@ export class DepartmentDetailsComponent implements OnInit {
       addDepObj.shiftTypes = [];
 
       for (let i = 0; i < this.shiftCount; i++) {
-        console.log(this.shiftCount);
         let shiftStart: string = (document.getElementById("shiftStartNew" + i) as HTMLInputElement).value;
         let shiftEnd: string = (document.getElementById("shiftEndNew" + i) as HTMLInputElement).value;
         let empCount: number = +(document.getElementById("shiftEmpNumNew" + i) as HTMLInputElement).value;
@@ -119,8 +118,6 @@ export class DepartmentDetailsComponent implements OnInit {
           addDepObj.shiftTypes.push(shift);
         }
       }
-
-      console.log(addDepObj);
 
       if(!anyError){
         this.departmentService.addDepartment(addDepObj);

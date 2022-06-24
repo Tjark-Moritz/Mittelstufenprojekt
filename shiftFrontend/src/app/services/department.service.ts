@@ -64,9 +64,6 @@ export class DepartmentService {
     }
     let sges = "{" + s1 + s1_1 + s2 + "}";
 
-    console.log(sges);
-    //return;
-
     this.httpClient.post(this.urlPre, sges,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
