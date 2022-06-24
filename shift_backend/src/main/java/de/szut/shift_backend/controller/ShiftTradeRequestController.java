@@ -104,4 +104,18 @@ public class ShiftTradeRequestController {
 
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
+
+    @Operation(summary = "delete shift trade request with given id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "deleted holiday successfully"),
+            @ApiResponse(responseCode = "400", description = "delete holiday failed", content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized", content = @Content),
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteById(@Valid @PathVariable("id") final long id) {
+
+        this.shiftTradeRequestService.delete(id);
+
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
 }

@@ -22,6 +22,10 @@ public class ShiftTradeRequestService {
         return shiftTradeRequestRepository.save(request);
     }
 
+    public void delete(Long sTradeRequest){
+        this.shiftTradeRequestRepository.deleteById(sTradeRequest);
+    }
+
     public ShiftTradeRequest getShiftTradeRequestByRequestId(Long requestId){
         Optional<ShiftTradeRequest> request = shiftTradeRequestRepository.findById(requestId);
 
