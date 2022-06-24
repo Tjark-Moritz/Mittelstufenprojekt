@@ -109,7 +109,7 @@ export class ProfileComponent implements OnInit {
     this._AdminView = (this.bearerTokenService.getUserRole == UserRoleEnum.Admin);
 
     //Todo remove cutom setter
-    this._LoggedInUserView = true;
+    this._LoggedInUserView = false;
     this._AdminView = true;
   }
 
@@ -131,6 +131,7 @@ export class ProfileComponent implements OnInit {
   public onClick_SaveAllChanges() {
     swal.default.fire({
       title: 'Änderungen wirklich speichern?',
+      icon: "question",
       showDenyButton: true,
       confirmButtonText: 'Ja',
       denyButtonText: 'Nein',
@@ -263,6 +264,41 @@ export class ProfileComponent implements OnInit {
     }
 
     this.newPassword = rdmText;
+  }
+
+  public onClick_DeleteEmployee(){
+    let title: string = "Mitarbeiter '" + this.originalSelectedEmployee.username + "' (ID: " + this.originalSelectedEmployee.id + ") wirklich löschen?";
+    swal.default.fire({
+      title: title,
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: 'Ja',
+      denyButtonText: 'Nein',
+      customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-1',
+        denyButton: 'order-2',
+      }
+    }).then((boxResult) => {
+      if (boxResult.isConfirmed) {
+        this.deleteEmployee();
+      } else if (boxResult.isDenied) {
+      }
+    });
+  }
+
+  private deleteEmployee(){
+    if(this.originalSelectedEmployee && this.originalSelectedEmployee.id) {
+      this.empService.deleteEmployee(this.originalSelectedEmployee.id);
+      this.openSavedMessageBox();
+
+      if(this.originalSelectedEmployee.id == this.loginService.LoggedInUser.id){
+        this.loginService.Logout();
+      }
+    }
+    else {
+      this.openFailedMessageBox("Mitarbeiter konnte nicht gefunden werden!");
+    }
   }
 
   private sendEmployeeChangesToDb(changes: {[key: string]: object}): boolean{
