@@ -12,7 +12,7 @@ import {GetEmployee} from "../models/dto/GetEmployee";
 export class ShiftPlanService {
   private urlPre = "/shiftplan"
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private bearerTokenService: BearerTokenService) {
 
   }
 
@@ -20,7 +20,7 @@ export class ShiftPlanService {
     return this.httpClient.get<GetShiftPlan>(this.urlPre + `/${shiftPlanId}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken}`)
     });
   }
 
@@ -28,7 +28,7 @@ export class ShiftPlanService {
     return this.httpClient.get<GetShiftPlan[]>(this.urlPre + `/department/${deptId}`, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken}`)
     });
   }
 
@@ -36,7 +36,7 @@ export class ShiftPlanService {
     this.httpClient.post(this.urlPre, shiftPlan,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken}`)
     }).toPromise();
 
     console.log("added Shiftplan");
@@ -46,7 +46,7 @@ export class ShiftPlanService {
     this.httpClient.delete(this.urlPre + `/${shiftPlanId}`,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${BearerTokenService.bearerToken.access_token}`)
+        .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken}`)
     }).toPromise();
 
     console.log("deleted Employee");
