@@ -5,6 +5,7 @@ export class GetMessage {
               public sendingEmployeeId?: number,
               public dateTime?: Date,
               public type?: number,
+              public content?: string,
               public status?: string) {
   }
 }
