@@ -9,6 +9,7 @@ import {DayDetailsComponent} from "../day-details/day-details.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ShiftPlanService} from "../../services/shift-plan.service";
 import {GetShiftPlan} from "../../models/dto/GetShiftPlan";
+import {LoginService} from "../../services/login.service";
 
 @Component({
   selector: 'app-shift-plan',
@@ -31,83 +32,23 @@ export class ShiftPlanComponent implements OnInit {
 
   currentUser: GetEmployee = new GetEmployee();
 
-  constructor(private employeeService: EmployeeService, private shiftplanService: ShiftPlanService, private dialog: MatDialog) {
-    let shift1Start = new Date();
-    shift1Start.setHours(6, 0, 0);
-    let shift1End = new Date();
-    shift1End.setHours(14, 0, 0);
-    let shift2End = new Date();
-    shift2End.setHours(22, 0, 0);
+  empList: GetEmployee[] = [];
+  shiftPlanList: GetShiftPlan[] = [];
 
-    let shiftType1: GetShiftType = new GetShiftType(1, shift1Start, shift1End, 1, "Frühschicht", "#B5FFE1");
-    let shiftType2: GetShiftType = new GetShiftType(2, shift1End, shift2End, 1, "Spätschicht", "#E5FFB5");
-
-    let empList: GetEmployee[] = [];
-    let shiftPlanList: GetShiftPlan[] = [];
-    let deptId: number = 0;
-
-    let emp1: GetEmployee = new GetEmployee();
-    emp1.id = 1;
-    emp1.firstName = "Jarno";
-    emp1.lastName = "Nitsch";
-    emp1.city = "OHZ";
-    emp1.email = "Jarno@123.de";
-
-    let emp2: GetEmployee = new GetEmployee();
-    emp2.id = 2;
-    emp2.firstName = "Michael";
-    emp2.lastName = "Jackson";
-    emp2.city = "NYCITY";
-    emp2.email = "michael@jackson.de";
-
-    empList.push(emp1);
-    empList.push(emp2);
-
-    this.employeeService.getAllEmployees().subscribe(val => empList = val)
-    this.shiftplanService.getShiftplansByDeptId(deptId).subscribe(val => shiftPlanList = val)
-
-    shiftPlanList.filter(shiftPlan => shiftPlan.validMonth?.toDateString() == this.chosenDate.toDateString())
-
-    let shift1List: GetEmployee[] = [];
-    let shift2List: GetEmployee[] = [];
-
-    if(empList) {
-      shift1List.push(empList[0]);
-      shift1List.push(empList[1]);
-      shift2List.push(empList[1]);
-    }
-
-    let shift1Date = new Date()
-    shift1Date.setFullYear(2022, 3, 1)
-    let shift2Date = new Date()
-    shift2Date.setFullYear(2022, 3, 2)
-
-    let shift1: GetShift = new GetShift(1, shift1Date, shiftType1, shift1List);
-    let shift2: GetShift = new GetShift(2, shift2Date, shiftType2, shift2List);
-    let shift3: GetShift = new GetShift(2, shift2Date, shiftType1, shift1List);
-
-    let shifts: GetShift[] = [];
-    shifts.push(shift1)
-    shifts.push(shift2)
-    shifts.push(shift3)
-
-    let validMonthYear = new Date()
-    validMonthYear.setFullYear(2022, 3)
-
-    let shiftTypes: GetShiftType[] = [];
-    shiftTypes.push(shiftType1)
-    shiftTypes.push(shiftType2)
-
-    this.chosenShiftPlan = new ShiftPlan(1, shifts, validMonthYear, shiftTypes)
-
-    if(empList) {
-      this.currentUser = empList[1];
+  constructor(private shiftplanService: ShiftPlanService, private employeeService: EmployeeService, private loginService: LoginService, private dialog: MatDialog) {
+    if(this.loginService.LoggedInUser) {
+      if(this.loginService.LoggedInUser.departmentId) {
+        this.employeeService.getAllEmployees().subscribe(val => this.empList = val)
+        this.shiftplanService.getShiftplansByDeptId(this.loginService.LoggedInUser.departmentId).subscribe(val => this.shiftPlanList = val)
+      }
     }
   }
 
   ngOnInit(): void {
     this.calculateMonthStructure();
     this.calculateWeekStructure();
+
+    console.log(this.shiftPlanList)
   }
 
 
