@@ -16,14 +16,26 @@ import {interval, Subscription} from "rxjs";
 export class LoginService {
   private _LoggedInUser: GetEmployee | undefined;
   public get LoggedInUser(): GetEmployee {
-    if(!this._LoggedInUser)
+    if(!this._LoggedInUser) {
       this.setLoggedInUser();
+    }
 
     if(this._LoggedInUser)
       return this._LoggedInUser;
     else
       return new GetEmployee();
   }
+
+  private waitForLoggedInUser(): GetEmployee {
+    if(this._LoggedInUser == undefined) {
+      console.log("1");
+      setTimeout(this.waitForLoggedInUser, 250);
+    }
+
+    console.log(this._LoggedInUser)
+    return this._LoggedInUser!;
+  }
+
 
   constructor(private bearerTokenService: BearerTokenService, private employeeService: EmployeeService, private router: Router) {
 

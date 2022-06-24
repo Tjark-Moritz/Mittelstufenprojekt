@@ -285,6 +285,34 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  public onClick_MakeAdmin() {
+    let title: string = "Mitarbeiter '" + this.originalSelectedEmployee.username + "' (ID: " + this.originalSelectedEmployee.id + ") zum Abteilungsleiter ernennen?";
+    swal.default.fire({
+      title: title,
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: 'Ja',
+      denyButtonText: 'Nein',
+      customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-1',
+        denyButton: 'order-2',
+      }
+    }).then((boxResult) => {
+      if (boxResult.isConfirmed) {
+        this.makeAdmin();
+      } else if (boxResult.isDenied) {
+      }
+    });
+  }
+
+  private makeAdmin(){
+    if(this.originalSelectedEmployee && this.originalSelectedEmployee.id){
+      this.empService.changeEmployeeRole("SHIFTADMIN", this.originalSelectedEmployee.id);
+      this.openSavedMessageBox();
+    }
+  }
+
   private deleteEmployee(){
     if(this.originalSelectedEmployee && this.originalSelectedEmployee.id) {
       this.empService.deleteEmployee(this.originalSelectedEmployee.id);
