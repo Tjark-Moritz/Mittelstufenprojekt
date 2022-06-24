@@ -413,7 +413,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "shiftuser", "shiftadmin" ],
+    "realmRoles" : [ "shiftadmin" ],
     "clientRoles" : {
       "account" : [ "manage-account", "view-profile" ]
     },
@@ -438,7 +438,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "offline_access", "uma_authorization" ],
+    "realmRoles" : [ "offline_access", "uma_authorization", "shiftuser"  ],
     "clientRoles" : {
       "account" : [ "manage-account", "view-profile" ]
     },
@@ -488,7 +488,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "offline_access", "uma_authorization" ],
+    "realmRoles" : [ "offline_access", "uma_authorization", "shiftuser"  ],
     "clientRoles" : {
       "account" : [ "manage-account", "view-profile" ]
     },
@@ -513,7 +513,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "offline_access", "uma_authorization" ],
+    "realmRoles" : [ "offline_access", "uma_authorization", "shiftuser" ],
     "clientRoles" : {
       "account" : [ "manage-account", "view-profile" ]
     },
@@ -538,7 +538,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "offline_access", "uma_authorization" ],
+    "realmRoles" : [ "offline_access", "uma_authorization", "shiftuser"  ],
     "clientRoles" : {
       "account" : [ "manage-account", "view-profile" ]
     },
@@ -563,7 +563,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "offline_access", "uma_authorization" ],
+    "realmRoles" : [ "offline_access", "uma_authorization", "shiftuser"  ],
     "clientRoles" : {
       "account" : [ "manage-account", "view-profile" ]
     },
@@ -588,7 +588,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "offline_access", "uma_authorization" ],
+    "realmRoles" : [ "offline_access", "uma_authorization", "shiftuser"  ],
     "clientRoles" : {
       "account" : [ "manage-account", "view-profile" ]
     },
@@ -656,7 +656,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "offline_access", "uma_authorization" ],
+    "realmRoles" : [ "offline_access", "uma_authorization", "shiftuser" ],
     "clientRoles" : {
       "account" : [ "manage-account", "view-profile" ]
     },
