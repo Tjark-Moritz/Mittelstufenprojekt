@@ -26,8 +26,8 @@ export class HolidayPlanerComponent implements OnInit
   chossenStartDate: Date = new Date();
   chossenEndDate: Date = new Date();
 
-  dataSource = new MatTableDataSource<GetHoliday[]>();
-  allHolidays: GetHoliday[] = [];
+  dataSource = new MatTableDataSource<AddHoliday[]>();
+  allHolidays: AddHoliday[] = [];
   activehol: GetHoliday = new GetHoliday();
 
   displayedColumns = ['vocationStart', 'vocationEnd', 'days', 'statuss'];
@@ -140,8 +140,10 @@ export class HolidayPlanerComponent implements OnInit
     });
   }
 
-  calculateDate()
+  calculateDate(element: GetHoliday)
   {
+    const msInDay = 24 * 60 * 60 * 1000;
 
+    return Math.round(Math.abs(Number(element.endDate) - Number(element.startDate)) / msInDay);
   }
 }
