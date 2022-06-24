@@ -48,8 +48,8 @@
 }
 
 .cDeleteEmployeeBtn {
-  background-color: red;
-  color: white;
+  background-color: red !important;
+  color: black;
   margin-right: 0;
 }
 
