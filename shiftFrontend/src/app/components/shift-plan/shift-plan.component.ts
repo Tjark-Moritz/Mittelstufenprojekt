@@ -188,8 +188,11 @@ export class ShiftPlanComponent implements OnInit {
 
     let shiftPlans: GetShiftPlan[] = this.shiftPlanList;
     if(shiftPlans.length > 0) {
-      if(shiftPlans[0].shifts) {
-        let shifts: GetShift[] = shiftPlans[0].shifts;
+      shiftPlans.forEach((value, index) => {
+        if(!value.shifts)
+          return;
+
+        let shifts: GetShift[] = value.shifts!;
         let allShiftsAtdate: GetShift[] = shifts.filter(x => {
           let xDate: Date = new Date(x.shiftDate!);
           return xDate.toDateString() == date.toDateString()
@@ -208,37 +211,14 @@ export class ShiftPlanComponent implements OnInit {
           shiftColor = userShiftAtDate.shiftType?.shiftTypeColor;
           console.log(shiftColor)
         }
+
+      })
+      if(shiftPlans[0].shifts) {
+
       }
     }
 
     return shiftColor;
-
-/*
-    if(!this.shiftPlanList.shift() || !this.shiftPlanList.shift().shifts || !shiftPlan.shiftType || !shiftPlan.validMonthYear) {
-      console.log(this.chosenShiftPlan)
-      console.log(shiftPlan)
-      return shiftColor;
-    }
-
-    if(this.currentDate.toDateString() == date.toDateString()) {
-      shiftColor = "#C8F6FF"    // Lightblue
-      return shiftColor
-    }
-
-    let tempShift = shiftPlan.shifts.find(shift => shift.shiftDate?.toDateString() == date.toDateString())
-    let tempShiftType: GetShiftType | undefined;
-    if(tempShift?.activeEmployees?.find(employee => employee.id == this.currentUser.id)) {
-      tempShiftType = shiftPlan.shiftType.find(type => type.id == tempShift?.id);
-      if(tempShiftType?.shiftTypeColor) {
-        shiftColor = tempShiftType?.shiftTypeColor
-      }
-    }
-
-    if(this.chosenDate.getMonth() != date.getMonth() && shiftColor == "#FFFFFF") {
-      shiftColor = "#D3D3D3";   // Grey
-    }
-
-    return shiftColor; */
   }
 
   setOpacity(shiftPlan: ShiftPlan, date: Date): string {
