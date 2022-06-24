@@ -31,25 +31,14 @@ public class HolidayService {
     public Holiday update(Long holidayId, Map<String, Object> holUpdate) throws ConstraintViolationException {
         Holiday holiday = this.getById(holidayId);
 
-        /*
-        String startDate = holUpdate.get("startDate").toString();
+        if(holUpdate.containsKey("holidayTypeId")){
+            Optional<HolidayType> ht = this.holidayTypeRepository.findById(((Integer) holUpdate.get("holidayTypeId")).longValue());
 
-        if (startDate != null) {
-            LocalDate dateStart = LocalDate.parse(startDate);
-            holUpdate.remove("startDate");
-            holUpdate.put("startDate", dateStart);
+            if (ht.isPresent())
+                holUpdate.put("holidayTypeId", ht.get());
+            else
+                throw new ResourceNotFoundException("Could not find HolidayType with Id: " + holUpdate.get("holidayTypeId"));
         }
-
-        String endDate = holUpdate.get("endDate").toString();
-
-        if (endDate != null) {
-            LocalDate dateEnd = LocalDate.parse(endDate);
-            holUpdate.remove("endDate");
-            holUpdate.put("endDate", dateEnd);
-        }
-         */
-
-
         Holiday holidayUpdated = ClassReflectionHelper.UpdateFields(holiday, holUpdate);
 
         this.holidayRepository.save(holidayUpdated);
@@ -61,6 +50,8 @@ public class HolidayService {
         Holiday holiday = this.getById(holidayId);
 
         holiday.setStatus(holidayStatus);
+
+        this.holidayRepository.save(holiday);
 
         return holiday;
     }
@@ -100,7 +91,7 @@ public class HolidayService {
         List<Holiday> matchedHolidays = new ArrayList<>();
 
         for (Holiday holiday : holidayList) {
-            Department department = employeeService.getDepartmentByEmployeeId(holiday.getEmployeeId());
+            Department department = employeeService.getDepartmentByEmployeeId(holiday.getEmployeeId().getId());
 
             if (department.getDepartmentId() == departmentId)
                 matchedHolidays.add(holiday);
@@ -128,7 +119,7 @@ public class HolidayService {
         List<Holiday> holidayList = getAllHolidays();
 
         for (Holiday holiday : holidayList) {
-            if (holidayToCheck.getEmployeeId() == holiday.getEmployeeId() &&
+            if (holidayToCheck.getEmployeeId().getId().equals(holiday.getEmployeeId().getId()) &&
                 holidayToCheck.getStartDate().equals(holiday.getStartDate()) &&
                 holidayToCheck.getEndDate().equals(holiday.getEndDate())
             ){
