@@ -1,6 +1,6 @@
 <div *ngIf="selectedEmployee">
   <div class="cBaseMargin">
-    <h1>Profil</h1>
+    <h1>Profil von {{this.originalSelectedEmployee.lastName}}, {{this.originalSelectedEmployee.firstName}}</h1>
     <section class="cFirstLayout">
       <div class="cProfilePictureDiv">
         <a class="cSymbol">
@@ -10,7 +10,7 @@
 
         <div class="cProfilePictureButtonsDiv" [hidden]="!(adminView || loggedInUserView)">
           <input [hidden]="!loggedInUserView" type="file" (change)="onChange_OpenProfilePicture($event)" accept="image/*"/>
-          <button [hidden]="!(adminView || loggedInUserView)" (click)="this.selectedEmployee.base64ProfilePic = ''">Bild entfernen</button>
+          <button [hidden]="!(adminView || loggedInUserView) || (this.selectedEmployee.base64ProfilePic == null || this.selectedEmployee.base64ProfilePic == '')" (click)="this.selectedEmployee.base64ProfilePic = ''">Bild entfernen</button>
         </div>
       </div>
 
@@ -18,6 +18,10 @@
         <div class="cDetailsFlex" [hidden]="!(adminView || loggedInUserView)">
           <label class="cDetailsFlex-item cDetailsLabel">Personalnummer: </label>
           <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.id!" readonly/>
+        </div>
+        <div class="cDetailsFlex">
+          <label class="cDetailsFlex-item cDetailsLabel">Username: </label>
+          <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.username" readonly/>
         </div>
         <div class="cDetailsFlex">
           <label class="cDetailsFlex-item cDetailsLabel">Nachname: </label>
@@ -44,6 +48,8 @@
           <label class="cDetailsFlex-item cDetailsLabel">Telefon: </label>
           <input type="text" class="cDetailsFlex-item" [(ngModel)]="selectedEmployee.phone" [readonly]="!adminView" required/>
         </div>
+
+        <button (click)="this.onClick_DeleteEmployee()" class="cDeleteEmployeeBtn" [hidden]="!(this.adminView)">Mitarbeiter Löschen</button>
       </div>
     </section>
   </div>

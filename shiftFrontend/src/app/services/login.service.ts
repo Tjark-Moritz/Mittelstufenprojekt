@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
 import jwtDecode from "jwt-decode";
 import {NavbarComponent} from "../components/navbar/navbar.component";
 import {GetShiftType} from "../models/dto/GetShiftType";
+import {interval, Subscription} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,9 @@ export class LoginService {
       return new GetEmployee();
   }
 
-  constructor(private bearerTokenService: BearerTokenService, private employeeService: EmployeeService, private router: Router) { }
+  constructor(private bearerTokenService: BearerTokenService, private employeeService: EmployeeService, private router: Router) {
+
+  }
 
   public Login(username: string, password: string, autoLogin: boolean){
     this.bearerTokenService.generateBearerToken(username, password).subscribe(
@@ -36,6 +39,7 @@ export class LoginService {
           UserCookieService.setBearerToken(res);
         }
         this.router.navigate(['/index']);
+        this.startintervalLoggedInUserUpdate();
       }, () => {
         swal.default.fire({
           position: 'top',
@@ -65,7 +69,6 @@ export class LoginService {
     if(UserCookieService.isBearerTokenSet() && !this.bearerTokenService.isBearerTokenSet()) {
       this.bearerTokenService.bearerToken = UserCookieService.getBearerToken();
       this.setLoggedInUser();
-      // Todo: ist zu langsam beim setzen
     }
   }
 
@@ -77,6 +80,13 @@ export class LoginService {
     }
   }
 
+  private startintervalLoggedInUserUpdate() {
+    let seconds: number = 5;
+    setInterval(() => {
+      this.setLoggedInUser();
+    }, seconds * 1000);
+  }
+
   private setLoggedInUser(){
     if (this.bearerTokenService.bearerToken.access_token == null) {
       this._LoggedInUser = undefined;
@@ -86,6 +96,7 @@ export class LoginService {
 
     // @ts-ignore
     let username: string = jwtDecode(this.bearerTokenService.bearerToken.access_token).preferred_username;
+
     this.employeeService.getEmployeeByUsername(username).subscribe(x => {
       this.updateLoggedInUser(x);
     }, () => {

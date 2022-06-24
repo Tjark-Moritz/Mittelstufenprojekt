@@ -3,6 +3,8 @@ package de.szut.shift_backend.model;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,20 +39,18 @@ public class Holiday {
     private Long holidayId;
 
     @OneToOne
-    @NotNull(message = "HolidayTypeId can not be null!")
     private HolidayType holidayTypeId;
 
-    @NotNull(message = "EmployeeId can not be null!")
-    private Long employeeId;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Employee employeeId;
 
-    @NotNull(message = "StartDate can not be null!")
     private LocalDate startDate;
 
-    @NotNull(message = "EndDate can not be null!")
     private LocalDate endDate;
 
     private Holiday.HolidayStatus status;
 
-    @NotNull(message = "RequestDate can not be null!")
     private LocalDateTime requestDate;
 }
