@@ -73,7 +73,7 @@ export class EmployeeService {
 
   }
 
-  updateEmployee(employeeChanges: {[key: string]: string}, employeeId: number){
+  updateEmployee(employeeChanges: {[key: string]: object}, employeeId: number){
     this.httpClient.patch(this.urlPre + `/${employeeId}`, employeeChanges,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')

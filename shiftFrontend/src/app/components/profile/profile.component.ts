@@ -63,9 +63,22 @@ export class ProfileComponent implements OnInit {
     return this._AdminView;
   }
 
+  private _SelectedShiftType: GetShiftType | undefined;
+  public get selectedShiftType(): GetShiftType | undefined {
+    return this._SelectedShiftType;
+  }
+  public set selectedShiftType(val){
+    if(this.selectedEmployee)
+      this.selectedEmployee.preferredShiftType = val;
+
+    this._SelectedShiftType = val;
+  }
+
   private _AllShiftTypes: GetShiftType[] = [];
 
   public set allShiftTypes(val){
+    this.selectedShiftType = val.find(x => x.id == this.loginService.LoggedInUser.preferredShiftType?.id);
+
     this._AllShiftTypes = val;
   }
 
@@ -136,53 +149,55 @@ export class ProfileComponent implements OnInit {
 
   private saveAllChanges() {
     if(this.selectedEmployee) {
-      let empChanges: {[key: string]: string} = {};
+      let empChanges: {[key: string]: object} = {};
       let detailsAreChanged: boolean = false;
 
       if (this.originalSelectedEmployee.lastName != this.selectedEmployee.lastName) {
-        empChanges["lastName"] = this.selectedEmployee.lastName;
+        empChanges["lastName"] = new String(this.selectedEmployee.lastName);
         detailsAreChanged = true;
       }
 
       if (this.originalSelectedEmployee.firstName != this.selectedEmployee.firstName) {
-        empChanges["firstName"] = this.selectedEmployee.firstName;
+        empChanges["firstName"] = new String(this.selectedEmployee.firstName);
         detailsAreChanged = true;
       }
 
       if (this.originalSelectedEmployee.street != this.selectedEmployee.street){
-        empChanges["street"] = this.selectedEmployee.street;
+        empChanges["street"] = new String(this.selectedEmployee.street);
         detailsAreChanged = true;
       }
 
       if (this.originalSelectedEmployee.zipcode != this.selectedEmployee.zipcode){
-        empChanges["zipcode"] = this.selectedEmployee.zipcode;
+        empChanges["zipcode"] = new String(this.selectedEmployee.zipcode);
         detailsAreChanged = true;
       }
 
       if (this.originalSelectedEmployee.city != this.selectedEmployee.city){
-        empChanges["city"] = this.selectedEmployee.city;
+        empChanges["city"] = new String(this.selectedEmployee.city);
         detailsAreChanged = true;
       }
 
       if (this.originalSelectedEmployee.phone != this.selectedEmployee.phone){
-        empChanges["phone"] = this.selectedEmployee.phone;
+        empChanges["phone"] = new String(this.selectedEmployee.phone);
         detailsAreChanged = true;
       }
 
       if (this.originalSelectedEmployee.email != this.selectedEmployee.email){
-        empChanges["email"] = this.selectedEmployee.email;
+        empChanges["email"] = new String(this.selectedEmployee.email);
         detailsAreChanged = true;
       }
 
       if (this.originalSelectedEmployee.base64ProfilePic != this.selectedEmployee.base64ProfilePic){
-        empChanges["base64ProfilePic"] = this.selectedEmployee.base64ProfilePic;
+        empChanges["base64ProfilePic"] = new String(this.selectedEmployee.base64ProfilePic);
         detailsAreChanged = true;
       }
 
-      if (this.originalSelectedEmployee.preferredShiftType != this.selectedEmployee.preferredShiftType){
-        empChanges["preferredShiftType"] = JSON.stringify(this.selectedEmployee.preferredShiftType);
+      if (this.originalSelectedEmployee.preferredShiftType != this.selectedEmployee.preferredShiftType && this.selectedShiftType && this.selectedShiftType.id){
+        empChanges["preferredShiftType"] = new Number(this.selectedShiftType.id);
         detailsAreChanged = true;
       }
+
+      console.log(empChanges)
 
       let detailsChangesResult: boolean = true;
       if(detailsAreChanged) {
@@ -250,13 +265,13 @@ export class ProfileComponent implements OnInit {
     this.newPassword = rdmText;
   }
 
-  private sendEmployeeChangesToDb(changes: {[key: string]: string}): boolean{
+  private sendEmployeeChangesToDb(changes: {[key: string]: object}): boolean{
     if(this.selectedEmployee) {
       if (this.originalSelectedEmployee.id && this.selectedEmployee.id) {
         this.empService.updateEmployee(changes, this.originalSelectedEmployee.id);
 
         let newPicture: string | undefined;
-        if(changes["base64ProfilePic"] != "") {
+        if(changes["base64ProfilePic"]) {
           newPicture = this.selectedEmployee.base64ProfilePic;
         }
 
@@ -319,22 +334,9 @@ export class ProfileComponent implements OnInit {
   private loadShiftTypes() {
     if (this.loginService.LoggedInUser.departmentId != null) {
       this.departmentService.getShifttypesFromDepartment(this.loginService.LoggedInUser.departmentId).subscribe(res => {
-        //this.allShiftTypes = res;  // Todo: uncomment
+        this.allShiftTypes = res;
       })
     }
-
-    // Todo: Remove dummy data
-    let shift1: GetShiftType = new GetShiftType(1, new Date(0, 0, 0, 5, 0, 0, 0), new Date(0, 0, 0, 10, 0, 0, 0),1, "Frühschicht", "#f0aa13");
-    let shift2: GetShiftType = new GetShiftType(2, new Date(0, 0, 0, 10, 0, 0, 0), new Date(0, 0, 0, 15, 0, 0, 0), 1,"Mittelschicht", "#47f013");
-    let shift3: GetShiftType = new GetShiftType(3, new Date(0, 0, 0, 15, 0, 0, 0), new Date(0, 0, 0, 20, 0, 0, 0), 1,"Spätschicht", "#0ce4f7");
-    this.allShiftTypes.push(shift1);
-    this.allShiftTypes.push(shift2);
-    this.allShiftTypes.push(shift3);
-    let combinedShifts: GetShiftType[] = [];
-    combinedShifts.push(shift1);
-    combinedShifts.push(shift2);
-    combinedShifts.push(shift3);
-    this.allShiftTypes = combinedShifts;
   }
 
   private openFailedMessageBox(text: string){

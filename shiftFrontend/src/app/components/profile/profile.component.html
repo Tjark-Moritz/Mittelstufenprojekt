@@ -52,7 +52,7 @@
 
   <div class="cBaseMargin" [hidden]="!loggedInUserView">
     <h3>Präferenzen</h3>
-    <select name="preferenceCombobox" class="cPreferenceCombobox" [(ngModel)]="this.selectedEmployee.preferredShiftType" [style.background-color]="this.selectedEmployee.preferredShiftType?.shiftTypeColor">
+    <select name="preferenceCombobox" class="cPreferenceCombobox" [(ngModel)]="this.selectedShiftType" [style.background-color]="this.selectedShiftType?.shiftTypeColor">
       <option *ngFor="let shiftType of this.allShiftTypes" [ngValue]="shiftType" [style.background-color]="shiftType.shiftTypeColor">
         {{shiftType.typeName}}
       </option>
