@@ -45,6 +45,10 @@ public class EmployeeService {
         }
     }
 
+    public void save(Employee newEmployee){
+        this.employeeRepository.save(newEmployee);
+    }
+
     public Employee getEmployeeById(Long empID){
         Optional<Employee> emp = employeeRepository.findById(empID);
 

@@ -45,6 +45,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(NotEnoughHolidaysLeftExecption.class)
+    public ResponseEntity<?> handleNEHLException(NotEnoughHolidaysLeftExecption ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(DataIncompleteException.class)
     public ResponseEntity<?> handleDataIncompleteException(DataIncompleteException ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
