@@ -426,6 +426,7 @@ COPY public.employee_holidays (employee_id, holidays_holiday_id) FROM stdin;
 --
 
 COPY public.holiday (holiday_id, employee_id, end_date, request_date, start_date, status, holiday_type_id_id) FROM stdin;
+3	3	2022-06-24	2022-06-24 18:06:55.660174	2022-06-24	0	1
 \.
 
 
@@ -434,6 +435,8 @@ COPY public.holiday (holiday_id, employee_id, end_date, request_date, start_date
 --
 
 COPY public.holiday_type (id, description, name) FROM stdin;
+1	Vertraglich festgehaltender Urlaub	Tarifurlaub
+2	Urlaub zum Überstundenausgleich	Sonderurlaub
 \.
 
 
@@ -835,7 +838,7 @@ COPY public.shift_trade_request (id, new_shift_id, old_shift_id, replying_employ
 COPY public.shift_type (id, shift_end_time, shift_start_time, shift_type_color, target_num_of_emps, type_name, shift_type_id) FROM stdin;
 1	12:00:00	06:00:00	#03BEFC	2	Frühschicht	1
 2	18:00:00	12:00:00	#07FC03	2	Spätschicht	1
-3	23:00:00	18:00:00	#C03F4	2	Nachtschicht	1
+3	23:00:00	18:00:00	#FFAB00	2	Nachtschicht	1
 \.
 
 
@@ -857,14 +860,14 @@ SELECT pg_catalog.setval('public.employee_id_seq', 9, true);
 -- Name: holiday_holiday_id_seq; Type: SEQUENCE SET; Schema: public; Owner: shiftplanner
 --
 
-SELECT pg_catalog.setval('public.holiday_holiday_id_seq', 1, false);
+SELECT pg_catalog.setval('public.holiday_holiday_id_seq', 3, true);
 
 
 --
 -- Name: holiday_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: shiftplanner
 --
 
-SELECT pg_catalog.setval('public.holiday_type_id_seq', 1, false);
+SELECT pg_catalog.setval('public.holiday_type_id_seq', 2, true);
 
 
 --
@@ -1107,6 +1110,14 @@ ALTER TABLE ONLY public.holiday
 
 ALTER TABLE ONLY public.shift_trade_request
     ADD CONSTRAINT fkfa3ljemu4jpp2lxw5g5g793mt FOREIGN KEY (old_shift_id) REFERENCES public.shift(id);
+
+
+--
+-- Name: holiday fkfcn4ebwwpcrk1dbvjqr760hyg; Type: FK CONSTRAINT; Schema: public; Owner: shiftplanner
+--
+
+ALTER TABLE ONLY public.holiday
+    ADD CONSTRAINT fkfcn4ebwwpcrk1dbvjqr760hyg FOREIGN KEY (employee_id) REFERENCES public.employee(id) ON DELETE CASCADE;
 
 
 --

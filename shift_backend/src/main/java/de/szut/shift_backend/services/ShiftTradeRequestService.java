@@ -1,8 +1,6 @@
 package de.szut.shift_backend.services;
 
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
-import de.szut.shift_backend.model.Employee;
-import de.szut.shift_backend.model.Shift;
 import de.szut.shift_backend.model.ShiftTradeRequest;
 import de.szut.shift_backend.repository.ShiftTradeRequestRepository;
 import org.springframework.stereotype.Service;
@@ -13,13 +11,19 @@ import java.util.Optional;
 @Service
 public class ShiftTradeRequestService {
     private final ShiftTradeRequestRepository shiftTradeRequestRepository;
+    private final ShiftService shiftService;
 
-    public ShiftTradeRequestService(ShiftTradeRequestRepository shiftTradeRequestRepository) {
+    public ShiftTradeRequestService(ShiftTradeRequestRepository shiftTradeRequestRepository, ShiftService shiftService) {
         this.shiftTradeRequestRepository = shiftTradeRequestRepository;
+        this.shiftService = shiftService;
     }
 
     public ShiftTradeRequest create(ShiftTradeRequest request){
         return shiftTradeRequestRepository.save(request);
+    }
+
+    public void delete(Long sTradeRequest){
+        this.shiftTradeRequestRepository.deleteById(sTradeRequest);
     }
 
     public ShiftTradeRequest getShiftTradeRequestByRequestId(Long requestId){
@@ -35,18 +39,39 @@ public class ShiftTradeRequestService {
         if (!accepted){
             shiftTradeRequestRepository.deleteById(updateRequest.getId());
         } else {
+            //Swap Shifts
+            this.shiftService.swapShifts(updateRequest.getRequestingEmployee(), updateRequest.getOldShift(),
+                    updateRequest.getReplyingEmployee(), updateRequest.getNewShift());
+
+            //delete request
+            this.shiftTradeRequestRepository.deleteById(updateRequest.getId());
+
+            //get conflicting requester trades
             List<ShiftTradeRequest> conflictingRequesterRequests = shiftTradeRequestRepository.findAllByRequestingEmployee_IdAndNewShift_ShiftDate(updateRequest.getRequestingEmployee().getId(),
                                                                                                                                                    updateRequest.getNewShift().getShiftDate());
+
+            conflictingRequesterRequests.addAll(this.shiftTradeRequestRepository.findAllByRequestingEmployee_IdAndNewShift_ShiftDate(
+                    updateRequest.getRequestingEmployee().getId(),
+                    updateRequest.getOldShift().getShiftDate()));
+
+            //get conflicting responder trades
             List<ShiftTradeRequest> conflictingRespondentRequests = shiftTradeRequestRepository.findAllByReplyingEmployee_IdAndOldShift_ShiftDate(updateRequest.getReplyingEmployee().getId(),
                                                                                                                                                   updateRequest.getOldShift().getShiftDate());
 
-            for(ShiftTradeRequest request : conflictingRequesterRequests){
-                shiftTradeRequestRepository.deleteById(request.getId());
-            }
+            conflictingRespondentRequests.addAll(this.shiftTradeRequestRepository.findAllByReplyingEmployee_IdAndOldShift_ShiftDate(
+                    updateRequest.getReplyingEmployee().getId(),
+                    updateRequest.getNewShift().getShiftDate()));
 
-            for(ShiftTradeRequest request : conflictingRespondentRequests){
-                shiftTradeRequestRepository.deleteById(request.getId());
-            }
+            //delete all conflicting shift requests
+            if(!conflictingRequesterRequests.isEmpty())
+                for(ShiftTradeRequest request : conflictingRequesterRequests){
+                    shiftTradeRequestRepository.deleteById(request.getId());
+                }
+
+            if(!conflictingRespondentRequests.isEmpty())
+                for(ShiftTradeRequest request : conflictingRespondentRequests){
+                    shiftTradeRequestRepository.deleteById(request.getId());
+                }
         }
     }
 

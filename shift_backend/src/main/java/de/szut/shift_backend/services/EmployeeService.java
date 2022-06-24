@@ -6,6 +6,7 @@ import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Department;
 import de.szut.shift_backend.model.Employee;
+import de.szut.shift_backend.model.Holiday;
 import de.szut.shift_backend.model.ShiftType;
 import de.szut.shift_backend.model.dto.UpdatePasswordDto;
 import de.szut.shift_backend.repository.EmployeeRepository;
@@ -43,6 +44,10 @@ public class EmployeeService {
         } catch (Exception e){
             throw new CreationException(e.getMessage());
         }
+    }
+
+    public void save(Employee newEmployee){
+        this.employeeRepository.save(newEmployee);
     }
 
     public Employee getEmployeeById(Long empID){
@@ -145,5 +150,12 @@ public class EmployeeService {
 
             this.keyService.updateUserPassword(subjectId, passwordDto);
         }
+    }
+
+    public void changeEmployeeRole(Long empId, Employee.EMPLOYEE_ROLE role){
+        Employee emp = this.getEmployeeById(empId);
+
+        this.keyService.changeUserRole(emp, role);
+
     }
 }

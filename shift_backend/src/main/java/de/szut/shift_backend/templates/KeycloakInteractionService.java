@@ -1,16 +1,13 @@
 package de.szut.shift_backend.templates;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.szut.shift_backend.exceptionHandling.DataIncompleteException;
 import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.dto.UpdatePasswordDto;
-import org.keycloak.TokenVerifier;
-import org.keycloak.common.VerificationException;
-import org.keycloak.representations.AccessToken;
-import org.keycloak.representations.JsonWebToken;
 import org.keycloak.representations.account.UserRepresentation;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -71,6 +68,30 @@ public class KeycloakInteractionService {
         throw new NullPointerException("Could not retrieve access_token!");
     }
 
+    public String getSubjectIdByUsername(String username){
+        String url =  baseUrl + "/users";
+
+        HttpHeaders header = getHttpBaseHeader(getAdminKey());
+
+        ObjectNode body = mapper.createObjectNode();
+        body.put("username", username);
+
+        HttpEntity request = new HttpEntity(body.toPrettyString(),header);
+
+        ResponseEntity<List<UserRepresentation>> response = this.restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<>() {},
+                1);
+        Optional<UserRepresentation> keyUser =  Objects.requireNonNull(response.getBody()).stream()
+                .filter(user -> user.getUsername().equals(username))
+                .findAny();
+
+
+        return keyUser.map(UserRepresentation::getId).orElse(null);
+    }
+
     public boolean addUserToKeycloak(Employee emp){
         String url = baseUrl + "/users";
         adminToken = getAdminKey();
@@ -90,7 +111,6 @@ public class KeycloakInteractionService {
         body.put("lastName",emp.getLastName());
         body.put("email", emp.getEmail());
         body.put("enabled",true);
-        body.put("realmRoles",  mapper.createArrayNode().add("shiftuser"));
 
         HttpEntity request = new HttpEntity(body.toPrettyString(),header);
 
@@ -124,27 +144,90 @@ public class KeycloakInteractionService {
                 1);
     }
 
-    public String getSubjectIdByUsername(String username){
-        String url =  baseUrl + "/users";
+    public void changeUserRole(Employee emp, Employee.EMPLOYEE_ROLE role) {
+        String subjectId = this.getSubjectIdByUsername(emp.getUsername());
+
+        List<RoleRepresentation> allRoles = getRealmRoles();
+
+        String addString = role == Employee.EMPLOYEE_ROLE.SHIFTADMIN ? "shiftadmin" : "shiftuser";
+        String removeString = addString.equals("shiftadmin") ? "shiftuser" : "shiftadmin";
+
+        Optional<RoleRepresentation> addRole = Objects.requireNonNull(allRoles).stream()
+                                                .filter(externRole -> externRole.getName().equals(addString))
+                                                .findAny();
+
+        Optional<RoleRepresentation> removeRole = Objects.requireNonNull(allRoles).stream()
+                                                .filter(externRole -> externRole.getName().equals(removeString))
+                                                .findAny();
+
+        if(addRole.isEmpty() || removeRole.isEmpty())
+            throw new DataIncompleteException("[KeycloakInteractionService] Can't retrieve realm roles");
+
+        addRoleToUser(subjectId, addRole.get());
+        removeRoleFromUser(subjectId, removeRole.get());
+    }
+
+    private List<RoleRepresentation> getRealmRoles(){
+        String url =  baseUrl + "/roles";
 
         HttpHeaders header = getHttpBaseHeader(getAdminKey());
+        HttpEntity request = new HttpEntity(header);
 
-        ObjectNode body = mapper.createObjectNode();
-        body.put("username", username);
-
-        HttpEntity request = new HttpEntity(body.toPrettyString(),header);
-
-        ResponseEntity<List<UserRepresentation>> response = this.restTemplate.exchange(
+        ResponseEntity<List<RoleRepresentation>> response = this.restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 request,
                 new ParameterizedTypeReference<>() {},
                 1);
-        Optional<UserRepresentation> keyUser =  Objects.requireNonNull(response.getBody()).stream()
-                                                .filter(user -> user.getUsername().equals(username))
-                                                .findAny();
 
+        return response.getBody();
+    }
 
-        return keyUser.map(UserRepresentation::getId).orElse(null);
+    private boolean addRoleToUser(String subjectId, RoleRepresentation role){
+        String url =  baseUrl + "/users/" + subjectId + "/role-mappings/realm";
+        HttpHeaders header = getHttpBaseHeader(getAdminKey());
+
+        ObjectNode roleRep = mapper.createObjectNode();
+        roleRep.put("id", role.getId());
+        roleRep.put("name", role.getName());
+
+        ArrayNode an = mapper.createArrayNode();
+        an.add(roleRep);
+
+        HttpEntity request = new HttpEntity(an,header);
+
+        System.out.println(request.getBody().toString());
+        ResponseEntity<List<RoleRepresentation>> response = this.restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                request,
+                new ParameterizedTypeReference<>() {},
+                1);
+
+        return response.getStatusCodeValue() == 200;
+    }
+
+    private boolean removeRoleFromUser(String subjectId, RoleRepresentation role){
+        String url =  baseUrl + "/users/" + subjectId + "/role-mappings/realm";
+        HttpHeaders header = getHttpBaseHeader(getAdminKey());
+
+        ObjectNode roleRep = mapper.createObjectNode();
+        roleRep.put("id", role.getId());
+        roleRep.put("name", role.getName());
+
+        ArrayNode an = mapper.createArrayNode();
+        an.add(roleRep);
+
+        HttpEntity request = new HttpEntity(an,header);
+
+        System.out.println(request.getBody().toString());
+        ResponseEntity<List<RoleRepresentation>> response = this.restTemplate.exchange(
+                url,
+                HttpMethod.DELETE,
+                request,
+                new ParameterizedTypeReference<>() {},
+                1);
+
+        return response.getStatusCodeValue() == 200;
     }
 }

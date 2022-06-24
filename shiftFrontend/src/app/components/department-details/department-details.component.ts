@@ -7,6 +7,8 @@ import {AddDepartment} from "../../models/dto/AddDepartment";
 import {UserRoleEnum} from "../../models/UserRoleEnum";
 import {BearerTokenService} from "../../services/bearer-token.service";
 import {AddShiftType} from "../../models/dto/AddShiftType";
+import {ShiftPlanService} from "../../services/shift-plan.service";
+import {AddShiftPlan} from "../../models/dto/AddShiftPlan";
 
 @Component({
   selector: 'app-department-details',
@@ -18,13 +20,17 @@ export class DepartmentDetailsComponent implements OnInit {
   activeDep: GetDepartment = new GetDepartment();
   isOld: boolean;
   isAdmin: boolean;
+  shiftCount: number;
 
   constructor(private departmentService: DepartmentService,
               private employeeService: EmployeeService,
               private dialogRef: MatDialogRef<DepartmentDetailsComponent>,
-              @Inject(MAT_DIALOG_DATA) private data: GetDepartment, private bearerTokenService: BearerTokenService) {
+              @Inject(MAT_DIALOG_DATA) private data: GetDepartment,
+              private bearerTokenService: BearerTokenService,
+              private shiftPlanService: ShiftPlanService) {
     this.isAdmin = false;
     this.isOld = false;
+    this.shiftCount = 0;
 
     let roleName: UserRoleEnum | undefined;
     // @ts-ignore
@@ -59,6 +65,17 @@ export class DepartmentDetailsComponent implements OnInit {
     this.dialogRef.close({ event: 'close', data: undefined });
   }
 
+  createShiftPlan(){
+    let addShiftPlan: AddShiftPlan = new AddShiftPlan();
+    addShiftPlan.departmentId = this.activeDep.departmentId;
+    addShiftPlan.excludedWeekdays = [];
+    addShiftPlan.validMonth = new Date(Date.now());
+    let year: number = addShiftPlan.validMonth.getFullYear();
+    let month: number = addShiftPlan.validMonth.getMonth();
+    addShiftPlan.validMonth.setFullYear(year, month, 1);
+    this.shiftPlanService.addShiftplan(addShiftPlan);
+  }
+
   async save() {
 
     let anyError: boolean = false;
@@ -88,34 +105,34 @@ export class DepartmentDetailsComponent implements OnInit {
         errorMessage += "Abteilungskürzel nicht eingetragen. ";
       }
 
-      let shiftStart: string = (document.getElementById("shiftStartNew") as HTMLInputElement).value;
-      let shiftEnd: string = (document.getElementById("shiftEndNew") as HTMLInputElement).value;
-      let empCount: number = +(document.getElementById("shiftEmpNumNew") as HTMLInputElement).value;
-      let shiftName: string = (document.getElementById("shiftTypeNameNew") as HTMLInputElement).value;
-      let shiftColor: string = (document.getElementById("shiftColorNew") as HTMLInputElement).value;
-
-      let dateStart: Date = new Date();
-      let splittedStart = shiftStart.split(":");
-      let hs: number = +splittedStart[0];
-      let ms: number = +splittedStart[0];
-      let ss: number = +splittedStart[0];
-      dateStart.setHours(hs, ms, ss);
-
-      let dateEnd: Date = new Date();
-      let splittedEnd = shiftEnd.split(":");
-      let he: number = +splittedStart[0];
-      let me: number = +splittedStart[0];
-      let se: number = +splittedStart[0];
-      dateEnd.setHours(he, me, se);
-
-
-      let shift: AddShiftType = new AddShiftType(dateStart, dateEnd, empCount, shiftName, shiftColor);
       addDepObj.shiftTypes = [];
-      if(addDepObj.shiftTypes){
-        addDepObj.shiftTypes.push(shift);
-      }
 
-      console.log(addDepObj);
+      for (let i = 0; i < this.shiftCount; i++) {
+        let shiftStart: string = (document.getElementById("shiftStartNew" + i) as HTMLInputElement).value;
+        let shiftEnd: string = (document.getElementById("shiftEndNew" + i) as HTMLInputElement).value;
+        let empCount: number = +(document.getElementById("shiftEmpNumNew" + i) as HTMLInputElement).value;
+        let shiftName: string = (document.getElementById("shiftTypeNameNew" + i) as HTMLInputElement).value;
+        let shiftColor: string = (document.getElementById("shiftColorNew" + i) as HTMLInputElement).value;
+
+        let dateStart: Date = new Date();
+        let splittedStart = shiftStart.split(":");
+        let hs: number = +splittedStart[0];
+        let ms: number = +splittedStart[1];
+        let ss: number = +splittedStart[2];
+        dateStart.setHours(hs, ms, ss);
+
+        let dateEnd: Date = new Date();
+        let splittedEnd = shiftEnd.split(":");
+        let he: number = +splittedEnd[0];
+        let me: number = +splittedEnd[1];
+        let se: number = +splittedEnd[2];
+        dateEnd.setHours(he, me, se);
+
+        let shift: AddShiftType = new AddShiftType(dateStart, dateEnd, empCount, shiftName, shiftColor);
+        if(addDepObj.shiftTypes){
+          addDepObj.shiftTypes.push(shift);
+        }
+      }
 
       if(!anyError){
         this.departmentService.addDepartment(addDepObj);
@@ -161,4 +178,30 @@ export class DepartmentDetailsComponent implements OnInit {
     }
     this.dialogRef.close({ event: 'close', data: undefined });
   }
+
+  addShifts(){
+    let sOld = (document.getElementById("adminDepTable") as HTMLInputElement).innerHTML;
+    sOld += this.addShiftString();
+    (document.getElementById("adminDepTable") as HTMLInputElement).innerHTML = sOld;
+  }
+
+  addShiftString(){
+
+
+    let s1: string = '<tr><td class="tdLabelName">Start Schicht ' + this.shiftCount + ':</td><td><input class="inputSetName" type="text" id="';
+    let s1_1: string = 'shiftStartNew' + this.shiftCount;
+    let s2: string = '"></td></tr><tr><td class="tdLabelName">Ende Schicht ' + this.shiftCount + ':</td><td><input class="inputSetName" type="text" id="';
+    let s2_1: string = 'shiftEndNew' + this.shiftCount;
+    let s3: string = '"></td></tr><tr><td class="tdLabelName">Mitarbeiterzahl ' + this.shiftCount + ':</td><td><input class="inputSetName" type="text" id="';
+    let s3_1: string = 'shiftEmpNumNew' + this.shiftCount;
+    let s4: string = '"></td></tr><tr><td class="tdLabelName">Schichtname ' + this.shiftCount + ':</td><td><input class="inputSetName" type="text" id="';
+    let s4_1: string = 'shiftTypeNameNew' + this.shiftCount;
+    let s5: string = '"></td></tr><tr><td class="tdLabelName">Schichtfarbe ' + this.shiftCount + ':</td><td><input class="inputSetName" type="text" id="';
+    let s5_1: string = 'shiftColorNew' + this.shiftCount;
+    let s6: string = '"></td></tr>';
+    let sAll = s1 + s1_1 + s2 + s2_1 + s3 + s3_1 + s4 + s4_1 + s5 + s5_1 + s6 ;
+    this.shiftCount++;
+    return sAll;
+  }
+
 }

@@ -200,27 +200,16 @@ public class MappingService {
         return shiftType;
     }
 
-    public AddHolidayDto mapHolidayToAddHolidayDto(Holiday holiday) {
-        AddHolidayDto addHolidayDto = new AddHolidayDto();
-        addHolidayDto.setId(holiday.getHolidayId());
-        addHolidayDto.setTypeId(holiday.getHolidayTypeId().getId());
-        addHolidayDto.setStartDate(holiday.getStartDate());
-        addHolidayDto.setEndDate(holiday.getEndDate());
-        addHolidayDto.setEmployeeId(holiday.getEmployeeId());
-
-        return addHolidayDto;
-    }
-
     public Holiday mapAddHolidayDtoToHoliday(AddHolidayDto addHolidayDto) {
         Holiday holiday = new Holiday();
 
         Employee employee = employeeService.getEmployeeById(addHolidayDto.getEmployeeId());
-        Optional<HolidayType> holidayType = holidayService.getByTypeId(addHolidayDto.getTypeId());
+        Optional<HolidayType> holidayType = holidayService.getByTypeId(addHolidayDto.getHolidayTypeId());
 
         holidayType.ifPresent(holiday::setHolidayTypeId);
 
         holiday.setHolidayId(addHolidayDto.getId());
-        holiday.setEmployeeId(employee.getId());
+        holiday.setEmployeeId(employee);
         holiday.setStartDate(addHolidayDto.getStartDate());
         holiday.setEndDate(addHolidayDto.getEndDate());
         holiday.setRequestDate(LocalDateTime.now());
@@ -236,7 +225,8 @@ public class MappingService {
         getHolidayDto.setHolidayTypeId(holiday.getHolidayTypeId().getId());
         getHolidayDto.setStartDate(holiday.getStartDate());
         getHolidayDto.setEndDate(holiday.getEndDate());
-        getHolidayDto.setEmployeeId(holiday.getEmployeeId());
+        getHolidayDto.setEmployeeId(holiday.getEmployeeId().getId());
+        getHolidayDto.setHolidayStatus(holiday.getStatus());
 
         return getHolidayDto;
     }
