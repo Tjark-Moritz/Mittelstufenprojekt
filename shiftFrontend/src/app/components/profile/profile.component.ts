@@ -105,10 +105,6 @@ export class ProfileComponent implements OnInit {
       this._LoggedInUserView = (this.selectedEmployee?.username == this.loginService.LoggedInUser.username);
     }
     this._AdminView = (this.bearerTokenService.getUserRole == UserRoleEnum.Admin);
-
-    // Todo: remove console
-    console.info("LoggedInUser: " + this._LoggedInUserView);
-    console.info("Admin: " + this._AdminView);
   }
 
   public isProfilePictureSet(): boolean{
