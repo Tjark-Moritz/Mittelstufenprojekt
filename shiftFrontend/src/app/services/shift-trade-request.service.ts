@@ -47,9 +47,8 @@ export class ShiftTradeRequestService {
     console.log("added Shift Trade Request");
   }
 
-  //todo einmal bitte wer rüberschauen
-  AddTradeRequestStatus(request: RequestAnswer, requestid: number){
-    this.httpClient.patch(this.urlPre + `/${requestid}`,request,{
+  AddTradeRequestStatus(requestAnswer: RequestAnswer, requestid: number){
+    this.httpClient.post(this.urlPre + `/${requestid}`, requestAnswer,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)
@@ -58,3 +57,4 @@ export class ShiftTradeRequestService {
   }
 
 }
+

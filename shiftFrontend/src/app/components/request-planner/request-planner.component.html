@@ -1,3 +1,5 @@
+<button mat-raised-button (click)="openDialog">testdialog</button>
+
 
 <div class="datePickerSpace">
   <!-- startdate picker -->
@@ -17,6 +19,7 @@
     <!-- swapdate Column -->
     <ng-container matColumnDef="swapDate">
       <th mat-header-cell *matHeaderCellDef> Swap Date </th>
+
       <td mat-cell *matCellDef="let element"> {{element.swapDate}} </td>
     </ng-container>
 

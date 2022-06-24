@@ -12,15 +12,20 @@ import {BearerTokenService} from "../../services/bearer-token.service";
 import {AddShiftTradeRequest} from "../../models/dto/AddShiftTradeRequest";
 import {LoginService} from "../../services/login.service";
 import {ShiftTradeRequestService} from "../../services/shift-trade-request.service";
-import {AddHoliday} from "../../models/dto/AddHoliday";
 import {RequestAnswer} from "../../models/dto/RequestAnswer";
+import {DayDetailsComponent} from "../day-details/day-details.component";
+import {GetShiftTradeRequest} from "../../models/dto/GetShiftTradeRequest";
+import {ShiftPlan} from "../../models/dto/ShiftPlan";
+import {GetShift} from "../../models/dto/GetShift";
+import {GetShiftType} from "../../models/dto/GetShiftType";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-request-planner',
   templateUrl: './request-planner.component.html',
   styleUrls: ['./request-planner.component.css']
 })
-//todo da Jarno noch nicht fertig ist mit seiner ansicht, evtl drop down menue erstellen mit Employees zum auswählen
+//todo evtl drop down menue erstellen mit Employees zum auswählen
 //todo replying id raufinden, oldShiftid und new shift id übergeben aus tabelle
 export class RequestPlannerComponent implements OnInit {
 
@@ -31,7 +36,10 @@ export class RequestPlannerComponent implements OnInit {
   constructor(private employeeService: EmployeeService,
               private bearerTokenService: BearerTokenService,
               private loginService: LoginService,
-              private shiftTradeRequestService: ShiftTradeRequestService)
+              private dialog: MatDialog,
+              private shiftTradeRequestService: ShiftTradeRequestService,
+              )
+  //private getShiftTradeRequest: GetShiftTradeRequest
   {
     //todo delete
     let requestArray: AddShiftTradeRequest[] = [];
@@ -72,29 +80,12 @@ export class RequestPlannerComponent implements OnInit {
     addRequest.requestingEmployeeId = this.loginService.LoggedInUser.id;
     addRequest.newShiftId = this.requestCounter;
     this.requestCounter = this.requestCounter+1;
-    //todo wie ziehe ich mir die // tabelle von Jarno auswahl
-    //addRequest.oldShiftId =
-    //todo wie ziehe ich mir die  // tabelle von Jarno auswahl
-    //addRequest.replyingEmployeeId =
+    //todo ist das richtig ?
+    //addRequest.oldShiftId = this.getShiftTradeRequest.oldShift?.id;
+    //todo ist das richtig ?
+    //addRequest.replyingEmployeeId = this.getShiftTradeRequest.replyingEmployee?.id;
     this.shiftTradeRequestService.AddTradeRequest(addRequest);
     this.refresh();
-    /*
-       // let empList = this.getUserData();
-
-       // let date: Date = new Date();
-
-        let shiftTradeRequest: ShiftTradeRequest = new ShiftTradeRequest();
-
-
-        shiftTradeRequest.oldShiftId = 1;
-        shiftTradeRequest.newShiftId = 2;
-        shiftTradeRequest.requestingEmployee = empList.employees?.[1];
-        shiftTradeRequest.shiftTradeId = this.requestCounter+1;
-        shiftTradeRequest.replyingEmployee = empList.employees?.[0];
-
-        this.requestData.push(shiftTradeRequest);
-
-    */
   }
 
 
@@ -118,8 +109,73 @@ export class RequestPlannerComponent implements OnInit {
   {
     let addRequestupdate = new RequestAnswer();
     addRequestupdate.accepted = false;
+    //todo delte AddTradeRequestStatus(shiftTypeMap: Map<string, object>, requestid: number){
     this.shiftTradeRequestService.AddTradeRequestStatus(addRequestupdate,1);
   }
+  /*
+    openDialog()
+    {
+      this.dialog.open(DayDetailsComponent,
+      {
+        position:
+          {
+            top: "0",
+            right: "0",
+          },
+        height: "100vh",
+        direction: "rtl",
+        data:
+          {}
+      });
+    }
+  */
+    openDialog(shiftPlan: ShiftPlan, date: Date) {
+      if(shiftPlan.shifts){
+        //let formattedDate: string = this.getFormattedDate(date);
+        let shifts: GetShift[] = this.getShifts(shiftPlan, date)
+
+        this.dialog.open(DayDetailsComponent, {
+          position: {
+            top: "0",
+            right: "0",
+          },
+          height: "100vh",
+          direction: "rtl",
+          data: {
+            date,
+            //formattedDate,
+            shifts,
+          }
+        });
+      }
+    }
+
+  /*
+  getFormattedDate(date: Date): string {
+    return this.weekdays[date.getDay()] + ", " + date.getDate() + "." + this.months[date.getMonth()] + " " + date.getFullYear();
+  }
+
+   */
+
+
+  getShifts(shiftPlan: ShiftPlan, date?: Date, shiftType?: GetShiftType): GetShift[] {
+    if(shiftPlan.shifts) {
+      if (date) {
+        let chosenDayShifts: GetShift[];
+        chosenDayShifts = shiftPlan.shifts.filter(shift => shift.shiftDate?.toDateString() == date.toDateString())
+
+        if (shiftType) {
+          return chosenDayShifts.filter(shift => shift.shiftType?.id == shiftType.id)
+        }
+        return chosenDayShifts
+      }
+      return shiftPlan.shifts
+    }
+    return []
+  }
+
+
+
 
   refresh()
   {
@@ -130,7 +186,6 @@ export class RequestPlannerComponent implements OnInit {
         //todo
         //this.allRequest = res;
       }
-      console.log(res);
     });
   }
 }
