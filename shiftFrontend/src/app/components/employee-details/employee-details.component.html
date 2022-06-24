@@ -1,21 +1,12 @@
 <div xmlns="http://www.w3.org/1999/html">
 
-  <div class="row" *ngIf="isOld">
+  <div class="row">
     <div class="col-4">
       <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
     </div>
     <div class="col-4">
       <a role="button" class="btn baseBtn saveBtn" (click)="save()">Save</a>
     </div>
-  </div>
-  <div class="row" *ngIf="!isOld">
-    <div class="col-4">
-      <a role="button" class="btn baseBtn cancelBtn" (click)="close()">Cancel</a>
-    </div>
-    <div class="col-4">
-      <a role="button" class="btn baseBtn saveBtn" (click)="save()">Add</a>
-    </div>
-    <div class="col-4"></div>
   </div>
 </div>
 
@@ -92,14 +83,6 @@
         </td>
         <td>
           <input class="inputSetName" type="text" id="numHolidaysLeftNew">
-        </td>
-      </tr>
-      <tr>
-        <td class="tdLabelName">
-          Profilbild:
-        </td>
-        <td>
-          <input class="inputSetName" type="text" id="base64ProfilePicNew">
         </td>
       </tr>
     </table>
