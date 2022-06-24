@@ -13,9 +13,9 @@
 
   <!-- startdate vom dem User wo ich sie von haben wil picker -->
   <mat-label > </mat-label>
-  <input matInput (dateChange)="closePicker($event, startpicker)" [matDatepicker]="startpicker" placeholder="Tauschen mit">
-  <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
-  <mat-datepicker #startpicker></mat-datepicker>
+  <input matInput (dateChange)="closePicker($event, endpicker)" [matDatepicker]="endpicker" placeholder="Tauschen mit">
+  <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
+  <mat-datepicker #endpicker></mat-datepicker>
 
   <button mat-raised-button (click)="sendRequest()">Senden</button>
 </div>

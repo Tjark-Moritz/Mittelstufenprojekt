@@ -10,6 +10,7 @@ import {RequestAnswer} from "../../models/dto/RequestAnswer";
 import {DayDetailsComponent} from "../day-details/day-details.component";
 import {MatDialog} from "@angular/material/dialog";
 import {GetShift} from "../../models/dto/GetShift";
+import {ShiftPlanService} from "../../services/shift-plan.service";
 
 @Component({
   selector: 'app-request-planner',
@@ -30,6 +31,7 @@ export class RequestPlannerComponent implements OnInit {
               private loginService: LoginService,
               private dialog: MatDialog,
               private shiftTradeRequestService: ShiftTradeRequestService,
+              private shiftPlanService: ShiftPlanService
               )
   //private
   {
@@ -75,8 +77,9 @@ export class RequestPlannerComponent implements OnInit {
     return shiftList;
   }
 */
-  sendRequest()
+  async sendRequest()
   {
+    /*
     //todo meine Shicht von this chosenLoginduserid
     let addRequest: AddShiftTradeRequest = new AddShiftTradeRequest();
     addRequest.requestingEmployeeId = this.loginService.LoggedInUser.id;
@@ -93,6 +96,27 @@ export class RequestPlannerComponent implements OnInit {
     // dem tag wo ich die haben will
     addRequest.replyingEmployeeId = this.personId;
     this.shiftTradeRequestService.AddTradeRequest(addRequest);
+    */
+
+    let userId: number | undefined = this.loginService.LoggedInUser.id;
+    let otherUserId: number | undefined = this.personId;
+    let rightId: number |undefined = 0;
+    //let userShiftId: number | undefined = ;
+    let str: string = String(this.loginService.LoggedInUser.departmentId);
+    this.shiftPlanService.getShiftplansByDeptId(+str).subscribe(res => {
+      res.forEach(temp => {
+        temp.shifts?.forEach(tmp => {
+          tmp.activeEmployees?.forEach(tp => {
+            if(tp.id == otherUserId){
+              rightId = tmp.id;
+            }
+          });
+        });
+      });
+      //console.log(rightId);
+    });
+
+
 
     this.refresh();
   }

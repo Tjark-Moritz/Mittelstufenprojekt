@@ -47,5 +47,15 @@
       "^/shiftplan": ""
     },
     "changeOrigin": true
+  },
+
+  "/request/shifttrade": {
+    "target": "http://localhost:8090/request/shifttrade",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/request/shifttrade": ""
+    },
+    "changeOrigin": true
   }
 }
