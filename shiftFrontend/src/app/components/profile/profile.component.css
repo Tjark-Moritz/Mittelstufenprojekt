@@ -47,6 +47,12 @@
   gap: 5px;
 }
 
+.cDeleteEmployeeBtn {
+  background-color: red;
+  color: white;
+  margin-right: 0;
+}
+
 
 input:read-only {
   background-color: #d1d1d1;
