@@ -58,7 +58,7 @@ export class EmployeeDetailsComponent implements OnInit {
     let phone: string = (document.getElementById("phoneNew") as HTMLInputElement).value;
     let email: string = (document.getElementById("eMailNew") as HTMLInputElement).value;
     let numHolidaysLeft: number = +(document.getElementById("numHolidaysLeftNew") as HTMLInputElement).value;
-    let base64ProfilePic: string = (document.getElementById("base64ProfilePicNew") as HTMLInputElement).value;
+    let base64ProfilePic: string = "";
 
     if(username == ""){
       errorMessage += "Benutzername falsch, "
@@ -87,9 +87,6 @@ export class EmployeeDetailsComponent implements OnInit {
     if(numHolidaysLeft == 0){
       errorMessage += "Urlaubstage übrig falsch, "
     }
-    if(base64ProfilePic == ""){
-      errorMessage += "Bild falsch, "
-    }
 
 
     if(anyError){
@@ -100,9 +97,5 @@ export class EmployeeDetailsComponent implements OnInit {
       this.employeeService.addEmployee(newEmp);
       this.dialogRef.close({ event: 'close', data: undefined });
     }
-  }
-
-  delete() {
-    // Wird vermutlich nicht benötigt
   }
 }
