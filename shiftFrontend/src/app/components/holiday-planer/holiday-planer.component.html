@@ -101,7 +101,7 @@
             <ng-container matColumnDef="statuss">
               <th mat-header-cell *matHeaderCellDef> Status </th>
               <mat-cell *matCellDef="let element" >
-                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted()">✔</button></div>
+                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted(element)">✔</button></div>
                 <div class="falseButton" ><button mat-raised-button (click)="element.status = false; holidaycanceled()">❌</button></div>
               </mat-cell>
             </ng-container>
@@ -111,7 +111,7 @@
             <ng-container matColumnDef="statuss">
               <th mat-header-cell *matHeaderCellDef > Status </th>
               <mat-cell *matCellDef="let element" bgcolor=#00FF00 >
-                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted();">✔</button></div>
+                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted(element);">✔</button></div>
                 <div class="falseButton" ><button mat-raised-button (click)="element.status = false; holidaycanceled()">❌</button></div>
               </mat-cell>
             </ng-container>
@@ -121,7 +121,7 @@
             <ng-container matColumnDef="statuss">
               <th mat-header-cell *matCellDef="let element" Status ></th>
               <mat-cell *matCellDef="let element" >
-                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted()">✔</button></div>
+                <div class="trueButton" ><button mat-raised-button (click)="element.status = true; holidayaccepted(element)">✔</button></div>
                 <div class="falseButton" ><button mat-raised-button (click)="element.status = false; holidaycanceled()">❌</button></div>
               </mat-cell>
             </ng-container>

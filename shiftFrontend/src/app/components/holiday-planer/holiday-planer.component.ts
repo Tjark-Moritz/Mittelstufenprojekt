@@ -99,13 +99,7 @@ export class HolidayPlanerComponent implements OnInit
 
 
   restDays:number | undefined = 0;
-  /*
-  setleftVecationDays()
-  {
-    this.restDays = this.loginService.LoggedInUser.numHolidaysLeft;
-    return this.restDays;
-  }
-   */
+
 
   startRequest()
   {
@@ -123,8 +117,12 @@ export class HolidayPlanerComponent implements OnInit
   }
 
   //todo check senden des Statuses
-  holidayaccepted()
+  holidayaccepted(holidayElem : AddHoliday)
   {
+    let holidaysGet: GetHoliday;
+    console.info(holidayElem.id)
+
+
     this.statusDisplay = "ACCEPTED";
   }
 

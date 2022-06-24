@@ -114,6 +114,7 @@ export class DepartmentService {
     }).toPromise();
   }
 
+  //todo
   updateDepartment(depChanges: {[key: string]: string}, departmentId: number){
     this.httpClient.patch(this.urlPre + `/${departmentId}`,depChanges,{
       headers: new HttpHeaders()

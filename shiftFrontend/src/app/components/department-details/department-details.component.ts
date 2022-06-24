@@ -122,12 +122,12 @@ export class DepartmentDetailsComponent implements OnInit {
       }
     }
     else {
-      let depChanges: {[key: string]: string} = {}
+      let depChanges: {[key: string]: string} = {} //todo
       let changes: boolean = false;
 
       if(this.activeDep.leadEmployee != leadEmpId){
         changes = true;
-        depChanges["leadEmployee"] = leadEmpId.toString();
+        depChanges["leadEmployee"] = leadEmpId.toString(); //todo
       }
       let depName: string = (document.getElementById("nameInputNew") as HTMLInputElement).value;
       if(this.activeDep.name != depName){
