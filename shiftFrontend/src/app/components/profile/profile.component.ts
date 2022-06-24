@@ -24,6 +24,20 @@ export class ProfileComponent implements OnInit {
               private bearerTokenService: BearerTokenService, private departmentService: DepartmentService) {
   }
 
+  ngOnInit(): void {
+    this.para = this.route.params.subscribe(params => {
+      if(Object.keys(params).length == 0) {
+        this.loadLoggedInProfile();
+      }
+      else {
+        this.loadProfile(params['id']);
+      }
+
+      console.log(params)
+    });
+  }
+
+
 
   private para: any;
   public _SelectedEmployee: GetEmployee | undefined;
@@ -86,31 +100,15 @@ export class ProfileComponent implements OnInit {
     return this._AllShiftTypes;
   };
 
-  ngOnInit(): void {
-    this.para = this.route.params.subscribe(params => {
-      if(Object.keys(params).length == 0) {
-        this.loadLoggedInProfile();
-      }
-      else {
-        this.loadProfile(params['id']);
-      }
-
-      if(!this.selectedEmployee) {
-        this.openFailedMessageBox("Profilseite von dem Benutzer konnte nicht gefunden werden!");
-        this.location.back();
-      }
-    });
-  }
-
   private setViewRights() {
     if(this.selectedEmployee) {
       this._LoggedInUserView = (this.selectedEmployee?.username == this.loginService.LoggedInUser.username);
     }
     this._AdminView = (this.bearerTokenService.getUserRole == UserRoleEnum.Admin);
 
-    //Todo remove cutom setter
-    this._LoggedInUserView = false;
-    this._AdminView = true;
+    // Todo: remove console
+    console.info("LoggedInUser: " + this._LoggedInUserView);
+    console.info("Admin: " + this._AdminView);
   }
 
   public isProfilePictureSet(): boolean{
@@ -204,7 +202,7 @@ export class ProfileComponent implements OnInit {
       if(detailsAreChanged) {
         this.sendEmployeeChangesToDb(empChanges);
         if(!detailsChangesResult){
-          this.openFailedMessageBox("Mitarbeiternummer ist nicht definiert!<br/>Details wurden nicht gespeichert!");
+          this.openFailedMessageBox("Konnte nicht gespeichert werden!", "Mitarbeiternummer ist nicht definiert!<br/>Details wurden nicht gespeichert!");
         }
       }
 
@@ -214,7 +212,7 @@ export class ProfileComponent implements OnInit {
 
         if(!passwordChangesResult)
         {
-          this.openFailedMessageBox("Passwort konnte nicht gespeichert werden!");
+          this.openFailedMessageBox("Konnte nicht gespeichert werden!", "Passwort konnte nicht gespeichert werden!");
         }
       }
 
@@ -240,7 +238,7 @@ export class ProfileComponent implements OnInit {
 
         let maxPicLength: number = 1000000 - 5000;
         if(pictureString.length > maxPicLength){
-          here.openFailedMessageBox("Das ausgewählte Bild überschreitet leider die maximale Dateigröße!<br/>" +
+          here.openFailedMessageBox("Konnte nicht gespeichert werden!", "Das ausgewählte Bild überschreitet leider die maximale Dateigröße!<br/>" +
             "Maximale Größe: " + (3 * (maxPicLength / 4)) + " bytes");
           return;
         }
@@ -297,7 +295,7 @@ export class ProfileComponent implements OnInit {
       }
     }
     else {
-      this.openFailedMessageBox("Mitarbeiter konnte nicht gefunden werden!");
+      this.openFailedMessageBox("Konnte nicht gespeichert werden!", "Mitarbeiter konnte nicht gefunden werden!");
     }
   }
 
@@ -341,7 +339,8 @@ export class ProfileComponent implements OnInit {
     }
 
     if(this._AdminView && !this._LoggedInUserView){
-      let updatedPassword = new UpdatedPassword(this.newPassword, this.newPasswordAgain);
+      let updatedPassword = new UpdatedPassword(this.newPassword, this.newPassword);
+      console.log(updatedPassword)
       if (this.originalSelectedEmployee.id != null) {
         this.empService.updateEmployeePasswordById(updatedPassword, this.originalSelectedEmployee.id)
         return true;
@@ -355,6 +354,14 @@ export class ProfileComponent implements OnInit {
     this.empService.getEmployeeById(empId).subscribe(emp => {
       this.selectedEmployee = JSON.parse(JSON.stringify(emp)); // Json used to create a copy
       this.originalSelectedEmployee = emp;
+
+      console.info(emp)
+
+      if(!this.selectedEmployee) {
+        this.openFailedMessageBox("Fehler beim Aufruf!", "Profilseite von dem Benutzer konnte nicht gefunden werden!");
+        this.location.back();
+      }
+
     });
   }
 
@@ -374,9 +381,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  private openFailedMessageBox(text: string){
+  private openFailedMessageBox(title: string, text: string){
     swal.default.fire({
-      title: "Konnte nicht gespeichert werden!",
+      title: title,
       html: text,
       icon: "error",
       showCloseButton: true

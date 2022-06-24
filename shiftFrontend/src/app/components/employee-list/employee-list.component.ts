@@ -9,6 +9,7 @@ import {EmployeeDetailsComponent} from "../employee-details/employee-details.com
 import {Observable} from "rxjs";
 import {BearerTokenService} from "../../services/bearer-token.service";
 import {UserRoleEnum} from "../../models/UserRoleEnum";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-employee-list',
@@ -27,7 +28,7 @@ export class EmployeeListComponent implements OnInit {
 
   isAdmin: boolean = false; // Muss geändert werden
 
-  constructor(private empService: EmployeeService, private depService: DepartmentService, private dialog: MatDialog, private bearerTokenService: BearerTokenService) {
+  constructor(private empService: EmployeeService, private depService: DepartmentService, private dialog: MatDialog, private bearerTokenService: BearerTokenService, private router: Router) {
     this.selection = new SelectionModel<GetEmployee>(true, []);
 
     let roleName: UserRoleEnum | undefined;
@@ -83,7 +84,7 @@ export class EmployeeListComponent implements OnInit {
   openModal(employee: GetEmployee){
 
     if(this.isAdmin && employee.id != undefined){
-      // Lennarts part aufrufen
+      this.router.navigate(["profile", employee.id]);
       return;
     }
 
