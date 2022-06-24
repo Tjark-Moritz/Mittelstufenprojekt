@@ -4,16 +4,14 @@ import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EmployeeService} from "../../services/employee.service";
 import * as swal from "sweetalert2";
-import {LoginComponent} from "../login/login.component";
 import {Location} from "@angular/common";
 import {BearerTokenService} from "../../services/bearer-token.service";
 import {UserRoleEnum} from "../../models/UserRoleEnum";
 import {LoginService} from "../../services/login.service";
-import {Observable, Subject} from "rxjs";
 import {UpdatedPassword} from "../../models/dto/UpdatedPassword";
 import {GetShiftType} from "../../models/dto/GetShiftType";
-import {ShiftTypeService} from "../../services/shift-type.service";
 import {DepartmentService} from "../../services/department.service";
+import {NavbarComponent} from "../navbar/navbar.component";
 
 @Component({
   selector: 'app-profile',
@@ -65,18 +63,9 @@ export class ProfileComponent implements OnInit {
     return this._AdminView;
   }
 
-  private _SelectedShiftType: GetShiftType | undefined;
-  public get selectedShiftType(): GetShiftType | undefined {
-    return this._SelectedShiftType;
-  }
-  public set selectedShiftType(val) {
-    this._SelectedShiftType = val;
-  }
-
   private _AllShiftTypes: GetShiftType[] = [];
 
   public set allShiftTypes(val){
-    this.selectedShiftType = val.find(x => x.id == this.loginService.LoggedInUser.preferredShiftType?.id);
     this._AllShiftTypes = val;
   }
 
@@ -87,11 +76,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.para = this.route.params.subscribe(params => {
       if(Object.keys(params).length == 0) {
-        if (this.loginService.LoggedInUser) {
-          this.selectedEmployee = JSON.parse(JSON.stringify(this.loginService.LoggedInUser)); // Json used to create a copy
-          this.originalSelectedEmployee = this.loginService.LoggedInUser;
-          this.loadShiftTypes();
-        }
+        this.loadLoggedInProfile();
       }
       else {
         this.loadProfile(params['id']);
@@ -194,6 +179,11 @@ export class ProfileComponent implements OnInit {
         detailsAreChanged = true;
       }
 
+      if (this.originalSelectedEmployee.preferredShiftType != this.selectedEmployee.preferredShiftType){
+        empChanges["preferredShiftType"] = JSON.stringify(this.selectedEmployee.preferredShiftType);
+        detailsAreChanged = true;
+      }
+
       let detailsChangesResult: boolean = true;
       if(detailsAreChanged) {
         this.sendEmployeeChangesToDb(empChanges);
@@ -264,7 +254,26 @@ export class ProfileComponent implements OnInit {
     if(this.selectedEmployee) {
       if (this.originalSelectedEmployee.id && this.selectedEmployee.id) {
         this.empService.updateEmployee(changes, this.originalSelectedEmployee.id);
-        this.originalSelectedEmployee = JSON.parse(JSON.stringify(this.selectedEmployee));
+
+        let newPicture: string | undefined;
+        if(changes["base64ProfilePic"] != "") {
+          newPicture = this.selectedEmployee.base64ProfilePic;
+        }
+
+//        this.originalSelectedEmployee = JSON.parse(JSON.stringify(this.selectedEmployee));
+
+        if(this.loggedInUserView){
+          this.loginService.updateLoggedInUser();
+          this.originalSelectedEmployee = JSON.parse(JSON.stringify(this.selectedEmployee));
+        }
+        else {
+          this.loadProfile(this.originalSelectedEmployee.id);
+        }
+
+        if(newPicture != undefined) {
+          NavbarComponent.profilePictureBase64 = newPicture;
+        }
+
         return true;
       } else {
         return false;
@@ -278,7 +287,6 @@ export class ProfileComponent implements OnInit {
     if(this._LoggedInUserView) {
       let updatedPassword = new UpdatedPassword(this.newPassword, this.newPasswordAgain);
       this.empService.updateEmployeePassword(updatedPassword);
-      this.loginService.updateLoggedInUser();
       return true;
     }
 
@@ -298,6 +306,14 @@ export class ProfileComponent implements OnInit {
       this.selectedEmployee = JSON.parse(JSON.stringify(emp)); // Json used to create a copy
       this.originalSelectedEmployee = emp;
     });
+  }
+
+  private loadLoggedInProfile(){
+    if (this.loginService.isUserLoggedIn()) {
+      this.selectedEmployee = JSON.parse(JSON.stringify(this.loginService.LoggedInUser)); // Json used to create a copy
+      this.originalSelectedEmployee = this.loginService.LoggedInUser;
+      this.loadShiftTypes();
+    }
   }
 
   private loadShiftTypes() {

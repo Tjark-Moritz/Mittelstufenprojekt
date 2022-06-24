@@ -65,11 +65,13 @@ export class LoginService {
     if(UserCookieService.isBearerTokenSet() && !this.bearerTokenService.isBearerTokenSet()) {
       this.bearerTokenService.bearerToken = UserCookieService.getBearerToken();
       this.setLoggedInUser();
+      // Todo: ist zu langsam beim setzen
     }
   }
 
   public updateLoggedInUser(){
     this.setLoggedInUser();
+    console.log("Set L User")
   }
 
   private setLoggedInUser(){
@@ -83,14 +85,12 @@ export class LoginService {
     let username: string = jwtDecode(this.bearerTokenService.bearerToken.access_token).preferred_username;
     this.employeeService.getEmployeeByUsername(username).subscribe(x => {
       this._LoggedInUser = x;
+
+      if (this._LoggedInUser && this._LoggedInUser.base64ProfilePic != null) {
+        NavbarComponent.profilePictureBase64 = this._LoggedInUser.base64ProfilePic;
+      }
     }, () => {
       console.error("Logged in user could not be found!");
     });
-
-    if(this._LoggedInUser) {
-      if (this._LoggedInUser.base64ProfilePic != null) {
-        NavbarComponent.profilePictureBase64 = this._LoggedInUser.base64ProfilePic;
-      }
-    }
   }
 }
