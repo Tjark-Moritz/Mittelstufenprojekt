@@ -33,22 +33,29 @@ export class ShiftPlanComponent implements OnInit {
   currentUser: GetEmployee = new GetEmployee();
 
   empList: GetEmployee[] = [];
-  shiftPlanList: GetShiftPlan[] = [];
+  _ShiftPlanList: GetShiftPlan[] = [];
+  public get shiftPlanList(): GetShiftPlan[]{
+    return this._ShiftPlanList;
+  }
+  public set shiftPlanList(val){
+    this._ShiftPlanList = val;
+
+    this.calculateMonthStructure();
+    this.calculateWeekStructure();
+  }
 
   constructor(private shiftplanService: ShiftPlanService, private employeeService: EmployeeService, private loginService: LoginService, private dialog: MatDialog) {
-    if(this.loginService.LoggedInUser) {
-      if(this.loginService.LoggedInUser.departmentId) {
-        this.employeeService.getAllEmployees().subscribe(val => this.empList = val)
-        this.shiftplanService.getShiftplansByDeptId(this.loginService.LoggedInUser.departmentId).subscribe(val => this.shiftPlanList = val)
-      }
-    }
   }
 
   ngOnInit(): void {
-    this.calculateMonthStructure();
-    this.calculateWeekStructure();
-
-    console.log(this.shiftPlanList)
+    if(this.loginService.isUserLoggedIn()) {
+      if(this.loginService.LoggedInUser.departmentId) {
+        this.employeeService.getAllEmployees().subscribe(val => this.empList = val)
+        this.shiftplanService.getShiftplansByDeptId(this.loginService.LoggedInUser.departmentId).subscribe(val => {
+          this.shiftPlanList = val;
+        })
+      }
+    }
   }
 
 
@@ -179,7 +186,37 @@ export class ShiftPlanComponent implements OnInit {
   colorizeShifts(shiftPlan: ShiftPlan, date: Date): string {
     let shiftColor: string = "#FFFFFF"
 
-    if(!shiftPlan.shifts || !shiftPlan.shiftType || !shiftPlan.validMonthYear) {
+    let shiftPlans: GetShiftPlan[] = this.shiftPlanList;
+    if(shiftPlans.length > 0) {
+      if(shiftPlans[0].shifts) {
+        let shifts: GetShift[] = shiftPlans[0].shifts;
+        let allShiftsAtdate: GetShift[] = shifts.filter(x => {
+          let xDate: Date = new Date(x.shiftDate!);
+          return xDate.toDateString() == date.toDateString()
+        });
+        let userShiftAtDate: GetShift | undefined;
+
+        allShiftsAtdate.forEach((value, index) => {
+          let empsInShift: GetEmployee[] | undefined = value.activeEmployees;
+          let empFound: GetEmployee | undefined = empsInShift?.find( x=> x.id == this.loginService.LoggedInUser.id);
+          if(empFound){
+            userShiftAtDate = value;
+          }
+        });
+
+        if(userShiftAtDate && userShiftAtDate.shiftType?.shiftTypeColor){
+          shiftColor = userShiftAtDate.shiftType?.shiftTypeColor;
+          console.log(shiftColor)
+        }
+      }
+    }
+
+    return shiftColor;
+
+/*
+    if(!this.shiftPlanList.shift() || !this.shiftPlanList.shift().shifts || !shiftPlan.shiftType || !shiftPlan.validMonthYear) {
+      console.log(this.chosenShiftPlan)
+      console.log(shiftPlan)
       return shiftColor;
     }
 
@@ -201,7 +238,7 @@ export class ShiftPlanComponent implements OnInit {
       shiftColor = "#D3D3D3";   // Grey
     }
 
-    return shiftColor;
+    return shiftColor; */
   }
 
   setOpacity(shiftPlan: ShiftPlan, date: Date): string {
