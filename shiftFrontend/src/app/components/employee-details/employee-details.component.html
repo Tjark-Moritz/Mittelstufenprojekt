@@ -93,7 +93,8 @@
   <div class="row">
     <div class="col-5"></div>
     <div class="col-2">
-      <input class="circle" type="text" id="abbNameInputExists" name="abbNameInput" value="{{activeEmp.base64ProfilePic}}" disabled>
+      <img *ngIf="!pictureSet" class="cSymbolImg" src="../../../assets/ProfilPicture/Base_Profil_Picture.svg" alt="Profile Picture"/>
+      <img *ngIf="pictureSet" id="ProfilePicture" class="cSymbolImg" [src]="getProfilePicture()" alt="Profile Picture"/>
     </div>
     <div class="col-5"></div>
   </div>

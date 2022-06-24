@@ -3,6 +3,17 @@
   border: 1px solid black;
 }
 
+.cSymbolImg {
+  background-color: white;
+
+  border-radius: 50%;
+  border: 3px solid white;
+
+  height: 42px;
+  width: 42px;
+  margin: 10px;
+}
+
 .baseBtn {
   align-self: center;
   width: 100px;

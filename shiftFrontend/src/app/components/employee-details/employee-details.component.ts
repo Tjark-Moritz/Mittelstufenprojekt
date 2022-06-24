@@ -6,6 +6,7 @@ import {EmployeeService} from "../../services/employee.service";
 import {GetEmployee} from "../../models/dto/GetEmployee";
 import {AddDepartment} from "../../models/dto/AddDepartment";
 import {AddEmployee} from "../../models/dto/AddEmployee";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-employee-details',
@@ -16,14 +17,20 @@ export class EmployeeDetailsComponent implements OnInit {
 
   activeEmp: GetEmployee = new GetEmployee();
   isOld: boolean = true;
+  pictureSet: boolean = false;
   // Kein Admin benötigt, da Admin bei existierendem Benutzer umgeleitet wird
 
-  constructor(private departmentService: DepartmentService,
+  constructor(private domSanitizer: DomSanitizer,
+              private departmentService: DepartmentService,
               private employeeService: EmployeeService,
               private dialogRef: MatDialogRef<EmployeeDetailsComponent>,
               @Inject(MAT_DIALOG_DATA) private data: GetEmployee) {
 
     this.activeEmp = data;
+
+    if(this.activeEmp.base64ProfilePic != ""){
+      this.pictureSet = true;
+    }
 
     if(this.activeEmp.id == undefined){
       this.isOld = false;
@@ -97,5 +104,10 @@ export class EmployeeDetailsComponent implements OnInit {
       this.employeeService.addEmployee(newEmp);
       this.dialogRef.close({ event: 'close', data: undefined });
     }
+  }
+
+  public getProfilePicture(): SafeResourceUrl | undefined{
+    console.log(this.activeEmp);
+    return this.domSanitizer.bypassSecurityTrustResourceUrl(this.activeEmp.base64ProfilePic);
   }
 }
