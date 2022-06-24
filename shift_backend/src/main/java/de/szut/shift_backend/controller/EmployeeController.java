@@ -129,6 +129,21 @@ public class EmployeeController {
             return new ResponseEntity<>(empUpdatedDto, HttpStatus.OK);
     }
 
+    @Operation(summary = "change employee role")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "employee was updated"),
+            @ApiResponse(responseCode =  "400", description = "employee parameter is null", content = @Content),
+            @ApiResponse(responseCode =  "401", description = "not authorized", content = @Content),
+    })
+    @PatchMapping("/{id}/role")
+    public ResponseEntity<GetEmployeeDto> changeEmployeeRole(@Valid @PathVariable("id") final Long employeeId,
+                                                             @Valid @RequestBody final Employee.EMPLOYEE_ROLE role) {
+
+        this.employeeService.changeEmployeeRole(employeeId, role);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @Operation(summary = "change Employee password")
     @ApiResponses(value = {
             @ApiResponse(responseCode =  "200", description = "password was updated"),

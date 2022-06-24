@@ -1,8 +1,10 @@
 package de.szut.shift_backend.services;
 
+import de.szut.shift_backend.exceptionHandling.NotEnoughHolidaysLeftExecption;
 import de.szut.shift_backend.exceptionHandling.ResourceNotFoundException;
 import de.szut.shift_backend.helper.ClassReflectionHelper;
 import de.szut.shift_backend.model.Department;
+import de.szut.shift_backend.model.Employee;
 import de.szut.shift_backend.model.Holiday;
 import de.szut.shift_backend.model.HolidayType;
 import de.szut.shift_backend.repository.HolidayRepository;
@@ -10,6 +12,7 @@ import de.szut.shift_backend.repository.HolidayTypeRepository;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolationException;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -48,12 +51,7 @@ public class HolidayService {
 
     public Holiday answer(Long holidayId, Holiday.HolidayStatus holidayStatus) {
         Holiday holiday = this.getById(holidayId);
-
-        holiday.setStatus(holidayStatus);
-
-        this.holidayRepository.save(holiday);
-
-        return holiday;
+        return this.holidayRepository.save(setHolidayStatus(holiday, holidayStatus));
     }
 
     public Holiday getById(Long id) {
@@ -104,17 +102,6 @@ public class HolidayService {
         holidayRepository.deleteById(holidayId);
     }
 
-    public Holiday setHolidayStatus(Long id, Holiday.HolidayStatus status) {
-        Holiday holiday = getById(id);
-
-        holiday.setStatus(status);
-
-        //todo: if holidayStatus == accepted => calculateFreeHolidayCounter() (Anzahl der freien Urlaubstage reduzieren)
-        //todo: [Bedarf] bei "unanswered" => geplante Urlaubstage erhöhen
-
-        return holiday;
-    }
-
     public boolean checkIfHolidayExists(Holiday holidayToCheck) {
         List<Holiday> holidayList = getAllHolidays();
 
@@ -127,5 +114,25 @@ public class HolidayService {
             }
         }
         return false;
+    }
+
+    private Holiday setHolidayStatus(Holiday holiday, Holiday.HolidayStatus status) {
+
+        if(status == Holiday.HolidayStatus.ACCEPTED){
+            Employee emp = this.employeeService.getEmployeeById(holiday.getEmployeeId().getId());
+            LocalDate moddedEnd = holiday.getEndDate().plusDays(1);
+            int holLength = holiday.getStartDate().until(moddedEnd).getDays();
+
+            if(holLength > emp.getNumHolidaysLeft())
+                throw new NotEnoughHolidaysLeftExecption("Not enough holidays left!");
+
+            holiday.setStatus(status);
+            emp.setNumHolidaysLeft(emp.getNumHolidaysLeft() - holLength);
+            this.employeeService.save(emp);
+        } else {
+            holiday.setStatus(status);
+        }
+
+        return holiday;
     }
 }
