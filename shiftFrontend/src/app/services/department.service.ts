@@ -33,81 +33,41 @@ export class DepartmentService {
 
   addDepartment(department: AddDepartment){
 
-    // @ts-ignore
-    let shi = department.shiftTypes[0].shiftStartTime.getHours();
-    // @ts-ignore
-    let smi = department.shiftTypes[0].shiftStartTime.getHours();
-    // @ts-ignore
-    let ssi = department.shiftTypes[0].shiftStartTime.getHours();
-    // @ts-ignore
-    let ehi = department.shiftTypes[0].shiftEndTime.getHours();
-    // @ts-ignore
-    let emi = department.shiftTypes[0].shiftEndTime.getHours();
-    // @ts-ignore
-    let esi = department.shiftTypes[0].shiftEndTime.getHours();
-
-    let sh, sm, ss, eh, em, es;
-
-
-    if(shi < 10){
-      sh = "0" + String(shi);
-    }
-    else {
-      sh = String(shi);
-    }
-    if(smi < 10){
-      sm = "0" + String(smi);
-    }
-    else {
-      sm = String(smi);
-    }
-    if(ssi < 10){
-      ss = "0" + String(ssi);
-    }
-    else {
-      ss = String(ssi);
-    }
-
-    if(ehi < 10){
-      eh = "0" + String(ehi);
-    }
-    else {
-      eh = String(ehi);
-    }
-    if(emi < 10){
-      em = "0" + String(emi);
-    }
-    else {
-      em = String(emi);
-    }
-    if(esi < 10){
-      es = "0" + String(esi);
-    }
-    else {
-      es = String(esi);
-    }
-
-    // @ts-ignore
-    let sdate: string =  sh + ":" + sm + ":" + ss;
-    // @ts-ignore
-    let edate: string = eh + ":" + em + ":" + es;
-
-    this.httpClient.post(this.urlPre, {
-      name: department.name,
-      abbreviatedName: department.abbreviatedName,
-      leadEmployeeId: department.leadEmployeeId,
-      employeeIds: department.employeeIds,
-      shiftTypes: [{
-        shiftStartTime: sdate,
-        shiftEndTime: edate,
+    let s1: string = '"name": "' + department.name + '",' +
+      '"abbreviatedName": "' +department.abbreviatedName + '",' +
+      '"leadEmployeeId": "' + department.leadEmployeeId + '",' +
+      '"employeeIds": [' + department.employeeIds + '],' +
+      '"shiftTypes": [';
+    let s1_1: string = "";
+    let s2: string = ']';
+    if(department.shiftTypes){
+      let isNotFirst: boolean = false;
+      department.shiftTypes.forEach(res => {
+        let s_1: string = "";
+        if(!isNotFirst){
+          // @ts-ignore
+          s_1 = '{"shiftStartTime": "' + res.shiftStartTime.toLocaleTimeString() + '",';
+        }
+        else {
+          // @ts-ignore
+          s_1 = ',{"shiftStartTime": "' + res.shiftStartTime.toLocaleTimeString() + '",';
+        }
+        isNotFirst = true;
         // @ts-ignore
-        targetNumOfEmps: department.shiftTypes[0].targetNumOfEmps,
-        // @ts-ignore
-        typeName: department.shiftTypes[0].typeName,
-        // @ts-ignore
-        shiftTypeColor: department.shiftTypes[0].shiftTypeColor
-      }]
-    },{
+        let s_2: string = '"shiftEndTime": "' + res.shiftEndTime.toLocaleTimeString() + '",';
+        let s_3: string = '"targetNumOfEmps": "' + res.targetNumOfEmps + '",';
+        let s_4: string = '"typeName": "' + res.typeName + '",';
+        let s_5: string = '"shiftTypeColor": "' + res.shiftTypeColor + '"}';
+        let s_ges: string = s_1 + s_2 + s_3 + s_4 + s_5;
+        s1_1 += s_ges;
+      });
+    }
+    let sges = "{" + s1 + s1_1 + s2 + "}";
+
+    console.log(sges);
+    //return;
+
+    this.httpClient.post(this.urlPre, sges,{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', `Bearer ${this.bearerTokenService.bearerToken.access_token}`)

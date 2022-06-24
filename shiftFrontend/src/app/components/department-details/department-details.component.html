@@ -21,6 +21,20 @@
   </div>
 </div>
 
+
+<div *ngIf="!isOld && isAdmin">
+  <div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <a role="button" class="btn cancelBtn" (click)="addShifts()">Schicht hinzufügen</a>
+    </div>
+    <div class="col-4"></div>
+  </div>
+  <table id="adminDepTable">
+  </table>
+  <br><br>
+</div>
+
 <div *ngIf="!isOld || isAdmin">
   <div class="row">
     <table>
@@ -56,46 +70,7 @@
           <input class="inputSetName" type="text" id="leadEmpLastNameInputNew">
         </td>
       </tr>
-      <tr>
-        <td class="tdLabelName">
-          Start Schicht:
-        </td>
-        <td>
-          <input class="inputSetName" type="text" id="shiftStartNew">
-        </td>
-      </tr>
-      <tr>
-        <td class="tdLabelName">
-          Ende Schicht:
-        </td>
-        <td>
-          <input class="inputSetName" type="text" id="shiftEndNew">
-        </td>
-      </tr>
-      <tr>
-        <td class="tdLabelName">
-          Mitarbeiterzahl:
-        </td>
-        <td>
-          <input class="inputSetName" type="text" id="shiftEmpNumNew">
-        </td>
-      </tr>
-      <tr>
-        <td class="tdLabelName">
-          Schichtname:
-        </td>
-        <td>
-          <input class="inputSetName" type="text" id="shiftTypeNameNew">
-        </td>
-      </tr>
-      <tr>
-        <td class="tdLabelName">
-          Schichtfarbe:
-        </td>
-        <td>
-          <input class="inputSetName" type="text" id="shiftColorNew">
-        </td>
-      </tr>
+
     </table>
   </div>
 </div>
@@ -137,6 +112,6 @@
       </ng-container>
       </tbody>
     </table>
-    <h2 *ngIf="!activeDep.employees">First add the employee to edit the qualifications!</h2>
+    <h2 *ngIf="!activeDep.employees">First add the employee!</h2>
   </div>
 </div>
