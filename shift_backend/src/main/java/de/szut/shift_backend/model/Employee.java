@@ -3,6 +3,9 @@ package de.szut.shift_backend.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -47,10 +50,10 @@ public class Employee {
     private long numHolidaysLeft;
 
     @OneToMany
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "employee_id")
     private List<Holiday> holidays;
 
-    //@OneToMany
-    //private List<SickDay> sickDays;
     @Column(length=1000000)
     private String base64ProfilePic;
 

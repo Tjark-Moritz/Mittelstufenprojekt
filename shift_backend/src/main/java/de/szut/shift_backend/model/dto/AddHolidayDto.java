@@ -13,7 +13,7 @@ public class AddHolidayDto {
     private Long id;
 
     @NotNull(message = "HolidayTypeId can not be null!")
-    private Long typeId;
+    private Long holidayTypeId;
 
     @NotNull(message = "StartDate can not be null!")
     private LocalDate startDate;
